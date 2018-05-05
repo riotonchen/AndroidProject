@@ -1,7 +1,9 @@
 package com.example.admin.project;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -17,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     SimpleDateFormat yyyyMMddEEEEE  =  new SimpleDateFormat ("yyyy/MM/dd EEEE", Locale.TAIWAN);
     SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
     TextView txv2,txv6,txv10,txv14;
+
+    Intent it;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         String yearend = yyyyMMdd.format(datetime.getTime());
         txv14.setText(yearstart+"~"+yearend);
 
+    }
 
+    public void OnClick(View v){
+        it=new Intent(this,Main3Activity.class);
+        startActivity(it);
     }
 }

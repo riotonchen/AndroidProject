@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.admin.project.Main2Activity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="213dp"
+        android:layout_height="35dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="2018/05/02"
+        android:textSize="14sp"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="75dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="214dp"
+        android:layout_height="39dp"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="132dp" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="214dp"
+        android:layout_height="39dp"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="214dp"
+        android:layout_height="39dp"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="236dp" />
+
+    <Spinner
+        android:id="@+id/spinner4"
+        android:layout_width="214dp"
+        android:layout_height="39dp"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="349dp" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="289dp" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="397dp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分類："
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="139dp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="子分類："
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="195dp" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="發票號碼："
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="298dp" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="帳戶："
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="74dp" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="專案："
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="356dp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="備註："
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="404dp" />
+
+</android.support.constraint.ConstraintLayout>

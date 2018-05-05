@@ -11,132 +11,170 @@
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="29dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText2"
-        android:layout_width="213dp"
+        android:layout_width="0dp"
         android:layout_height="35dp"
+        android:layout_marginBottom="54dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginTop="59dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="2018/05/02"
         android:textSize="14sp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="75dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="214dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="132dp" />
+        android:layout_marginBottom="56dp"
+        android:layout_marginTop="57dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner2"
+        app:layout_constraintEnd_toEndOf="@+id/spinner2"
+        app:layout_constraintStart_toStartOf="@+id/spinner2"
+        app:layout_constraintTop_toTopOf="@+id/editText2" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="214dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="188dp" />
+        android:layout_marginBottom="48dp"
+        android:layout_marginTop="49dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner3"
+        app:layout_constraintEnd_toEndOf="@+id/spinner3"
+        app:layout_constraintStart_toStartOf="@+id/spinner3"
+        app:layout_constraintTop_toTopOf="@+id/textView17" />
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="214dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="236dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/spinner4"
+        app:layout_constraintStart_toStartOf="@+id/editText3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner4"
-        android:layout_width="214dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="349dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView22"
+        app:layout_constraintEnd_toEndOf="@+id/editText4"
+        app:layout_constraintStart_toStartOf="@+id/editText4"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
 
     <EditText
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="289dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/spinner3" />
 
     <EditText
         android:id="@+id/editText4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="29dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="397dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="31dp"
+        android:layout_marginEnd="14dp"
         android:text="分類："
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="72dp"
-        tools:layout_editor_absoluteY="139dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView18"
+        app:layout_constraintEnd_toStartOf="@+id/spinner" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="12dp"
         android:text="子分類："
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="56dp"
-        tools:layout_editor_absoluteY="195dp" />
+        app:layout_constraintBottom_toTopOf="@+id/spinner3"
+        app:layout_constraintEnd_toStartOf="@+id/spinner2" />
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="9dp"
         android:text="發票號碼："
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="298dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText3"
+        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
         android:text="帳戶："
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="74dp" />
+        app:layout_constraintEnd_toStartOf="@+id/spinner3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="7dp"
         android:text="專案："
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:layout_constraintEnd_toStartOf="@+id/spinner4"
+        app:layout_constraintTop_toTopOf="@+id/spinner4" />
 
     <TextView
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
         android:text="備註："
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="72dp"
-        tools:layout_editor_absoluteY="404dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText4"
+        app:layout_constraintEnd_toStartOf="@+id/editText4" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
         android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="457dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

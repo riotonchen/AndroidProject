@@ -13,13 +13,14 @@ public class Main3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mTab = (android.support.design.widget.TabLayout) findViewById(R.id.tabs);
-        mTab.addTab(mTab.newTab().setText("Tab 1"));
-        mTab.addTab(mTab.newTab().setText("Tab 2"));
-        mTab.addTab(mTab.newTab().setText("Tab 3"));
-
+        setContentView(R.layout.activity_main3);
+        mTab = (TabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
+
+      /*  mTab.addTab(mTab.newTab().setText("Tab 1"));
+        mTab.addTab(mTab.newTab().setText("Tab 2"));
+        mTab.addTab(mTab.newTab().setText("Tab 3"));*/
+
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTab));
         mTab.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

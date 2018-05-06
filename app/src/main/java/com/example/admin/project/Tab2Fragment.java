@@ -16,7 +16,7 @@ public class Tab2Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab1_fragment,container,false);
+        View view = inflater.inflate(R.layout.tab2_fragment,container,false);
         btnTab = (Button) view.findViewById(R.id.btnTab);
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override

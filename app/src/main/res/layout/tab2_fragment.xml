@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Name2"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView19"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView19" />
@@ -96,7 +96,7 @@
         android:layout_marginBottom="15dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Name2"
         app:layout_constraintBottom_toTopOf="@+id/btnTab"
         app:layout_constraintStart_toStartOf="@+id/editText3" />
 

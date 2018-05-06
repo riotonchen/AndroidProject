@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClick(View v){
-        it=new Intent(this,Main3Activity.class);
+        it=new Intent(this,Main5Activity.class);
         startActivity(it);
     }
 }

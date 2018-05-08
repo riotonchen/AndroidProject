@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         datetime.setFirstDayOfWeek(Calendar.MONDAY);
         txv2 = (TextView) findViewById(R.id.textView2);//今日日期
         txv6 = (TextView) findViewById(R.id.textView6);//本週日期
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClick(View v){
-        it=new Intent(this,Main5Activity.class);
+        it=new Intent(this,Main6Activity.class);
         startActivity(it);
     }
 }

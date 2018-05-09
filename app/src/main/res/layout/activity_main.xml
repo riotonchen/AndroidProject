@@ -11,8 +11,8 @@
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="136dp"
@@ -27,15 +27,16 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="136dp"
         android:background="@drawable/wallet3"
         android:paddingTop="75dp"
         android:text="帳戶管理"
-        android:textSize="12sp"
+        android:textSize="12dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +45,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="136dp"
@@ -59,8 +60,8 @@
 
     <Button
         android:id="@+id/button7"
-        android:layout_width="110sp"
-        android:layout_height="110sp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
@@ -76,8 +77,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="110sp"
-        android:layout_height="110sp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
@@ -85,8 +86,9 @@
         android:background="@drawable/piggybank3"
         android:onClick="OnClick"
         android:paddingTop="90dp"
-
         android:text="記一筆"
+        android:textSize="14dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

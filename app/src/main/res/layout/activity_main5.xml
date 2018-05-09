@@ -28,6 +28,7 @@
                 android:layout_weight="1"
 
                 android:background="@drawable/backbutton"
+                android:onClick="OnClick"
                 android:text="返回"
                 android:textColor="@android:color/background_dark"
                 android:textColorHighlight="@android:color/background_light"

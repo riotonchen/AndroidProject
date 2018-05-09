@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.SectionIndexer;
 
 public class Main5Activity extends AppCompatActivity {
@@ -34,5 +35,8 @@ public class Main5Activity extends AppCompatActivity {
         adapter.addFragment(new Tab2Fragment(),"收入");
         adapter.addFragment(new Tab3Fragment(),"轉帳");
         viewPager.setAdapter(adapter);
+    }
+    public void OnClick(View view){
+        finish();
     }
 }

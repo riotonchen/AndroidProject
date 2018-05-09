@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
@@ -21,8 +21,9 @@
         android:inputType="number"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingTop="5dp"
         android:text="0"
-        android:textSize="30sp"
+        android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +34,7 @@
 
     <EditText
         android:id="@+id/editText2"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
@@ -42,10 +43,12 @@
         android:ems="10"
         android:gravity="right"
         android:inputType="date"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingTop="5dp"
         android:text="2018/05/02"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -55,13 +58,13 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="112dp"
         android:background="@drawable/et"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:theme="@style/SpinnerStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,13 +73,13 @@
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="208dp"
         android:background="@drawable/et"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -84,13 +87,13 @@
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="256dp"
         android:background="@drawable/et"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -98,13 +101,13 @@
 
     <Spinner
         android:id="@+id/spinner4"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="160dp"
         android:background="@drawable/et"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -112,7 +115,7 @@
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
@@ -123,7 +126,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Name"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -131,7 +134,7 @@
 
     <EditText
         android:id="@+id/editText4"
-        android:layout_width="215dp"
+        android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
@@ -142,7 +145,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Name"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -158,7 +161,7 @@
         android:gravity="right"
         android:text="分類："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spinner"
         app:layout_constraintHorizontal_bias="1.0"
@@ -176,7 +179,7 @@
         android:gravity="right"
         android:text="子分類："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spinner4"
         app:layout_constraintHorizontal_bias="1.0"
@@ -188,19 +191,15 @@
         android:id="@+id/textView19"
         android:layout_width="130dp"
         android:layout_height="36dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="304dp"
         android:gravity="right"
         android:text="發票號碼："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText3"
         app:layout_constraintEnd_toStartOf="@+id/editText3"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView20"
@@ -212,7 +211,7 @@
         android:gravity="right"
         android:text="帳戶："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spinner2"
         app:layout_constraintHorizontal_bias="1.0"
@@ -230,7 +229,7 @@
         android:gravity="right"
         android:text="專案："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spinner3"
         app:layout_constraintHorizontal_bias="1.0"
@@ -242,19 +241,15 @@
         android:id="@+id/textView22"
         android:layout_width="100dp"
         android:layout_height="36dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="352dp"
         android:gravity="right"
         android:text="備註："
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText4"
         app:layout_constraintEnd_toStartOf="@+id/editText4"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -307,5 +302,38 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="80dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bluebackground"
+        android:paddingTop="60dp"
+        android:text="拍照"
+        app:layout_constraintBottom_toTopOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.571" />
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/photo_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/button11"
+        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="@+id/button11"
+        app:layout_constraintTop_toTopOf="@+id/button11"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity
             android:name=".Main4Activity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -19,6 +20,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+=======
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+>>>>>>> parent of 265aaaa... 05092340
         <activity android:name=".Main2Activity" />
         <activity android:name=".Main3Activity" />
         <activity
@@ -28,8 +38,12 @@
         <activity
             android:name=".Main6Activity"
             android:label="@string/title_activity_main6"
+<<<<<<< HEAD
             android:theme="@style/AppTheme.NoActionBar" />
 
+=======
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+>>>>>>> parent of 265aaaa... 05092340
     </application>
 
 </manifest>

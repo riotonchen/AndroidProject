@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,8 +33,8 @@ public class MainFragment extends Fragment {
         btn2 = (Button) view.findViewById(R.id.button2);
         btn3 = (Button) view.findViewById(R.id.button3);
         btn4 = (Button) view.findViewById(R.id.button4);
-        txv2 = (TextView) view.findViewById(R.id.textView2);//今日日期
-        txv6 = (TextView) view.findViewById(R.id.textView6);//本週日期
+        txv2 = (TextView) view.findViewById(R.id.textView2);  //今日日期
+        txv6 = (TextView) view.findViewById(R.id.textView6);  //本週日期
         txv10 = (TextView) view.findViewById(R.id.textView10);//本月日期
         txv14 = (TextView) view.findViewById(R.id.textView14);//本年日期
 
@@ -91,8 +92,6 @@ public class MainFragment extends Fragment {
         datetime.roll(Calendar.DAY_OF_YEAR,-1);
         String yearend = yyyyMMdd.format(datetime.getTime());
         txv14.setText(yearstart+"~"+yearend);
-
-
         return view;
     }
 

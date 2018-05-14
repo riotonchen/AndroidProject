@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class Tab4Fragment extends Fragment {
+public class Tab4Fragment extends Fragment{
 
     private static final String TAG="Tab4Fragment";
     private Button btnTab;
+    private ListView lv;
 
     @Nullable
     @Override
@@ -25,6 +27,9 @@ public class Tab4Fragment extends Fragment {
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
             }
         });
+
+        //lv = (ListView) getActivity().findViewById(R.id.lv);
+
         return view;
     }
 }

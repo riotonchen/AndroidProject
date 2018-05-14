@@ -78,7 +78,7 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:background="@drawable/budget3"
+        android:background="@drawable/budget"
         android:onClick="OnClick"
         android:paddingTop="75dp"
         android:text="分類管理"
@@ -96,7 +96,7 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:background="@drawable/wallet3"
+        android:background="@drawable/wallet"
         android:onClick="OnClick"
         android:paddingTop="75dp"
         android:text="帳戶管理"
@@ -134,7 +134,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/piggybank3"
+        android:background="@drawable/piggybank"
         android:onClick="OnClick"
         android:paddingTop="90dp"
         android:text="記一筆"
@@ -436,7 +436,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView30"
+                android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.05"

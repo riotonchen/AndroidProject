@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
     TextView txv2,txv6,txv10,txv14;
     Button btn1,btn2,btn3,btn4;
-
     Intent it;
 
     @Override
@@ -29,12 +28,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         datetime.setFirstDayOfWeek(Calendar.MONDAY);
-        btn1 = (Button) findViewById(R.id.button);
+        /*btn1 = (Button) findViewById(R.id.button);
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
-        btn4 = (Button) findViewById(R.id.button4);
+        btn4 = (Button) findViewById(R.id.button4);*/
         txv2 = (TextView) findViewById(R.id.textView2);//今日日期
         txv6 = (TextView) findViewById(R.id.textView6);//本週日期
         txv10 = (TextView) findViewById(R.id.textView10);//本月日期
@@ -78,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(it);
         }
         else if(v.getId() == btn3.getId()){
-            it=new Intent(this,Main5Activity.class);
+            it=new Intent(this,Main4Activity.class);
             startActivity(it);
         }
         else if(v.getId() == btn4.getId()){
-            it=new Intent(this,Main5Activity.class);
+            it=new Intent(this,Main4Activity.class);
             startActivity(it);
         }
     }

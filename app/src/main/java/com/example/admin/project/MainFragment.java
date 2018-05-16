@@ -39,28 +39,28 @@ public class MainFragment extends Fragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), Main5Activity.class);
+                it = new Intent(getActivity(), AccountingActivity.class);
                 startActivity(it);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), Main6Activity.class);
+                it = new Intent(getActivity(), SortActivity.class);
                 startActivity(it);
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), Main5Activity.class);
+                it = new Intent(getActivity(), AccountActivity.class);
                 startActivity(it);
             }
         });
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), Main5Activity.class);
+                it = new Intent(getActivity(), AccountingActivity.class);
                 startActivity(it);
             }
         });

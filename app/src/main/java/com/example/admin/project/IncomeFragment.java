@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class Tab5Fragment extends Fragment {
-    private static final String TAG="Tab5Fragment";
+public class IncomeFragment extends Fragment {
+    private static final String TAG="IncomeFragment";
     private Button btnTab;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab5_fragment,container,false);
+        View view = inflater.inflate(R.layout.income_fragment,container,false);
         btnTab = (Button) view.findViewById(R.id.btnTab);
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override

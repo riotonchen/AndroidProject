@@ -1,42 +1,49 @@
 package com.example.admin.project;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.SectionIndexer;
+import android.view.ViewGroup;
 
-public class Main6Activity extends AppCompatActivity {
+import android.widget.TextView;
 
-    private static final String TAG="Main6Activity";
-    private SectionsPagerAdapter mSectionsPageAdapter;
+public class AccountActivity extends AppCompatActivity {
+
+    private static final String TAG="AccountActivity";
+    private com.example.admin.project.SectionsPagerAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main6);
-        Log.d(TAG,"onCreate: Starting.");
+        setContentView(R.layout.account);
 
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
     }
+
+
     private void setupViewPager(ViewPager viewPager){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Tab4Fragment(),"支出分類");
-        adapter.addFragment(new Tab5Fragment(),"收入分類");
+        adapter.addFragment(new AccountFragment(),"帳戶管理");
         viewPager.setAdapter(adapter);
     }
-
     public void OnClick(View view){
         finish();
     }
+
 }

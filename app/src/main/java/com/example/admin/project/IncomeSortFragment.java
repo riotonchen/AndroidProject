@@ -20,9 +20,10 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
 
     private static final String TAG="IncomeSortFragment";
     private Button btnTab;
-    static final String DB_NAME = "HotlineDB";
-    static final String TB_NAME = "hotlist";
-    static final int MAX=8;
+    // static final String DB_NAME = "HotlineDB";
+    // static final String TB_NAME = "hotlist";
+    static final String DB_NAME = "MYLOCALDB";
+    static final String TB_NAME = "SortClass";
     static String [] From = new String[]{"name","budget","cost"};
     SQLiteDatabase db;
     Cursor cur;
@@ -42,7 +43,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             }
         });
         db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
-        //建資料表
+      /*  //建資料表
         String createTable = "CREATE TABLE IF NOT EXISTS "+
                 TB_NAME+
                 "(_id Integer Primary Key AUTOINCREMENT ," +
@@ -58,7 +59,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             addData("人情往來","預算:0","$ 0");
             addData("其他雜項","預算:0","$ 0");
             addData("居家物業","預算:0","$ 0");
-        }
+        }*/
 
         adapter = new SimpleCursorAdapter(getActivity(),R.layout.item,cur,From,
                 new int[] {R.id.name,R.id.budget,R.id.cost},0);
@@ -66,33 +67,24 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         lv = (ListView) view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
-        requery();
+        Requery();
         return view;
     }
-    private void requery(){
+    private void Requery(){
 
-        cur = db.rawQuery("select * FROM " +TB_NAME,null);
+        cur = db.rawQuery("SELECT * FROM " +TB_NAME,null);
         adapter.changeCursor(cur);
-/*
-        if(cur.getCount()  == MAX){
-            btInsert.setEnabled(false);
-
-        }else{
-            btInsert.setEnabled(true);
-        }
-        btUpdate.setEnabled(false);
-        btDelete.setEnabled(false);*/
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-    private void addData(String name,String budget,String cost){
+   /* private void addData(String name,String budget,String cost){
         ContentValues cv = new ContentValues(3);
         cv.put("name", name);
         cv.put("budget", budget);
         cv.put("cost", cost);
         db.insert(TB_NAME,null,cv);
-    }
+    }*/
 
 }

@@ -29,7 +29,7 @@ public class AccountingActivity extends AppCompatActivity {
     }
     private void setupViewPager(ViewPager viewPager){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AccountFragment(),"支出");
+        adapter.addFragment(new ExpendFragment(),"支出");
         adapter.addFragment(new IncomeFragment(),"收入");
         adapter.addFragment(new TransferFragment(),"轉帳");
         viewPager.setAdapter(adapter);

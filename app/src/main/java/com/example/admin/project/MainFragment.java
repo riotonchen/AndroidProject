@@ -27,10 +27,10 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment,container,false);
         datetime.setFirstDayOfWeek(Calendar.MONDAY);
-        btn1 = (Button) view.findViewById(R.id.button);
-        btn2 = (Button) view.findViewById(R.id.button2);
-        btn3 = (Button) view.findViewById(R.id.button3);
-        btn4 = (Button) view.findViewById(R.id.button4);
+        btn1 = (Button) view.findViewById(R.id.button);//記一筆
+        btn2 = (Button) view.findViewById(R.id.button2);//分類管理
+        btn3 = (Button) view.findViewById(R.id.button3);//帳戶管理
+        btn4 = (Button) view.findViewById(R.id.button4);//統計分析
         txv2 = (TextView) view.findViewById(R.id.textView2);//今日日期
         txv6 = (TextView) view.findViewById(R.id.textView6);//本週日期
         txv10 = (TextView) view.findViewById(R.id.textView10);//本月日期

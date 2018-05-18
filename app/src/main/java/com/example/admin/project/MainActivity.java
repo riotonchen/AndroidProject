@@ -37,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void SetUpLocalDB(String dbName) {
         // Android 使用 SQLite 資料庫的方法
+        // http://jim690701.blogspot.tw/2012/06/android-sqlite.html
         // http://sweeteason.pixnet.net/blog/post/37364146-android-%E4%BD%BF%E7%94%A8-sqlite-%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E6%96%B9%E6%B3%95
 
+     /*   final String TB_NAME = "SortClass";
+        DBHelper DH = new DBHelper(this);
+        db=DH.getReadableDatabase();
+*/
         //建資料庫
         db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
         //建資料表

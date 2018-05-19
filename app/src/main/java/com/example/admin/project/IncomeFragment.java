@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.constraint.solver.widgets.WidgetContainer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import java.io.IOException;
 
 public class IncomeFragment extends Fragment {
     private static final String TAG="IncomeFragment";
-    private Button btnTab;
+    private Button photoshoot,photoshoot2;
     private ImageView imv;
     private Uri imgUri;
 
@@ -35,19 +36,41 @@ public class IncomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.income_fragment,container,false);
         imv = (ImageView) view.findViewById(R.id.imageView);
+        photoshoot = (Button) view.findViewById(R.id.photoshoot);
+        photoshoot2 = (Button) view.findViewById(R.id.button12);
+
+        photoshoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
+                }else{
+                    savePhoto();
+                    photoshoot.setVisibility(View.INVISIBLE);
+                    photoshoot2.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        });
+        /*imv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
+                }else{
+                    savePhoto();
+
+                }
+            }
+        });*/
         return view;
     }
-/*
-    public void onGet(View v){
-        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
-        }else{
-            savePhoto();
 
-        }
-    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -84,7 +107,6 @@ public class IncomeFragment extends Fragment {
         Bitmap bmp= null;
         try{
             bmp = BitmapFactory.decodeStream(cr.openInputStream(imgUri),null,null);
-
         }
         catch (IOException e){
             Toast.makeText(getActivity(),"無法讀取照片",Toast.LENGTH_LONG).show();
@@ -110,5 +132,5 @@ public class IncomeFragment extends Fragment {
             Toast.makeText(getActivity(),"需要權限",Toast.LENGTH_SHORT).show();
         }
 
-    }*/
+    }
 }

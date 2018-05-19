@@ -36,7 +36,7 @@ public class AccountingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accounting);
         Log.d(TAG,"onCreate: Starting.");
-        //imv = (ImageView) findViewById(R.id.imageView);
+        imv = (ImageView) findViewById(R.id.imageView);
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -55,7 +55,7 @@ public class AccountingActivity extends AppCompatActivity {
     public void OnClick(View view){
         finish();
     }
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK && requestCode ==100){
@@ -125,5 +125,5 @@ public class AccountingActivity extends AppCompatActivity {
             Toast.makeText(this,"需要權限",Toast.LENGTH_SHORT).show();
         }
 
-    }*/
+    }
 }

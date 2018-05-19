@@ -29,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SORTCLASS_TABLE);
 
         final String CREATE_SUBSORTCLASS_TABLE = "CREATE TABLE IF NOT EXISTS " + "TABLE_NAME_SUBSORTCLASS" +
-                "(_id Integer Primary Key AUTOINCREMENT ,name VARCHER(32))";
+                "(_id Integer Primary Key AUTOINCREMENT ," +
+                "name VARCHER(32))";
         db.execSQL(CREATE_SUBSORTCLASS_TABLE);
 
     }

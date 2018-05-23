@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/money"
         android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/date"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -115,7 +115,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/number"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -134,7 +134,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/remark"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -195,8 +195,8 @@
         android:text="發票號碼："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText3"
-        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintBaseline_toBaselineOf="@+id/number"
+        app:layout_constraintEnd_toStartOf="@+id/number"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -245,8 +245,8 @@
         android:text="備註："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText4"
-        app:layout_constraintEnd_toStartOf="@+id/editText4"
+        app:layout_constraintBaseline_toBaselineOf="@+id/remark"
+        app:layout_constraintEnd_toStartOf="@+id/remark"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -276,6 +276,48 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/btnDialog"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:padding="0dp"
+            android:text="語音"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.026"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/scan_btn"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:padding="0dp"
+            android:text="掃描"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.026"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
@@ -313,7 +355,7 @@
         android:paddingTop="60dp"
         android:text="拍照"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/money"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -329,7 +371,7 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/photo_camera"
         app:layout_constraintBottom_toBottomOf="@+id/photoshoot"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="@+id/photoshoot"
         app:layout_constraintTop_toTopOf="@+id/photoshoot"

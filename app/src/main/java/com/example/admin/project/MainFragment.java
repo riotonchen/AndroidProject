@@ -22,6 +22,7 @@ public class MainFragment extends Fragment {
     private Button btn1,btn2,btn3,btn4;
     private TextView txv2,txv6,txv10,txv14;
     private Intent it;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

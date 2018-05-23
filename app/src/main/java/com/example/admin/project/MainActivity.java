@@ -40,14 +40,11 @@ public class MainActivity extends AppCompatActivity {
         // http://jim690701.blogspot.tw/2012/06/android-sqlite.html
         // http://sweeteason.pixnet.net/blog/post/37364146-android-%E4%BD%BF%E7%94%A8-sqlite-%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E6%96%B9%E6%B3%95
 
-     /*   final String TB_NAME = "SortClass";
+        //取得資料庫
         DBHelper DH = new DBHelper(this);
         db=DH.getReadableDatabase();
-*/
-        //建資料庫
-        db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
-        //建資料表
-        final String TB_NAME;
+        //  db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
+        String TB_NAME;
         String[] col;
         String[] data;
         String cmd;
@@ -61,17 +58,27 @@ public class MainActivity extends AppCompatActivity {
                 "人情往來", "預算:0", "$ 0",
                 "其他雜項", "預算:0", "$ 0",
                 "居家物業", "預算:0", "$ 0"};
-        cmd = "CREATE TABLE IF NOT EXISTS " +
+        /*cmd = "CREATE TABLE IF NOT EXISTS " +
                 TB_NAME +
                 "(_id Integer Primary Key AUTOINCREMENT ," +
                 "name VARCHER(32)," +
                 "budget VARCHER(16)," +
                 "cost VARCHER(64))";
-        db.execSQL(cmd);
-        cur = db.rawQuery("select * FROM " + TB_NAME, null);
+        db.execSQL(cmd);*/
+        cur = db.rawQuery("SELECT * FROM " + TB_NAME, null);
         if (cur.getCount() == 0) {//沒資料才要新增
             AddData(TB_NAME, col, data);
         }
+        //建SubSortClass資料表
+        TB_NAME = "SubSortClass";
+        col = new String[]{"name"};
+        data = new String[]{"進修學習", "預算:200", "$ 125",
+                "食品酒水", "預算:0", "$ 120",
+                "休閒娛樂", "預算:0", "$ 0",
+                "人情往來", "預算:0", "$ 0",
+                "其他雜項", "預算:0", "$ 0",
+                "居家物業", "預算:0", "$ 0"};
+
     }
 
     public void AddData(String tableName, String[] columnName, String[] data) {

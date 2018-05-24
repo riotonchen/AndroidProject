@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        SetUpLocalDB(DB_NAME);//建立資料庫及資料表
+        //SetUpLocalDB(DB_NAME);//建立資料庫及資料表
     }
 
     private void setupViewPager(ViewPager viewPager) {

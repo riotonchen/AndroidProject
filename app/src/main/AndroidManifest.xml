@@ -2,25 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.admin.project">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- hardwareAccelerated、largeHeap 解決OutOfMemory問題-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="智慧記帳系統"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".AccountingActivity"
-            android:label="@string/title_activity_main5"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SortActivity"
-            android:label="@string/title_activity_main6"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
-            android:label="smart"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +26,26 @@
             </intent-filter>
         </activity>
         <activity
+        android:name=".AccountingActivity"
+        android:label="AccountingActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".SortActivity"
+            android:label="SortActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
+        <activity
             android:name=".AccountActivity"
             android:label="@string/title_activity_account"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <!--直式掃描發票-->
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ViewDetails"
+            android:label="ViewDetails"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!-- 直式掃描發票 -->
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

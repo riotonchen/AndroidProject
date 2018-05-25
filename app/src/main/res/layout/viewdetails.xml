@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".AccountingActivity">
+    tools:context=".AccountActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -41,13 +41,13 @@
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="#ffffff"
                 android:gravity="center"
-                android:text="新增收支紀錄"
+                android:text="查看明細"
                 android:textColor="#000000"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp" />
 
@@ -62,41 +62,10 @@
         </android.support.constraint.ConstraintLayout>
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#ffffff"
-            app:tabIndicatorColor="#057523"
-            app:tabIndicatorHeight="2.0dp"
-            app:tabSelectedTextColor="#057523"
-            app:tabTextColor="#000000"
-            app:tabTextAppearance="@android:style/TextAppearance.Holo.Medium"
-           >
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="支出" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="收入" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="轉帳" />
-
-        </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/container2"
+        android:id="@+id/container3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/black"

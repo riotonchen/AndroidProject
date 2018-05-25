@@ -31,7 +31,7 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.account);
 
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container3);
         setupViewPager(mViewPager);
 
     }

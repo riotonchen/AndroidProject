@@ -7,6 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.view.View;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        SetUpLocalDB(DB_NAME);//建立資料庫及資料表
+        //SetUpLocalDB(DB_NAME);//建立資料庫及資料表
     }
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MainFragment(), "支出");
+        adapter.addFragment(new MainFragment(), "123");
+        //adapter.addFragment(new ExpenseSortFragment(),"支出分類");
         viewPager.setAdapter(adapter);
     }
-
+/*
     private void SetUpLocalDB(String dbName) {
         // Android 使用 SQLite 資料庫的方法
         // http://jim690701.blogspot.tw/2012/06/android-sqlite.html
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
      /*   final String TB_NAME = "SortClass";
         DBHelper DH = new DBHelper(this);
         db=DH.getReadableDatabase();
-*/
+
         //建資料庫
         db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
         //建資料表
@@ -83,5 +87,5 @@ public class MainActivity extends AppCompatActivity {
             }
             db.insert(tableName, null, cv);
         }
-    }
+    }*/
 }

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.WidgetContainer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,6 +30,8 @@ public class IncomeFragment extends Fragment {
     private Button photoshoot,photoshoot2;
     private ImageView imv;
     private Uri imgUri;
+    private String today;
+    private EditText date;
 
     @Nullable
     @Override
@@ -38,8 +40,24 @@ public class IncomeFragment extends Fragment {
         imv = (ImageView) view.findViewById(R.id.imageView);
         photoshoot = (Button) view.findViewById(R.id.photoshoot);
         photoshoot2 = (Button) view.findViewById(R.id.button12);
-
+        date = (EditText) view.findViewById(R.id.date);
+        today = getActivity().getIntent().getExtras().getString("today");
         photoshoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
+                }else{
+                    savePhoto();
+                    photoshoot.setVisibility(View.INVISIBLE);
+                    photoshoot2.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        });
+        photoshoot2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
@@ -67,6 +85,8 @@ public class IncomeFragment extends Fragment {
                 }
             }
         });*/
+
+        date.setText(today);
         return view;
     }
 

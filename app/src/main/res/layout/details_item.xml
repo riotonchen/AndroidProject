@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/underline"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
         <ImageView
@@ -17,13 +18,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_weight="0.05"
             app:srcCompat="@drawable/budget" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.5"
             android:orientation="vertical">
 
             <TextView
@@ -32,25 +34,26 @@
                 android:layout_height="wrap_content"
 
                 android:layout_weight="1"
-                android:text="進修學習"
+                android:text="書報雜誌"
                 android:textColor="@android:color/background_dark"
                 android:textSize="18dp" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="230dp"
+            <TextView
+                android:id="@+id/name2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_weight="1"
-                android:max="100"
-                android:progress="20" />
+                android:text="中信(1:1)"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="0.1"
             android:orientation="vertical">
 
             <TextView
@@ -58,9 +61,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="預算:200"
+                android:text="-$200"
 
-                android:textColor="@android:color/holo_blue_dark"
+                android:textColor="@android:color/holo_red_dark"
                 android:textSize="18dp" />
 
             <TextView
@@ -68,8 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="$124"
-                android:textColor="@android:color/holo_red_dark"
+                android:text="2018/05/21週一"
+                android:textColor="@android:color/black"
                 android:textSize="18dp" />
 
 
@@ -79,7 +82,7 @@
             android:id="@+id/textView28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.05"
             android:text="　" />
 
     </LinearLayout>

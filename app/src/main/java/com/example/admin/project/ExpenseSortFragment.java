@@ -1,16 +1,19 @@
 package com.example.admin.project;
 
-import android.content.ContentValues;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -19,7 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ExpenseSortFragment extends Fragment implements OnItemClickListener {
 
     private static final String TAG="ExpenseSortFragment";
-    private Button btnTab;
+    private Button btnTab,create;
    // static final String DB_NAME = "HotlineDB";
    // static final String TB_NAME = "hotlist";
     static final String DB_NAME = "MYLOCALDB";
@@ -36,10 +39,39 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expensesort_fragment,container,false);
         btnTab = (Button) view.findViewById(R.id.btnTab);
+        create = (Button) view.findViewById(R.id.create);
+        final View item = LayoutInflater.from(getActivity()).inflate(R.layout.createsort, null);
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //新增分類 第二次有閃退問題
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("新增分類")
+                        .setView(item)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) item.findViewById(R.id.edit_text);
+                                String name = editText.getText().toString();
+                                if(TextUtils.isEmpty(name)){
+                                    Toast.makeText(getActivity().getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity().getApplicationContext(),  name, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        })
+                        .show();
             }
         });
        db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
@@ -73,7 +105,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
             addData("居家物業","預算:0","$ 0");
         }*/
 
-        adapter = new SimpleCursorAdapter(getActivity(),R.layout.item,cur,From,
+        adapter = new SimpleCursorAdapter(getActivity(),R.layout.sort_item,cur,From,
                 new int[] {R.id.name,R.id.budget,R.id.cost},0);
 
         lv = (ListView) view.findViewById(R.id.expenses_lv);
@@ -107,5 +139,6 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         cv.put("cost", cost);
         db.insert(TB_NAME,null,cv);
     }*/
+
 
 }

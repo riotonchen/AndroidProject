@@ -20,7 +20,7 @@
         android:paddingTop="75dp"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toEndOf="@+id/button3" />
@@ -36,7 +36,7 @@
         android:paddingTop="75dp"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -51,7 +51,7 @@
         android:paddingTop="75dp"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -78,14 +78,13 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:background="@drawable/budget3"
-        android:onClick="OnClick"
+        android:background="@drawable/budget2"
         android:paddingTop="75dp"
         android:text="分類管理"
         android:textColor="@android:color/background_dark"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -97,13 +96,12 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:background="@drawable/wallet"
-        android:onClick="OnClick"
         android:paddingTop="75dp"
         android:text="帳戶管理"
         android:textColor="@android:color/background_dark"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -115,13 +113,12 @@
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:background="@drawable/analysis"
-        android:onClick="OnClick"
         android:paddingTop="75dp"
         android:text="統計分析"
         android:textColor="@android:color/background_dark"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/daydetails"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toEndOf="@+id/button3" />
@@ -135,7 +132,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/piggybank"
-        android:onClick="OnClick"
         android:paddingTop="90dp"
         android:text="記一筆"
         android:textColor="@android:color/background_dark"
@@ -147,12 +143,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/daydetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/underline"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
+        app:layout_constraintBottom_toTopOf="@+id/weekdetails"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -247,12 +243,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout7"
+        android:id="@+id/weekdetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/underline"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
+        app:layout_constraintBottom_toTopOf="@+id/monthdetails"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -347,12 +343,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout8"
+        android:id="@+id/monthdetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/underline"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
+        app:layout_constraintBottom_toTopOf="@+id/yeardetails"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -448,7 +444,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout9"
+        android:id="@+id/yeardetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -603,7 +599,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/btnTab3"
+            android:id="@+id/btnScan"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"

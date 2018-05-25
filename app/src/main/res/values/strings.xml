@@ -99,4 +99,8 @@
     <string name="title_activity_main4">Main4Activity</string>
     <string name="title_activity_main6">Main6Activity</string>
     <string name="title_activity_account">AccountActivity</string>
+    <string name="分類管理">分類管理</string>
+    <string name="帳戶管理">帳戶管理</string>
+    <string name="統計分析">統計分析</string>
+    <string name="記一筆">記一筆</string>
 </resources>

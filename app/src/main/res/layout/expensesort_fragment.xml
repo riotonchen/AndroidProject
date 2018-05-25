@@ -121,7 +121,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/background_transparent"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/button_linear"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +147,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btnTab3"
+            android:id="@+id/create"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"

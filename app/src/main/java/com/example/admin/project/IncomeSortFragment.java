@@ -1,6 +1,5 @@
 package com.example.admin.project;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -61,7 +60,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             addData("居家物業","預算:0","$ 0");
         }*/
 
-        adapter = new SimpleCursorAdapter(getActivity(),R.layout.item,cur,From,
+        adapter = new SimpleCursorAdapter(getActivity(),R.layout.sort_item,cur,From,
                 new int[] {R.id.name,R.id.budget,R.id.cost},0);
 
         lv = (ListView) view.findViewById(R.id.revenue_lv);

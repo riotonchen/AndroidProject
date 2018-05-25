@@ -8,6 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "MYLOCALDB";
+    private static final String TABLE_NAME_MEMBER="mbr_Member";
     private static final String TABLE_NAME_SORT="sys_Sort";
     private static final String TABLE_NAME_SUBSORT="sys_SubSort";
     private static final String TABLE_NAME_MEMBERSORT="mbr_MemberSort";
@@ -32,6 +33,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        final String CREATE_TABLE_mbr_Member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "name NVARCHAR(32)," +
+                "nickname NVARCHAR(20)," +
+                "email VARCHAR(100)," +
+                "password VARCAHR(30)," +
+                "renew_time DATETIME)";
+        db.execSQL(CREATE_TABLE_mbr_Member);
 
         final String CREATE_TABLE_sys_Sort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +

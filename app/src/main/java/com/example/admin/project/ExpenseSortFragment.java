@@ -20,92 +20,56 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
 
     private static final String TAG="ExpenseSortFragment";
     private Button btnTab;
-   // static final String DB_NAME = "HotlineDB";
    // static final String TB_NAME = "hotlist";
     static final String DB_NAME = "MYLOCALDB";
-    static final String TB_NAME = "SortClass";
-    static String [] From = new String[]{"name","budget","cost"};
+    //static String [] From = new String[]{"name","budget","cost"};
+    DBHelper DH;
     SQLiteDatabase db;
     Cursor cur;
     SimpleCursorAdapter adapter;
     ListView lv;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.expensesort_fragment,container,false);
+        View view = inflater.inflate(R.layout.expensesort_fragment, container, false);
         btnTab = (Button) view.findViewById(R.id.btnTab);
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
             }
         });
-       db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
-    /*    //建資料表
-        String createTable = "CREATE TABLE IF NOT EXISTS "+
-                TB_NAME+
-                "(_id Integer Primary Key AUTOINCREMENT ," +
-                "name VARCHER(32),"+
-                "budget VARCHER(16),"+
-                "cost VARCHER(64))";
-        db.execSQL(createTable);
-        cur = db.rawQuery("select * FROM " +TB_NAME,null);
-        if(cur.getCount()==0){
-            addData("進修學習","預算:200","$ 125");
-            addData("食品酒水","預算:0","$ 120");
-            addData("休閒娛樂","預算:0","$ 0");
-            addData("人情往來","預算:0","$ 0");
-            addData("其他雜項","預算:0","$ 0");
-            addData("居家物業","預算:0","$ 0");
-            addData("進修學習","預算:200","$ 125");
-            addData("食品酒水","預算:0","$ 120");
-            addData("休閒娛樂","預算:0","$ 0");
-            addData("人情往來","預算:0","$ 0");
-            addData("其他雜項","預算:0","$ 0");
-            addData("居家物業","預算:0","$ 0");
-            addData("進修學習","預算:200","$ 125");
-            addData("食品酒水","預算:0","$ 120");
-            addData("休閒娛樂","預算:0","$ 0");
-            addData("人情往來","預算:0","$ 0");
-            addData("其他雜項","預算:0","$ 0");
-            addData("居家物業","預算:0","$ 0");
-        }*/
-
-        adapter = new SimpleCursorAdapter(getActivity(),R.layout.item,cur,From,
-                new int[] {R.id.name,R.id.budget,R.id.cost},0);
+        DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
+        //db = getActivity().openOrCreateDatabase(DB_NAME, android.content.Context.MODE_PRIVATE, null);
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.item, cur, new String[]{"name","budget","cost"},
+                new int[]{R.id.name, R.id.budget, R.id.cost}, 0);
 
         lv = (ListView) view.findViewById(R.id.expenses_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
         Requery();
+        DH.close();
         return view;
     }
-    private void Requery(){
+    private void Requery() {
+        /*String sqlCmd = "SELECT sys_Sort.name,mbr_MemberSort.budget,0 FROM sys_Sort,mbr_MemberSort " +
+                "WHERE memberID=1 " +
+                "AND sys_Sort._id=mbr_MemberSort.sortID " +
+                "AND sys_Sort.type=1";*/
+        try{
+            String sqlCmd="SELECT 分類1,200,0";
+            cur = db.rawQuery(sqlCmd, null);
+            adapter.changeCursor(cur);
 
-        cur = db.rawQuery("SELECT * FROM " +TB_NAME,null);
-        adapter.changeCursor(cur);
-/*
-        if(cur.getCount()  == MAX){
-            btInsert.setEnabled(false);
+        }catch (Exception ex){
 
-        }else{
-            btInsert.setEnabled(true);
         }
-        btUpdate.setEnabled(false);
-        btDelete.setEnabled(false);*/
+        //cur.close();
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-   /* private void addData(String name,String budget,String cost){
-        ContentValues cv = new ContentValues(3);
-        cv.put("name", name);
-        cv.put("budget", budget);
-        cv.put("cost", cost);
-        db.insert(TB_NAME,null,cv);
-    }*/
-
 }

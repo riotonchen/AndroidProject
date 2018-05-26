@@ -25,8 +25,6 @@ public class ViewDetails extends AppCompatActivity {
         setupViewPager(mViewPager);
 
 
-
-
     }
     private void setupViewPager(ViewPager viewPager){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());

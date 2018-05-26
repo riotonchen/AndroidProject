@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,7 +52,6 @@ public class ExpendFragment extends Fragment {
     private Uri imgUri;
     private String today,scanresult;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +66,25 @@ public class ExpendFragment extends Fragment {
         date = (EditText) view.findViewById(R.id.date);
         number = (EditText) view.findViewById(R.id.number);
         remark = (EditText) view.findViewById(R.id.remark);
+        Spinner spnSort= view.findViewById(R.id.spnSort);
+        Spinner spnSubSort= view.findViewById(R.id.spnSubSort);
+
+        //開啟資料庫帶入spinner
+        DBHelper DH=new DBHelper(getActivity());
+        db=DH.getReadableDatabase();
+        String sqlCmd;
+        //sort
+        sqlCmd="SELECT name FROM (SELECT * FROM sys_Sort WHERE type=0) AS A " +
+                  "LEFT OUTER JOIN" +
+                    "(SELECT sortID,budget FROM mbr_MemberSort WHERE memberID=1) AS B " +
+                  "ON A._id=B.sortID";
+        ArrayList<String> arrayList;
+        arrayList=Query(sqlCmd);
+        ArrayAdapter adapter=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayList);
+        spnSort.setAdapter(adapter);
+        //
+
+        db.close();
 
         //設定日期
         today = getActivity().getIntent().getExtras().getString("today");
@@ -78,8 +99,6 @@ public class ExpendFragment extends Fragment {
             int money_int = Integer.parseInt(money_temp,16);
             money.setText(String.valueOf(money_int));
         }
-
-
 
 
         btnTab.setOnClickListener(new View.OnClickListener() {
@@ -102,8 +121,6 @@ public class ExpendFragment extends Fragment {
 
             }
         });
-        Spinner spnSortClass=(Spinner)getActivity().findViewById(R.id.spinner);
-       // db = SQLiteDatabase.openDatabase(DB_NAME, android.content.Context.MODE_PRIVATE);
 
         //掃描
         scan_btn.setOnClickListener(new View.OnClickListener() {
@@ -155,11 +172,28 @@ public class ExpendFragment extends Fragment {
             }
         });
 
-
         return view;
-
-
     }
+
+    private ArrayList<String> Query(String sqlCmd){
+        ArrayList<String> arrayList=new ArrayList<>();
+        try{
+            Cursor cur=db.rawQuery(sqlCmd,null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayList.add(cur.getString(0));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        }catch (Exception ex){
+            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+        }
+        return arrayList;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

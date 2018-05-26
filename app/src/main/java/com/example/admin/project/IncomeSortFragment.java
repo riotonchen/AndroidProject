@@ -35,7 +35,6 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     ListView lv;
     List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +46,8 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
             }
         });
+
+        //讀取分類資料
 		DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
         adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
@@ -58,6 +59,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         DH.close();
         return view;
     }
+
     private void Requery() {
         String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
                 "        FROM (SELECT * FROM sys_Sort WHERE type=1) AS A" +
@@ -83,6 +85,4 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-   
-
 }

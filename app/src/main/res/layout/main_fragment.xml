@@ -78,7 +78,7 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:background="@drawable/budget3"
+        android:background="@drawable/background_transparent"
         android:onClick="OnClick"
         android:paddingTop="75dp"
         android:text="分類管理"

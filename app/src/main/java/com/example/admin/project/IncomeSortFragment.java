@@ -12,23 +12,28 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class IncomeSortFragment extends Fragment implements OnItemClickListener {
 
     private static final String TAG="IncomeSortFragment";
     private Button btnTab;
-    // static final String TB_NAME = "hotlist";
     static final String DB_NAME = "MYLOCALDB";
-    //static String [] From = new String[]{"name","budget","cost"};
     DBHelper DH;
     SQLiteDatabase db;
     Cursor cur;
-    SimpleCursorAdapter adapter;
+    SimpleAdapter adapter;
     ListView lv;
-
+    List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
 
     @Nullable
     @Override
@@ -43,26 +48,35 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         });
         DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
-        //db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
-        adapter = new SimpleCursorAdapter(getActivity(),R.layout.item,cur,new String[]{"name","budget","cost"},
-                new int[] {R.id.name,R.id.budget,R.id.cost},0);
-
+        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.item, new String[]{"name", "budget", "cost"},
+                new int[]{R.id.name, R.id.budget, R.id.cost});
+        Requery();
         lv = (ListView) view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
-        Requery();
         DH.close();
         return view;
     }
     private void Requery() {
-        /*String sqlCmd = "SELECT sys_Sort.name,mbr_MemberSort.budget,0 FROM sys_Sort,mbr_MemberSort " +
-                "WHERE memberID=1 " +
-                "AND sys_Sort._id=mbr_MemberSort.sortID " +
-                "AND sys_Sort.type=0";*/
-        String sqlCmd="SELECT 分類1,200,0";
+        String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
+                "        FROM (SELECT * FROM sys_Sort WHERE type=1) AS A" +
+                "        LEFT OUTER JOIN" +
+                "                (SELECT sortID,budget FROM mbr_MemberSort WHERE memberID=1) AS B" +
+                "        ON A._id=B.sortID";
+
         cur = db.rawQuery(sqlCmd, null);
-        adapter.changeCursor(cur);
-        cur.close();
+        int rowsCount = cur.getCount();
+        if (rowsCount != 0) {
+            cur.moveToFirst();
+            for (int i = 0; i < rowsCount; i++) {
+                Map<String,String> row =new HashMap<String,String>();
+                row.put("name",cur.getString(0));
+                row.put("budget","預算:"+Integer.toString(cur.getInt(1)));
+                row.put("cost","$"+Integer.toString(cur.getInt(2)));
+                sortValue.add(row);
+                cur.moveToNext();
+            }
+        }
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

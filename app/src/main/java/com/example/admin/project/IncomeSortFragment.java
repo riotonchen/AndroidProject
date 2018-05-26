@@ -11,24 +11,28 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class IncomeSortFragment extends Fragment implements OnItemClickListener {
 
     private static final String TAG="IncomeSortFragment";
     private Button btnTab;
-    // static final String DB_NAME = "HotlineDB";
-    // static final String TB_NAME = "hotlist";
     static final String DB_NAME = "MYLOCALDB";
-    static final String TB_NAME = "SortClass";
-    static String [] From = new String[]{"name","budget","cost"};
+    DBHelper DH;
     SQLiteDatabase db;
     Cursor cur;
-    SimpleCursorAdapter adapter;
+    SimpleAdapter adapter;
     ListView lv;
-
+    List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
 
     @Nullable
     @Override
@@ -41,6 +45,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
             }
         });
+<<<<<<< HEAD
         db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
       /*  //建資料表
         String createTable = "CREATE TABLE IF NOT EXISTS "+
@@ -63,27 +68,43 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         adapter = new SimpleCursorAdapter(getActivity(),R.layout.sort_item,cur,From,
                 new int[] {R.id.name,R.id.budget,R.id.cost},0);
 
+=======
+        DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
+        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.item, new String[]{"name", "budget", "cost"},
+                new int[]{R.id.name, R.id.budget, R.id.cost});
+        Requery();
+>>>>>>> DBCoding
         lv = (ListView) view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
-        Requery();
+        DH.close();
         return view;
     }
-    private void Requery(){
+    private void Requery() {
+        String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
+                "        FROM (SELECT * FROM sys_Sort WHERE type=1) AS A" +
+                "        LEFT OUTER JOIN" +
+                "                (SELECT sortID,budget FROM mbr_MemberSort WHERE memberID=1) AS B" +
+                "        ON A._id=B.sortID";
 
-        cur = db.rawQuery("SELECT * FROM " +TB_NAME,null);
-        adapter.changeCursor(cur);
+        cur = db.rawQuery(sqlCmd, null);
+        int rowsCount = cur.getCount();
+        if (rowsCount != 0) {
+            cur.moveToFirst();
+            for (int i = 0; i < rowsCount; i++) {
+                Map<String,String> row =new HashMap<String,String>();
+                row.put("name",cur.getString(0));
+                row.put("budget","預算:"+Integer.toString(cur.getInt(1)));
+                row.put("cost","$"+Integer.toString(cur.getInt(2)));
+                sortValue.add(row);
+                cur.moveToNext();
+            }
+        }
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-   /* private void addData(String name,String budget,String cost){
-        ContentValues cv = new ContentValues(3);
-        cv.put("name", name);
-        cv.put("budget", budget);
-        cv.put("cost", cost);
-        db.insert(TB_NAME,null,cv);
-    }*/
 
 }

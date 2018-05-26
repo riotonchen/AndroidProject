@@ -11,27 +11,11 @@
         android:label="智慧記帳系統"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-<<<<<<< HEAD
 
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
 
-=======
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-        >
-
-        <activity
-            android:name=".AccountingActivity"
-            android:label="@string/title_activity_main5"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SortActivity"
-            android:label="@string/title_activity_main6"
-            android:theme="@style/AppTheme.NoActionBar" />
->>>>>>> DBCoding
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

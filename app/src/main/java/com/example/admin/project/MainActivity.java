@@ -13,15 +13,11 @@ import android.view.View;
 import java.util.Calendar;
 import java.util.Locale;
 
-import java.util.Calendar;
-import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private SectionsPagerAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
-    Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
@@ -37,12 +33,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        //SetUpLocalDB(DB_NAME);//建立資料庫及資料表
-=======
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
         SharedPreferences myPref=getPreferences(MODE_PRIVATE);
         boolean isFirst=myPref.getBoolean("isFirst",true);//第一次找不到為true
         if(isFirst){
@@ -51,11 +41,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("isFirst",false);
             editor.commit();
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> DBCoding
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -71,24 +56,9 @@ private void SetUpLocalDB(String dbName) {
 
         //取得資料庫
         DBHelper DH = new DBHelper(this);
-<<<<<<< HEAD
         db = DH.getReadableDatabase();
         //  db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
         String TB_NAME;
-=======
-<<<<<<< HEAD
-        db=DH.getReadableDatabase();
-
-        //建資料庫
-        db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
-        //建資料表
-        final String TB_NAME;
-=======
-        db = DH.getReadableDatabase();
-        //  db = openOrCreateDatabase(dbName, android.content.Context.MODE_PRIVATE, null);
-        String TB_NAME;
->>>>>>> DBCoding
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
         String[] col;
         String[] data;
         String cmd;
@@ -114,34 +84,6 @@ private void SetUpLocalDB(String dbName) {
                 "工作收入", "1", null,
                 "其他收入", "1", null};
         AddData(TB_NAME, col, data);
-<<<<<<< HEAD
-=======
-        /*
-          data = new String[]{"進修學習", "預算:200", "$ 125",
-                "食品酒水", "預算:0", "$ 120",
-                "休閒娛樂", "預算:0", "$ 0",
-                "人情往來", "預算:0", "$ 0",
-                "其他雜項", "預算:0", "$ 0",
-                "居家物業", "預算:0", "$ 0"};
-        cmd = "CREATE TABLE IF NOT EXISTS " +
-                TB_NAME +
-                "(_id Integer Primary Key AUTOINCREMENT ," +
-                "name VARCHER(32)," +
-                "budget VARCHER(16)," +
-                "cost VARCHER(64))";
-<<<<<<< HEAD
-        db.execSQL(cmd);
-        cur = db.rawQuery("select * FROM " + TB_NAME, null);
-        if (cur.getCount() == 0) {//沒資料才要新增
-            AddData(TB_NAME, col, data);
-        }
-=======
-        db.execSQL(cmd);*/
-        /*cur = db.rawQuery("SELECT * FROM " + TB_NAME, null);
-        if (cur.getCount() == 0) {//沒資料才要新增
-            AddData(TB_NAME, col, data);
-        }*/
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
 
         //新增SubSortClass資料
         TB_NAME = "sys_SubSort";
@@ -223,10 +165,6 @@ private void SetUpLocalDB(String dbName) {
         data = new String[]{"1",datetime.getTime().toString(),"11","42","37000","2","1",null,null,null};
         AddData(TB_NAME, col, data);
         //轉帳資料省略
-<<<<<<< HEAD
-=======
->>>>>>> DBCoding
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
     }
     public void AddData(String tableName, String[] columnName, String[] data) {
         db = openOrCreateDatabase(DB_NAME, android.content.Context.MODE_PRIVATE, null);

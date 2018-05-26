@@ -34,10 +34,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     SimpleAdapter adapter;
     ListView lv;
     List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
-<<<<<<< HEAD
 
-=======
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
 
     @Nullable
     @Override
@@ -50,44 +47,11 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
             }
         });
-<<<<<<< HEAD
 		DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
         adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
                 new int[]{R.id.name, R.id.budget, R.id.cost});
         Requery();
-=======
-<<<<<<< HEAD
-        db = getActivity().openOrCreateDatabase(DB_NAME,android.content.Context.MODE_PRIVATE ,null);
-      /*  //建資料表
-        String createTable = "CREATE TABLE IF NOT EXISTS "+
-                TB_NAME+
-                "(_id Integer Primary Key AUTOINCREMENT ," +
-                "name VARCHER(32),"+
-                "budget VARCHER(16),"+
-                "cost VARCHER(64))";
-        db.execSQL(createTable);
-        cur = db.rawQuery("select * FROM " +TB_NAME,null);
-        if(cur.getCount()==0){
-            addData("進修學習","預算:200","$ 125");
-            addData("食品酒水","預算:0","$ 120");
-            addData("休閒娛樂","預算:0","$ 0");
-            addData("人情往來","預算:0","$ 0");
-            addData("其他雜項","預算:0","$ 0");
-            addData("居家物業","預算:0","$ 0");
-        }*/
-
-        adapter = new SimpleCursorAdapter(getActivity(),R.layout.sort_item,cur,From,
-                new int[] {R.id.name,R.id.budget,R.id.cost},0);
-
-=======
-        DH = new DBHelper(getActivity());
-        db = DH.getReadableDatabase();
-        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.item, new String[]{"name", "budget", "cost"},
-                new int[]{R.id.name, R.id.budget, R.id.cost});
-        Requery();
->>>>>>> DBCoding
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
         lv = (ListView) view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
@@ -119,9 +83,6 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-<<<<<<< HEAD
    
-=======
->>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
 
 }

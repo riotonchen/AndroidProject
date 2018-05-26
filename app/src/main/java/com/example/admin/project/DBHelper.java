@@ -33,6 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+<<<<<<< HEAD
 
         final String CREATE_TABLE_mbr_Member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
@@ -43,6 +44,31 @@ public class DBHelper extends SQLiteOpenHelper {
                 "renew_time DATETIME)";
         db.execSQL(CREATE_TABLE_mbr_Member);
 
+=======
+<<<<<<< HEAD
+        final String CREATE_SORTCLASS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SORTCLASS +
+                "(_id Integer Primary Key AUTOINCREMENT ," +
+                "name VARCHER(32)," +
+                "budget VARCHER(16)," +
+                "cost VARCHER(64))";
+        db.execSQL(CREATE_SORTCLASS_TABLE);
+
+        final String CREATE_SUBSORTCLASS_TABLE = "CREATE TABLE IF NOT EXISTS " + "TABLE_NAME_SUBSORTCLASS" +
+                "(_id Integer Primary Key AUTOINCREMENT ,name VARCHER(32))";
+        db.execSQL(CREATE_SUBSORTCLASS_TABLE);
+=======
+>>>>>>> DBCoding
+
+        final String CREATE_TABLE_mbr_Member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "name NVARCHAR(32)," +
+                "nickname NVARCHAR(20)," +
+                "email VARCHAR(100)," +
+                "password VARCAHR(30)," +
+                "renew_time DATETIME)";
+        db.execSQL(CREATE_TABLE_mbr_Member);
+
+>>>>>>> 4bbf247afd634dbb73be22c17a285423cc88ca80
         final String CREATE_TABLE_sys_Sort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32)," +

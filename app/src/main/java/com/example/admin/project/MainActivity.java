@@ -89,7 +89,7 @@ private void SetUpLocalDB(String dbName) {
         TB_NAME = "sys_SubSort";
         col = new String[]{"name", "type", "icon"};
         data = new String[]{"早餐", "0", null,"午餐", "0", null,"晚餐", "0", null,
-                "菸酒茶資料", "0", null,"水果零食", "0", null,"公共交通費", "0", null,
+                "菸酒茶飲料", "0", null,"水果零食", "0", null,"公共交通費", "0", null,
                 "計程車費", "0", null,"汽機車加油費", "0", null,"火車飛機費", "0", null,
                 "日常用品", "0", null,"水電瓦斯", "0", null,"房租房貸", "0", null,
                 "電話費", "0", null,"手機費", "0", null,"網路費", "0", null,
@@ -110,14 +110,38 @@ private void SetUpLocalDB(String dbName) {
         col = new String[]{"memberID", "sortID","budget" ,"icon"};
         data = new String[]{"1", "1","4000", null,
                             "1", "2","300", null,
-                            "1", "4","499", null,
-                            "1", "5","500", null};//休閒娛樂
+                            "1", "3","0", null,
+                            "1", "4","499", null,//休閒娛樂
+                            "1", "5","500", null,
+                            "1", "6","0", null,
+                            "1", "7","0", null,
+                            "1", "8","0", null,
+                            "1", "9","0", null,
+                            "1", "10","0", null,
+                            "1", "11","0", null,
+                            "1", "12","0", null,};
         AddData(TB_NAME, col, data);
         //新增MemberSubSort資料
         TB_NAME = "mbr_MemberSubSort";
-        col = new String[]{"memberID", "subsortID","budget" ,"icon"};
-        data = new String[]{"1","18","300", null,//朋友聚餐
-                            "1","19","200", null,};//休閒玩樂
+        col = new String[]{"memberID","memberSortID", "subsortID","budget" ,"icon"};
+        data = new String[]{"1","1","1","0",null,
+                "1","1","2","0",null,
+                "1","1","3","0",null,
+                "1","1","4","0",null,
+                "1","1","5","0",null,
+                "1","2","6","0",null,
+                "1","2","7","0",null,
+                "1","2","8","0",null,
+                "1","2","9","0",null,
+                "1","3","10","0",null,
+                "1","3","11","0",null,
+                "1","3","12","0",null,
+                "1","4","12","0",null,
+                "1","4","12","0",null,
+                "1","4","12","0",null,
+                "1","4","12","0",null,
+                "1","4","18","300", null,//休閒娛樂 下的 朋友聚餐
+                            "1","4","19","200", null,};//休閒娛樂 下的 休閒玩樂
         AddData(TB_NAME, col, data);
         //新增Account資料
         TB_NAME = "sys_Account";

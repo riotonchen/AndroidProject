@@ -69,10 +69,12 @@ public class DBHelper extends SQLiteOpenHelper {
         final String CREATE_TABLE_mbr_MemberSubSort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBESUBRSORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "memberID INTEGER," +
+                "memberSortID INTEGER," +
                 "subsortID INTEGER," +
                 "budget INTEGER," +
                 "icon VARCHAR(64)," +
-                "FOREIGN KEY(subsortID) REFERENCES sys_SubSort(_id))";
+                "FOREIGN KEY(subsortID) REFERENCES sys_SubSort(_id)," +
+                "FOREIGN KEY(memberSortID) REFERENCES mbr_MemberSort(_id))";
         db.execSQL(CREATE_TABLE_mbr_MemberSubSort);
 
         final String CREATE_TABLE_mbr_sys_Account = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNT +

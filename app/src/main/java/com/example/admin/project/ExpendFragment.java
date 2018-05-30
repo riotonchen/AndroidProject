@@ -73,16 +73,24 @@ public class ExpendFragment extends Fragment {
         DBHelper DH=new DBHelper(getActivity());
         db=DH.getReadableDatabase();
         String sqlCmd;
-        //sort
+        //Sort
         sqlCmd="SELECT name FROM (SELECT * FROM sys_Sort WHERE type=0) AS A " +
                   "LEFT OUTER JOIN" +
-                    "(SELECT sortID,budget FROM mbr_MemberSort WHERE memberID=1) AS B " +
+                    "(SELECT sortID FROM mbr_MemberSort WHERE memberID=1) AS B " +
                   "ON A._id=B.sortID";
-        ArrayList<String> arrayList;
-        arrayList=Query(sqlCmd);
-        ArrayAdapter adapter=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayList);
-        spnSort.setAdapter(adapter);
-        //
+        ArrayList<String> arrayListSort;
+        arrayListSort=Query(sqlCmd);
+        ArrayAdapter adapterSort=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayListSort);
+        spnSort.setAdapter(adapterSort);
+        //SubSort，預設帶食品主分類的子分類
+        sqlCmd="SELECT name FROM (SELECT * FROM sys_SubSort WHERE type=0 AND _id=1) AS A " +
+                "LEFT OUTER JOIN" +
+                "(SELECT subsortID, FROM mbr_MemberSubSort WHERE memberID=1) AS B " +
+                "ON A._id=B.sortID";
+        ArrayList<String> arrayListSubSort;
+        arrayListSubSort=Query(sqlCmd);
+        ArrayAdapter adapterSubSort=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayListSubSort);
+        spnSubSort.setAdapter(adapterSubSort);
 
         db.close();
 

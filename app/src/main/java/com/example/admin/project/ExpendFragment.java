@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,20 +43,20 @@ import static android.app.Activity.RESULT_OK;
 
 public class ExpendFragment extends Fragment {
 
-    private static final String TAG="ExpendFragment";
-    private Button btnTab,scan_btn,btnDialog;
+    private static final String TAG = "ExpendFragment";
+    private Button btnTab, scan_btn, btnDialog;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
-    private EditText money,date,number,remark;
-    private Button photoshoot,photoshoot2;
+    private EditText money, date, number, remark;
+    private Button photoshoot, photoshoot2;
     private ImageView imv;
     private Uri imgUri;
-    private String today,scanresult;
+    private String today, scanresult;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.expense_fragment,container,false);
+        View view = inflater.inflate(R.layout.expense_fragment, container, false);
         btnTab = (Button) view.findViewById(R.id.btnTab);
         scan_btn = (Button) view.findViewById(R.id.scan_btn);
         btnDialog = (Button) view.findViewById(R.id.btnDialog);
@@ -66,31 +67,66 @@ public class ExpendFragment extends Fragment {
         date = (EditText) view.findViewById(R.id.date);
         number = (EditText) view.findViewById(R.id.number);
         remark = (EditText) view.findViewById(R.id.remark);
-        Spinner spnSort= view.findViewById(R.id.spnSort);
-        Spinner spnSubSort= view.findViewById(R.id.spnSubSort);
+        final Spinner spnSort = view.findViewById(R.id.spnSort);
+        final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
 
         //開啟資料庫帶入spinner
-        DBHelper DH=new DBHelper(getActivity());
-        db=DH.getReadableDatabase();
+        DBHelper DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
         String sqlCmd;
+        ArrayList<String> arrayList;
+        ArrayAdapter adapter;
         //Sort
-        sqlCmd="SELECT name FROM (SELECT * FROM sys_Sort WHERE type=0) AS A " +
-                  "LEFT OUTER JOIN" +
-                    "(SELECT sortID FROM mbr_MemberSort WHERE memberID=1) AS B " +
-                  "ON A._id=B.sortID";
-        ArrayList<String> arrayListSort;
-        arrayListSort=Query(sqlCmd);
-        ArrayAdapter adapterSort=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayListSort);
-        spnSort.setAdapter(adapterSort);
-        //SubSort，預設帶食品主分類的子分類
-        sqlCmd="SELECT name FROM (SELECT * FROM sys_SubSort WHERE type=0 AND _id=1) AS A " +
+        sqlCmd = "SELECT name FROM (SELECT * FROM sys_sort WHERE type=0) AS A " +
                 "LEFT OUTER JOIN" +
-                "(SELECT subsortID, FROM mbr_MemberSubSort WHERE memberID=1) AS B " +
+                "(SELECT sortID FROM mbr_membersort WHERE memberID=1) AS B " +
                 "ON A._id=B.sortID";
-        ArrayList<String> arrayListSubSort;
-        arrayListSubSort=Query(sqlCmd);
-        ArrayAdapter adapterSubSort=new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,arrayListSubSort);
-        spnSubSort.setAdapter(adapterSubSort);
+        arrayList = Query(sqlCmd);
+        adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+        spnSort.setAdapter(adapter);
+        //選擇事件
+        spnSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                DBHelper DH = new DBHelper(getActivity());
+                db = DH.getReadableDatabase();
+                String sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
+                        "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                        "       (SELECT _id FROM sys_sort WHERE name=\"" + parent.getSelectedItem().toString() + "\") " +
+                        "       AND " +
+                        "       memberID=1" +
+                        "   ) AS B " +
+                        "ON A._id=B.subsortID";
+                ArrayList<String> arrayList = Query(sqlCmd);
+                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                spnSubSort.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                /*DBHelper DH = new DBHelper(getActivity());
+                db = DH.getReadableDatabase();
+                String sqlCmd = "SELECT name FROM (SELECT * FROM sys_sort WHERE type=0) AS A " +
+                        "LEFT OUTER JOIN" +
+                        "(SELECT sortID FROM mbr_membersort WHERE memberID=1) AS B " +
+                        "ON A._id=B.sortID";
+                ArrayList<String> arrayList = Query(sqlCmd);
+                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                spnSort.setAdapter(adapter);*/
+            }
+        });
+        //SubSort，預設帶食品主分類的子分類
+        String sortName = spnSort.getSelectedItem().toString();
+        sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
+                "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                "       (SELECT _id FROM sys_sort WHERE name=\"" + sortName + "\") " +
+                "       AND " +
+                "       memberID=1" +
+                "   ) AS B " +
+                "ON A._id=B.subsortID";
+        arrayList = Query(sqlCmd);
+        adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+        spnSubSort.setAdapter(adapter);
 
         db.close();
 
@@ -100,11 +136,11 @@ public class ExpendFragment extends Fragment {
 
         //接收首頁掃描資料
         scanresult = getActivity().getIntent().getExtras().getString("scanresult");
-        if(scanresult != null){
-            number.setText(scanresult.substring(0,10));
-            date.setText(Integer.parseInt(scanresult.substring(10,13))+1911+"/"+scanresult.substring(13,15)+"/"+scanresult.substring(15,17));
-            String money_temp = scanresult.substring(30,37);
-            int money_int = Integer.parseInt(money_temp,16);
+        if (scanresult != null) {
+            number.setText(scanresult.substring(0, 10));
+            date.setText(Integer.parseInt(scanresult.substring(10, 13)) + 1911 + "/" + scanresult.substring(13, 15) + "/" + scanresult.substring(15, 17));
+            String money_temp = scanresult.substring(30, 37);
+            int money_int = Integer.parseInt(money_temp, 16);
             money.setText(String.valueOf(money_int));
         }
 
@@ -112,7 +148,7 @@ public class ExpendFragment extends Fragment {
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,7 +170,7 @@ public class ExpendFragment extends Fragment {
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-				//IntentIntegrator integrator = new IntentIntegrator(getActivity());
+                //IntentIntegrator integrator = new IntentIntegrator(getActivity());
                 FragmentIntentIntegrator integrator = new FragmentIntentIntegrator(ExpendFragment.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("請掃描左邊QR-Code!!");
@@ -150,11 +186,11 @@ public class ExpendFragment extends Fragment {
         photoshoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
-                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
-                }else{
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
+                } else {
                     savePhoto();
                     photoshoot.setVisibility(View.INVISIBLE);
                     photoshoot2.setVisibility(View.INVISIBLE);
@@ -167,11 +203,11 @@ public class ExpendFragment extends Fragment {
         photoshoot2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
-                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},200);
-                }else{
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
+                } else {
                     savePhoto();
                     photoshoot.setVisibility(View.INVISIBLE);
                     photoshoot2.setVisibility(View.INVISIBLE);
@@ -183,10 +219,10 @@ public class ExpendFragment extends Fragment {
         return view;
     }
 
-    private ArrayList<String> Query(String sqlCmd){
-        ArrayList<String> arrayList=new ArrayList<>();
-        try{
-            Cursor cur=db.rawQuery(sqlCmd,null);
+    private ArrayList<String> Query(String sqlCmd) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
             int rowsCount = cur.getCount();
             if (rowsCount != 0) {
                 cur.moveToFirst();
@@ -196,8 +232,8 @@ public class ExpendFragment extends Fragment {
                 }
             }
             cur.close();
-        }catch (Exception ex){
-            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
         }
         return arrayList;
     }
@@ -208,10 +244,10 @@ public class ExpendFragment extends Fragment {
 
         //拍照
         if (requestCode == 100) {
-            if(resultCode == Activity.RESULT_OK ){
+            if (resultCode == Activity.RESULT_OK) {
                 showImg();
-            }else{
-                Toast.makeText(getActivity(),"沒拍到照片",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "沒拍到照片", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -229,11 +265,11 @@ public class ExpendFragment extends Fragment {
                 }*/
                 remark.setText(all, TextView.BufferType.EDITABLE);
 
-                String regEx="[^0-9]";
+                String regEx = "[^0-9]";
                 Pattern p = Pattern.compile(regEx);
                 Matcher m = p.matcher(all);
                 String a = m.replaceAll("").trim();
-                if( a != "" )
+                if (a != "")
                     money.setText(m.replaceAll("").trim());
                 //Toast.makeText(getActivity(), m.replaceAll("").trim(),Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getActivity(), all,Toast.LENGTH_SHORT).show();
@@ -241,43 +277,38 @@ public class ExpendFragment extends Fragment {
         }
 
         //掃描
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
-        if (result != null)
-        {
-            if (result.getContents()==null)
-            {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
                 Toast.makeText(getActivity(), "You cancelled the scanning", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
+            } else {
                 String all = result.getContents();
-                number.setText(all.substring(0,10));
-                date.setText(Integer.parseInt(all.substring(10,13))+1911+"/"+all.substring(13,15)+"/"+all.substring(15,17));
-                String money_temp = all.substring(30,37);
-                int money_int = Integer.parseInt(money_temp,16);
+                number.setText(all.substring(0, 10));
+                date.setText(Integer.parseInt(all.substring(10, 13)) + 1911 + "/" + all.substring(13, 15) + "/" + all.substring(15, 17));
+                String money_temp = all.substring(30, 37);
+                int money_int = Integer.parseInt(money_temp, 16);
                 money.setText(String.valueOf(money_int));
                 //txv.setText(all+"\n"+number+"\n"+date+"\n"+money);
                 //Toast.makeText(getActivity(),all+"\n"+number+"\n"+date+"\n"+money,Toast.LENGTH_SHORT).show();
 
             }
-        }
-        else
-        {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
     }
-    public void showImg(){
-        int iw,ih,vw,vh;
+
+    public void showImg() {
+        int iw, ih, vw, vh;
         BitmapFactory.Options option = new BitmapFactory.Options();
         ContentResolver cr = getActivity().getContentResolver();
         option.inJustDecodeBounds = true;
-        try{
+        try {
             BitmapFactory.decodeStream(
-                    cr.openInputStream(imgUri),null,option);
+                    cr.openInputStream(imgUri), null, option);
 
-        }catch (IOException e){
-            Toast.makeText(getActivity(),"讀取照片資訊時發生錯誤",Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "讀取照片資訊時發生錯誤", Toast.LENGTH_LONG).show();
             return;
         }
         iw = option.outWidth;
@@ -285,41 +316,35 @@ public class ExpendFragment extends Fragment {
         vw = imv.getWidth();
         vh = imv.getHeight();
 
-        int scaleFactor = Math.min(iw/vw,ih/vh);
+        int scaleFactor = Math.min(iw / vw, ih / vh);
         option.inJustDecodeBounds = false;
         option.inSampleSize = scaleFactor;
 
-        Bitmap bmp= null;
-        try{
-            bmp = BitmapFactory.decodeStream(cr.openInputStream(imgUri),null,null);
-        }
-        catch (IOException e){
-            Toast.makeText(getActivity(),"無法讀取照片",Toast.LENGTH_LONG).show();
+        Bitmap bmp = null;
+        try {
+            bmp = BitmapFactory.decodeStream(cr.openInputStream(imgUri), null, null);
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "無法讀取照片", Toast.LENGTH_LONG).show();
         }
         imv.setImageBitmap(bmp);
     }
 
 
-    public void savePhoto(){
+    public void savePhoto() {
         ContentResolver cr = getActivity().getContentResolver();
-        imgUri = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,new ContentValues());
+        imgUri = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
         Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        it.putExtra(MediaStore.EXTRA_OUTPUT,imgUri);
-        startActivityForResult(it,100);
+        it.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+        startActivityForResult(it, 100);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 200){
+        if (requestCode == 200) {
             savePhoto();
-        }
-        else {
-            Toast.makeText(getActivity(),"需要權限",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "需要權限", Toast.LENGTH_SHORT).show();
         }
 
     }
-
-
-
-
 }

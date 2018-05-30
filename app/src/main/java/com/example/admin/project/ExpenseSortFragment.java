@@ -99,9 +99,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
 
     private void Requery() {
         String sqlCmd = "SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
-                "        FROM (SELECT * FROM sys_Sort WHERE type=0) AS A" +
+                "        FROM (SELECT * FROM sys_sort WHERE type=0) AS A" +
                 "        LEFT OUTER JOIN" +
-                "                (SELECT sortID,budget FROM mbr_MemberSort WHERE memberID=1) AS B" +
+                "                (SELECT sortID,budget FROM mbr_membersort WHERE memberID=1) AS B" +
                 "        ON A._id=B.sortID";
         //String[][] strSort;
         cur = db.rawQuery(sqlCmd, null);

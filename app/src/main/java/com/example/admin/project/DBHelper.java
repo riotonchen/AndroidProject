@@ -8,20 +8,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "MYLOCALDB";
-    private static final String TABLE_NAME_MEMBER="mbr_Member";
-    private static final String TABLE_NAME_SORT="sys_Sort";
-    private static final String TABLE_NAME_SUBSORT="sys_SubSort";
-    private static final String TABLE_NAME_MEMBERSORT="mbr_MemberSort";
-    private static final String TABLE_NAME_MEMBESUBRSORT="mbr_MemberSubSort";
-    private static final String TABLE_NAME_ACCOUNT="sys_Account";
-    private static final String TABLE_NAME_ACCOUNTTYPE="sys_AccountType";
-    private static final String TABLE_NAME_MEMBERACCOUNT="mbr_MemberAccount";
-    private static final String TABLE_NAME_MEMBERBUDGET="mbr_MemberBudget";
-    private static final String TABLE_NAME_PROJECT="sys_Project";
-    private static final String TABLE_NAME_MEMBERPROJECT="mbr_MemberProject";
-    private static final String TABLE_NAME_EXPEND="mbr_Expend";
-    private static final String TABLE_NAME_INCOME="mbr_Income";
-    private static final String TABLE_NAME_TRANSFER="mbr_Transfer";
+    private static final String TABLE_NAME_MEMBER="mbr_member";
+    private static final String TABLE_NAME_SORT="sys_sort";
+    private static final String TABLE_NAME_SUBSORT="sys_subsort";
+    private static final String TABLE_NAME_MEMBERSORT="mbr_membersort";
+    private static final String TABLE_NAME_MEMBESUBRSORT="mbr_membersubsort";
+    private static final String TABLE_NAME_ACCOUNT="sys_account";
+    private static final String TABLE_NAME_ACCOUNTTYPE="sys_accounttype";
+    private static final String TABLE_NAME_MEMBERACCOUNT="mbr_memberaccount";
+    private static final String TABLE_NAME_MEMBERBUDGET="mbr_memberbudget";
+    private static final String TABLE_NAME_PROJECT="sys_project";
+    private static final String TABLE_NAME_MEMBERPROJECT="mbr_memberproject";
+    private static final String TABLE_NAME_EXPEND="mbr_expend";
+    private static final String TABLE_NAME_INCOME="mbr_income";
+    private static final String TABLE_NAME_TRANSFER="mbr_transfer";
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);//交給父類別
@@ -34,39 +34,39 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        final String CREATE_TABLE_mbr_Member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
+        final String CREATE_TABLE_mbr_member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name NVARCHAR(32)," +
                 "nickname NVARCHAR(20)," +
                 "email VARCHAR(100)," +
                 "password VARCAHR(30)," +
                 "renew_time DATETIME)";
-        db.execSQL(CREATE_TABLE_mbr_Member);
+        db.execSQL(CREATE_TABLE_mbr_member);
 
-        final String CREATE_TABLE_sys_Sort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SORT +
+        final String CREATE_TABLE_sys_sort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32)," +
                 "type BOOLEAN," +
                 "icon VARCHAR(64))";
-        db.execSQL(CREATE_TABLE_sys_Sort);
+        db.execSQL(CREATE_TABLE_sys_sort);
 
-        final String CREATE_TABLE_sys_SubSort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SUBSORT +
+        final String CREATE_TABLE_sys_subsort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_SUBSORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32)," +
                 "type BOOLEAN," +
                 "icon VARCHAR(64))";
-        db.execSQL(CREATE_TABLE_sys_SubSort);
+        db.execSQL(CREATE_TABLE_sys_subsort);
 
-        final String CREATE_TABLE_mbr_MemberSort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERSORT +
+        final String CREATE_TABLE_mbr_membersort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERSORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "memberID INTEGER ," +
                 "sortID INTEGER," +
                 "budget INTEGER," +
                 "icon VARCHAR(64)," +
                 "FOREIGN KEY(sortID) REFERENCES sys_Sort(_id))";
-        db.execSQL(CREATE_TABLE_mbr_MemberSort);
+        db.execSQL(CREATE_TABLE_mbr_membersort);
 
-        final String CREATE_TABLE_mbr_MemberSubSort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBESUBRSORT +
+        final String CREATE_TABLE_mbr_membersubsort = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBESUBRSORT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "memberID INTEGER," +
                 "memberSortID INTEGER," +
@@ -75,20 +75,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 "icon VARCHAR(64)," +
                 "FOREIGN KEY(subsortID) REFERENCES sys_SubSort(_id)," +
                 "FOREIGN KEY(memberSortID) REFERENCES mbr_MemberSort(_id))";
-        db.execSQL(CREATE_TABLE_mbr_MemberSubSort);
+        db.execSQL(CREATE_TABLE_mbr_membersubsort);
 
-        final String CREATE_TABLE_mbr_sys_Account = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNT +
+        final String CREATE_TABLE_mbr_sys_account = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32))";
-        db.execSQL(CREATE_TABLE_mbr_sys_Account);
+        db.execSQL(CREATE_TABLE_mbr_sys_account);
 
 
-        final String CREATE_TABLE_sys_AccountType = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNTTYPE +
+        final String CREATE_TABLE_sys_accounttype = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNTTYPE +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32))";
-        db.execSQL(CREATE_TABLE_sys_AccountType);
+        db.execSQL(CREATE_TABLE_sys_accounttype);
 
-        final String CREATE_TABLE_mbr_MemberAccount = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERACCOUNT +
+        final String CREATE_TABLE_mbr_memberaccount = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERACCOUNT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "memberID INTEGER," +
                 "accountID INTEGER," +
@@ -98,28 +98,28 @@ public class DBHelper extends SQLiteOpenHelper {
                 "comment VARCHAR(32)," +
                 "FOREIGN KEY(accountID) REFERENCES sys_Account(_id)," +
                 "FOREIGN KEY(accountTypeID) REFERENCES sys_AccountType(_id))";
-        db.execSQL(CREATE_TABLE_mbr_MemberAccount);
+        db.execSQL(CREATE_TABLE_mbr_memberaccount);
 
-        final String CREATE_TABLE_mbr_MemberBudget = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERBUDGET +
+        final String CREATE_TABLE_mbr_memberbudget = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERBUDGET +
                 "(memberID INTEGER," +
                 "month DATETIME," +
                 "budget INTEGER," +
                 "PRIMARY KEY(memberID,month))";
-        db.execSQL(CREATE_TABLE_mbr_MemberBudget);
+        db.execSQL(CREATE_TABLE_mbr_memberbudget);
 
-        final String CREATE_TABLE_sys_Project = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_PROJECT +
+        final String CREATE_TABLE_sys_project = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_PROJECT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "name VARCHAR(32))";
-        db.execSQL(CREATE_TABLE_sys_Project);
+        db.execSQL(CREATE_TABLE_sys_project);
 
-        final String CREATE_TABLE_mbr_MemberProject = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERPROJECT +
+        final String CREATE_TABLE_mbr_memberproject = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBERPROJECT +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "memberID INTEGER," +
                 "projectID INTEGER," +
                 "FOREIGN KEY(projectID) REFERENCES sys_Project(_id))";
-        db.execSQL(CREATE_TABLE_mbr_MemberProject);
+        db.execSQL(CREATE_TABLE_mbr_memberproject);
 
-        final String CREATE_TABLE_mbr_Expend = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_EXPEND +
+        final String CREATE_TABLE_mbr_expend = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_EXPEND +
                 "(memberID INTEGER," +
                 "time DATETIME," +
                 "sortID INTEGER," +
@@ -135,9 +135,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(subsortID) REFERENCES mbr_MemberSubSort(_id)," +
                 "FOREIGN KEY(accountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(projectID) REFERENCES mbr_MemberProject(_id))";
-        db.execSQL(CREATE_TABLE_mbr_Expend);
+        db.execSQL(CREATE_TABLE_mbr_expend);
 
-        final String CREATE_TABLE_mbr_Income = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_INCOME +
+        final String CREATE_TABLE_mbr_income = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_INCOME +
                 "(memberID INTEGER," +
                 "time DATETIME," +
                 "sortID INTEGER," +
@@ -153,9 +153,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(subsortID) REFERENCES mbr_MemberSubSort(_id)," +
                 "FOREIGN KEY(accountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(projectID) REFERENCES mbr_MemberProject(_id))";
-        db.execSQL(CREATE_TABLE_mbr_Income);
+        db.execSQL(CREATE_TABLE_mbr_income);
 
-        final String CREATE_TABLE_mbr_Transfer = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TRANSFER +
+        final String CREATE_TABLE_mbr_transfer = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TRANSFER +
                 "(memberID INTEGER," +
                 "time DATETIME," +
                 "sourceAccountID INTEGER," +
@@ -167,14 +167,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "PRIMARY KEY(memberID,time)," +
                 "FOREIGN KEY(sourceAccountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(targetAccountID) REFERENCES mbr_MemberAccount(_id))";
-        db.execSQL(CREATE_TABLE_mbr_Transfer);
+        db.execSQL(CREATE_TABLE_mbr_transfer);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       /* final String DROP_TABLE_sys_Sort="DROP TABLE "+TABLE_NAME_SORT;
-        db.execSQL(DROP_TABLE_sys_Sort);
-        final String DROP_TABLE_sys_SubSort="DROP TABLE "+TABLE_NAME_SUBSORT;
-        db.execSQL(DROP_TABLE_sys_SubSort);*/
+       /* final String DROP_TABLE_sys_sort="DROP TABLE "+TABLE_NAME_SORT;
+        db.execSQL(DROP_TABLE_sys_sort);
+        final String DROP_TABLE_sys_subsort="DROP TABLE "+TABLE_NAME_SUBSORT;
+        db.execSQL(DROP_TABLE_sys_subsort);*/
     }
 }

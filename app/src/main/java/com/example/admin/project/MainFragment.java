@@ -2,6 +2,7 @@ package com.example.admin.project;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
@@ -29,7 +30,7 @@ public class MainFragment extends Fragment {
     private Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
     private SimpleDateFormat yyyyMMddEEEEE  =  new SimpleDateFormat ("yyyy/MM/dd EEEE", Locale.TAIWAN);
     private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
-    private Button btn1,btn2,btn3,btn4,btnScan;
+    private Button btn1,btn2,btn3,btn4,btnScan,btnFriend,btnMember,btnInvoice,btnSet;
     private TextView txv2,txv6,txv10,txv14;
     private Intent it;
     private LinearLayout daydetails,weekdetails,monthdetails,yeardetails;
@@ -45,7 +46,11 @@ public class MainFragment extends Fragment {
         btn2 = (Button) view.findViewById(R.id.button2);//分類管理
         btn3 = (Button) view.findViewById(R.id.button3);//帳戶管理
         btn4 = (Button) view.findViewById(R.id.button4);//統計分析
-        btnScan = (Button) view.findViewById(R.id.btnScan);//統計分析
+        btnScan = (Button) view.findViewById(R.id.btnScan);//掃描
+        btnFriend = (Button) view.findViewById(R.id.btnFriend);//好友
+        btnMember = (Button) view.findViewById(R.id.btnMember);//會員
+        btnInvoice = (Button) view.findViewById(R.id.btnInvoice);//發票
+        btnSet = (Button) view.findViewById(R.id.btnSet);//設定
         txv2 = (TextView) view.findViewById(R.id.textView2);//今日日期
         txv6 = (TextView) view.findViewById(R.id.textView6);//本週日期
         txv10 = (TextView) view.findViewById(R.id.textView10);//本月日期
@@ -55,6 +60,11 @@ public class MainFragment extends Fragment {
         monthdetails = (LinearLayout)view.findViewById(R.id.monthdetails);
         yeardetails = (LinearLayout)view.findViewById(R.id.yeardetails);
 
+        //設置刪除線
+        btnFriend.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        btnMember.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        btnInvoice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        btnSet.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
 
         //今日日期
@@ -117,7 +127,7 @@ public class MainFragment extends Fragment {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), AccountingActivity.class);
+                it = new Intent(getActivity(), MonthSortPieChartActivity.class);
                 startActivity(it);
             }
         });

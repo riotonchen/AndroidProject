@@ -4,18 +4,17 @@
     package="com.example.admin.project">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- hardwareAccelerated、largeHeap 解決OutOfMemory問題-->
+
+    <!-- hardwareAccelerated、largeHeap 解決OutOfMemory問題 -->
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="智慧記帳系統"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -26,30 +25,33 @@
             </intent-filter>
         </activity>
         <activity
-        android:name=".AccountingActivity"
-        android:label="AccountingActivity"
-        android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:name=".AccountingActivity"
+            android:label="AccountingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SortActivity"
             android:label="SortActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AccountActivity"
             android:label="@string/title_activity_account"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ViewDetails"
             android:label="ViewDetails"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- 直式掃描發票 -->
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
+        <activity
+            android:name=".PieChartActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".MonthSortPieChartActivity"
+            android:label="@string/title_activity_month_sort_pie_chart"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

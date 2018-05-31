@@ -37,7 +37,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     Cursor cur;
     //SimpleCursorAdapter adapter;
     SimpleAdapter adapter;
-    ListView lv;
+    ListView lv,lv2;
     List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
 
     @Nullable
@@ -92,6 +92,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         lv = (ListView) view.findViewById(R.id.expenses_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
+
         //Requery();
         DH.close();
         return view;

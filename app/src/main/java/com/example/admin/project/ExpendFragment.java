@@ -2,6 +2,7 @@ package com.example.admin.project;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -35,7 +37,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,31 +49,55 @@ import static android.app.Activity.RESULT_OK;
 public class ExpendFragment extends Fragment {
 
     private static final String TAG = "ExpendFragment";
-    private Button btnTab, scan_btn, btnDialog;
+    private Button btnTab, scan_btn, btnDialog,btnDatePicker;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
-    private EditText money, date, number, remark;
+    private final String TABLE_NAME_ACCOUNTING="mbr_accounting";
+    private TextView txvDate;
+    private EditText money, number, remark;
     private Button photoshoot, photoshoot2;
     private ImageView imv;
     private Uri imgUri;
     private String today, scanresult;
-
+    Calendar calendar=Calendar.getInstance(Locale.TAIWAN);
+    private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expense_fragment, container, false);
-        btnTab = (Button) view.findViewById(R.id.btnTab);
-        scan_btn = (Button) view.findViewById(R.id.scan_btn);
-        btnDialog = (Button) view.findViewById(R.id.btnDialog);
+        btnTab =  view.findViewById(R.id.btnTab);
+        scan_btn =view.findViewById(R.id.scan_btn);
+        btnDialog =  view.findViewById(R.id.btnDialog);
         imv = (ImageView) view.findViewById(R.id.imageView);
-        photoshoot = (Button) view.findViewById(R.id.photoshoot);
-        photoshoot2 = (Button) view.findViewById(R.id.button12);
-        money = (EditText) view.findViewById(R.id.money);
-        date = (EditText) view.findViewById(R.id.date);
-        number = (EditText) view.findViewById(R.id.number);
-        remark = (EditText) view.findViewById(R.id.remark);
+        photoshoot =  view.findViewById(R.id.photoshoot);
+        photoshoot2 = view.findViewById(R.id.button12);
+        money = view.findViewById(R.id.money);
+        txvDate =  view.findViewById(R.id.txvDate);
+        number =  view.findViewById(R.id.number);
+        remark =  view.findViewById(R.id.remark);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
         final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
+        final Spinner spnAccount=view.findViewById(R.id.spnAccount);
+        final Spinner spnProject=view.findViewById(R.id.spnProject);
+
+        //設定txvDate預設日期
+        txvDate.setText(yyyyMMdd.format(calendar.getTime()));
+        //btnDatePicker
+        btnDatePicker=view.findViewById(R.id.btnDatePicker);
+        btnDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                calendar.set(year,month,day);
+                                txvDate.setText(yyyyMMdd.format(calendar.getTime()));
+                            }
+                        },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
 
         //開啟資料庫帶入spinner
         DBHelper DH = new DBHelper(getActivity());
@@ -84,7 +113,7 @@ public class ExpendFragment extends Fragment {
         arrayList = Query(sqlCmd);
         adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
         spnSort.setAdapter(adapter);
-        //選擇事件
+        //分類選擇事件
         spnSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -104,15 +133,7 @@ public class ExpendFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                /*DBHelper DH = new DBHelper(getActivity());
-                db = DH.getReadableDatabase();
-                String sqlCmd = "SELECT name FROM (SELECT * FROM sys_sort WHERE type=0) AS A " +
-                        "LEFT OUTER JOIN" +
-                        "(SELECT sortID FROM mbr_membersort WHERE memberID=1) AS B " +
-                        "ON A._id=B.sortID";
-                ArrayList<String> arrayList = Query(sqlCmd);
-                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                spnSort.setAdapter(adapter);*/
+
             }
         });
         //SubSort，預設帶食品主分類的子分類
@@ -127,28 +148,72 @@ public class ExpendFragment extends Fragment {
         arrayList = Query(sqlCmd);
         adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
         spnSubSort.setAdapter(adapter);
-
+        //spnAccount
+        sqlCmd="SELECT name FROM sys_account WHERE _id IN " +
+                "(SELECT accountID FROM mbr_memberaccount " +
+                "WHERE memberID=1)";
+        arrayList = Query(sqlCmd);
+        adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+        spnAccount.setAdapter(adapter);
+        //spnProject
+        sqlCmd="SELECT name FROM sys_project WHERE _id IN " +
+                "(SELECT projectID FROM mbr_memberproject " +
+                "WHERE memberID=1)";
+        arrayList = Query(sqlCmd);
+        adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+        spnProject.setAdapter(adapter);
         db.close();
 
-        //設定日期
+        /*//設定日期
         today = getActivity().getIntent().getExtras().getString("today");
-        date.setText(today);
+        date.setText(today);*/
 
         //接收首頁掃描資料
         scanresult = getActivity().getIntent().getExtras().getString("scanresult");
         if (scanresult != null) {
             number.setText(scanresult.substring(0, 10));
-            date.setText(Integer.parseInt(scanresult.substring(10, 13)) + 1911 + "/" + scanresult.substring(13, 15) + "/" + scanresult.substring(15, 17));
+            txvDate.setText(Integer.parseInt(scanresult.substring(10, 13)) + 1911 + "/" + scanresult.substring(13, 15) + "/" + scanresult.substring(15, 17));
             String money_temp = scanresult.substring(30, 37);
             int money_int = Integer.parseInt(money_temp, 16);
             money.setText(String.valueOf(money_int));
         }
 
-
+        //儲存
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
+                try{
+                    DBHelper DH = new DBHelper(getActivity());
+                    db = DH.getReadableDatabase();
+                    ContentValues cv=new ContentValues();
+                    //"memberID", "time","type", "sortID", "subsortID", "amount",
+                    //                "accountID", "projectID", "invoiceNum", "picture", "comment"
+                    cv.put("memberID","1");
+                    cv.put("time",calendar.getTime().toString());
+                    cv.put("type","0");//0為支出
+                    cv.put("sortID",Query("sys_sort",spnSort.getSelectedItem().toString()));//要先找出代號
+                    cv.put("subsortID",Query("sys_subsort",spnSubSort.getSelectedItem().toString()));
+                    cv.put("amount",money.getText().toString());
+                    cv.put("accountID",Query("sys_account",spnAccount.getSelectedItem().toString()));
+                    cv.put("projectID",Query("sys_project",spnProject.getSelectedItem().toString()));
+                    cv.put("invoiceNum",number.getText().toString());
+                    //cv.put("picture","");
+                    String value=remark.getText().toString();
+                    if(value==""){
+                        cv.putNull("comment");
+                    }else
+                        cv.put("comment",value);
+                    long result=db.insert(TABLE_NAME_ACCOUNTING,null,cv);
+                    if(result==-1){
+                        Toast.makeText(getActivity(), "新增失敗", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getActivity(), "新增成功", Toast.LENGTH_LONG).show();
+                        Intent it=new Intent(getActivity(),MainActivity.class);
+                        startActivity(it);
+                    }
+                }catch (Exception ex){
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -238,6 +303,26 @@ public class ExpendFragment extends Fragment {
         return arrayList;
     }
 
+    private String Query(String tableName,String str){
+        ArrayList<String> arrayList = new ArrayList<>();
+        String sqlCmd="SELECT _id FROM "+tableName+" WHERE name=\""+str+"\"";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayList.add(cur.getString(0));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        return arrayList.toString();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -284,7 +369,7 @@ public class ExpendFragment extends Fragment {
             } else {
                 String all = result.getContents();
                 number.setText(all.substring(0, 10));
-                date.setText(Integer.parseInt(all.substring(10, 13)) + 1911 + "/" + all.substring(13, 15) + "/" + all.substring(15, 17));
+                txvDate.setText(Integer.parseInt(all.substring(10, 13)) + 1911 + "/" + all.substring(13, 15) + "/" + all.substring(15, 17));
                 String money_temp = all.substring(30, 37);
                 int money_int = Integer.parseInt(money_temp, 16);
                 money.setText(String.valueOf(money_int));

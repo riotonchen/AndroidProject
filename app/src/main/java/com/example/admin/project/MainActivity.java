@@ -174,19 +174,21 @@ public class MainActivity extends AppCompatActivity {
         data = new String[]{"1", "1",
                 "1", "4"};
         AddData(TB_NAME, col, data);
-        //新增mbr_expend資料
-        TB_NAME = "mbr_expend";
-        col = new String[]{"memberID", "time", "sortID", "subsortID", "amount",
+        //新增mbr_accounting資料
+        TB_NAME = "mbr_accounting";
+        col = new String[]{"memberID", "time","type", "sortID", "subsortID", "amount",
                 "accountID", "projectID", "invoiceNum", "picture", "comment"};
-        data = new String[]{"1", datetime.getTime().toString(), "1", null, "65", "1", "1", "EV54838339", null, null,
-                "1", datetime.getTime().toString(), "3", "1", "80", "2", "1", "EV58635266", null, null,};
+        data = new String[]{
+                "1", datetime.getTime().toString(),"0", "1", null, "65", "1", "1", "EV54838339", null, null,
+                "1", datetime.getTime().toString(),"0", "3", "1", "80", "2", "1", "EV58635266", null, null,
+                "1", datetime.getTime().toString(),"1", "11", "42", "37000", "2", "1", null, null, null};
         AddData(TB_NAME, col, data);
-        //新增mbr_income資料
+        /*//新增mbr_income資料
         TB_NAME = "mbr_income";
         col = new String[]{"memberID", "time", "sortID", "subsortID", "amount",
                 "accountID", "projectID", "invoiceNum", "picture", "comment"};
         data = new String[]{"1", datetime.getTime().toString(), "11", "42", "37000", "2", "1", null, null, null};
-        AddData(TB_NAME, col, data);
+        AddData(TB_NAME, col, data);*/
         //轉帳資料省略
     }
 

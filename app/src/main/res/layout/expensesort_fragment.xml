@@ -11,7 +11,7 @@
     android:focusableInTouchMode="true">
 
     <EditText
-        android:id="@+id/money"
+        android:id="@+id/txtExpenseBudget"
         android:layout_width="110dp"
         android:layout_height="36dp"
         android:layout_marginStart="120dp"
@@ -55,11 +55,28 @@
         android:text="本月預算"
         android:textColor="@android:color/background_light"
         android:textSize="18dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/money"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txtExpenseBudget"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/txvExpenseBalance"
+        android:layout_width="110dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_transparent"
+        android:gravity="right"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="0"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtExpenseBudget" />
+
+    <TextView
+        android:id="@+id/txvExpenseExpense"
         android:layout_width="110dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -75,25 +92,8 @@
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView29"
+        app:layout_constraintTop_toBottomOf="@+id/txvExpenseBalance"
         app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="110dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/background_transparent"
-        android:gravity="right"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:text="0"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/money" />
 
     <TextView
         android:id="@+id/textView20"
@@ -104,7 +104,7 @@
         android:text="本月支出"
         android:textColor="@android:color/background_light"
         android:textSize="18dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView29"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txvExpenseBalance"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -116,7 +116,7 @@
         android:text="預算餘額"
         android:textColor="@android:color/background_light"
         android:textSize="18dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView19"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txvExpenseExpense"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
@@ -129,7 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19">
+        app:layout_constraintTop_toBottomOf="@+id/txvExpenseExpense">
 
         <ListView
             android:id="@+id/expenses_lv"
@@ -224,7 +224,7 @@
         android:progress="80"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView29"
+        app:layout_constraintStart_toEndOf="@+id/txvExpenseBalance"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <TextView
@@ -237,7 +237,7 @@
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/progressBar2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/money"
+        app:layout_constraintStart_toEndOf="@+id/txtExpenseBudget"
         app:layout_constraintTop_toBottomOf="@+id/textView17"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -253,7 +253,7 @@
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/money"
+        app:layout_constraintStart_toEndOf="@+id/txtExpenseBudget"
         app:layout_constraintTop_toBottomOf="@+id/textView30" />
     <ImageView
         android:id="@+id/imageView6"

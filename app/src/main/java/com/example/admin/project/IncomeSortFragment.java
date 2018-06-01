@@ -33,7 +33,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     Cursor cur;
     SimpleAdapter adapter;
     ListView lv;
-    List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
+    List<Map<String,String>> sortList=new ArrayList<Map<String,String>>();
 
     @Nullable
     @Override
@@ -50,7 +50,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         //讀取分類資料
 		DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
-        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+        adapter = new SimpleAdapter(getActivity(), sortList, R.layout.sort_item, new String[]{"name", "budget", "cost"},
                 new int[]{R.id.name, R.id.budget, R.id.cost});
         Requery();
         lv = (ListView) view.findViewById(R.id.revenue_lv);
@@ -63,7 +63,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     private void Requery() {
         String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
                 "        FROM (SELECT * FROM sys_sort WHERE type=1) AS A" +
-                "        LEFT OUTER JOIN" +
+                "        INNER JOIN" +
                 "                (SELECT sortID,budget FROM mbr_membersort WHERE memberID=1) AS B" +
                 "        ON A._id=B.sortID";
 
@@ -76,7 +76,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
                 row.put("name",cur.getString(0));
                 row.put("budget","預算:"+Integer.toString(cur.getInt(1)));
                 row.put("cost","$"+Integer.toString(cur.getInt(2)));
-                sortValue.add(row);
+                sortList.add(row);
                 cur.moveToNext();
             }
         }

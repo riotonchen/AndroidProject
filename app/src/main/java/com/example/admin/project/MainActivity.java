@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences myPref = getPreferences(MODE_PRIVATE);
         boolean isFirst = myPref.getBoolean("isFirst", true);//第一次找不到為true
         if (isFirst) {
-            SetUpLocalDB(DB_NAME);//建立SQLite資料庫及資料表
+            SetUpLocalDB();//建立SQLite資料庫及資料表
             SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
             editor.putBoolean("isFirst", false);
             editor.commit();
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    private void SetUpLocalDB(String dbName) {
+    private void SetUpLocalDB() {
         // Android 使用 SQLite 資料庫的方法
         // http://jim690701.blogspot.tw/2012/06/android-sqlite.html
         // http://sweeteason.pixnet.net/blog/post/37364146-android-%E4%BD%BF%E7%94%A8-sqlite-%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E6%96%B9%E6%B3%95
@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         AddData(TB_NAME, col, data);
         //新增mbr_memberaccount資料
         TB_NAME = "mbr_memberaccount";
-        col = new String[]{"memberID", "accountID", "accountTypeID", "initialAmount", "FX", "comment"};
-        data = new String[]{"1", "1", "1", "72500", "1:1", null,
-                "1", "3", "2", "55000", "1:1", null};
+        col = new String[]{"memberID", "accountID", "accountTypeID", "initialAmount", "balance", "FX", "comment"};
+        data = new String[]{"1", "1", "1", "72500", "72355", "1:1", null,
+                "1", "3", "2", "55000", "92000", "1:1", null};
         AddData(TB_NAME, col, data);
         //新增mbr_memberbudget資料
         TB_NAME = "mbr_memberbudget";
@@ -176,12 +176,12 @@ public class MainActivity extends AppCompatActivity {
         AddData(TB_NAME, col, data);
         //新增mbr_accounting資料
         TB_NAME = "mbr_accounting";
-        col = new String[]{"memberID", "time","type", "sortID", "subsortID", "amount",
+        col = new String[]{"memberID", "time", "type", "sortID", "subsortID", "amount",
                 "accountID", "projectID", "invoiceNum", "picture", "comment"};
         data = new String[]{
-                "1", datetime.getTime().toString(),"0", "1", null, "65", "1", "1", "EV54838339", null, null,
-                "1", datetime.getTime().toString(),"0", "3", "1", "80", "2", "1", "EV58635266", null, null,
-                "1", datetime.getTime().toString(),"1", "11", "42", "37000", "2", "1", null, null, null};
+                "1", datetime.getTime().toString(), "0", "1", null, "65", "1", "1", "EV54838339", null, null,
+                "1", datetime.getTime().toString(), "0", "3", "1", "80", "2", "1", "EV58635266", null, null,
+                "1", datetime.getTime().toString(), "1", "11", "42", "37000", "2", "1", null, null, null};
         AddData(TB_NAME, col, data);
         /*//新增mbr_income資料
         TB_NAME = "mbr_income";

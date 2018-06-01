@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -71,7 +70,7 @@ public class ExpendFragment extends Fragment {
         imv = (ImageView) view.findViewById(R.id.imageView);
         photoshoot =  view.findViewById(R.id.photoshoot);
         photoshoot2 = view.findViewById(R.id.button12);
-        money = view.findViewById(R.id.money);
+        money = view.findViewById(R.id.txtExpenseMoney);
         txvDate =  view.findViewById(R.id.txvDate);
         number =  view.findViewById(R.id.number);
         remark =  view.findViewById(R.id.remark);
@@ -192,6 +191,7 @@ public class ExpendFragment extends Fragment {
                     cv.put("time",calendar.getTime().toString());
                     cv.put("type","0");//0為支出
                     cv.put("sortID",Query("sys_sort",spnSort.getSelectedItem().toString()));//要先找出代號
+                    String temp1=Query("sys_sort",spnSort.getSelectedItem().toString());
                     cv.put("subsortID",Query("sys_subsort",spnSubSort.getSelectedItem().toString()));
                     cv.put("amount",money.getText().toString());
                     cv.put("accountID",Query("sys_account",spnAccount.getSelectedItem().toString()));
@@ -216,7 +216,6 @@ public class ExpendFragment extends Fragment {
                 }
             }
         });
-
 
         //語音
         btnDialog.setOnClickListener(new View.OnClickListener() {
@@ -320,7 +319,7 @@ public class ExpendFragment extends Fragment {
         } catch (Exception ex) {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
         }
-        return arrayList.toString();
+        return arrayList.get(0);
     }
 
     @Override

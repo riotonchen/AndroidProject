@@ -36,7 +36,7 @@
                 android:textColor="@android:color/background_dark" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/txvTotalAsset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -59,7 +59,7 @@
                 android:textColor="@android:color/background_dark" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/txvTotalLiability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -82,7 +82,7 @@
                 android:textColor="@android:color/background_dark" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/txvNetAsset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -105,7 +105,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bar">
 
         <ListView
-            android:id="@+id/revenue_lv"
+            android:id="@+id/account_lv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1" />

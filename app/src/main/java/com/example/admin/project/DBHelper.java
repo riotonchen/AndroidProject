@@ -95,6 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "accountID INTEGER," +
                 "accountTypeID INTEGER," +
                 "initialAmount INTEGER," +
+                "balance INTEGER," +
                 "FX VARCHAR(10)," +
                 "comment VARCHAR(32)," +
                 "FOREIGN KEY(accountID) REFERENCES sys_Account(_id)," +

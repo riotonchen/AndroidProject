@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <EditText
-        android:id="@+id/money"
+        android:id="@+id/txtIncomeMoney"
         android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
@@ -32,32 +32,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/date"
+    <Button
+        android:id="@+id/btnDatePicker"
         android:layout_width="190dp"
         android:layout_height="36dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="67dp"
         android:background="@drawable/et"
-        android:ems="10"
-        android:gravity="right"
-        android:inputType="date"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:text="2018/05/02"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:stateListAnimator="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDatePicker"
+        app:layout_constraintEnd_toEndOf="@+id/btnDatePicker"
+        app:layout_constraintTop_toTopOf="@+id/btnDatePicker" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spnSort"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -72,7 +71,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spnAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -86,7 +85,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/spnProject"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -100,7 +99,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spinner4"
+        android:id="@+id/spnSubSort"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -161,7 +160,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner"
+        app:layout_constraintEnd_toStartOf="@+id/spnSort"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -179,14 +178,14 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner4"
+        app:layout_constraintEnd_toStartOf="@+id/spnSubSort"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/txvExpenseBalance"
         android:layout_width="130dp"
         android:layout_height="36dp"
         android:layout_marginStart="32dp"
@@ -211,7 +210,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintEnd_toStartOf="@+id/spnAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -229,7 +228,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner3"
+        app:layout_constraintEnd_toStartOf="@+id/spnProject"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -309,7 +308,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/money"
+        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -327,7 +326,7 @@
         android:paddingTop="60dp"
         android:text="拍照"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/money"
+        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

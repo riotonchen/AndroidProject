@@ -1,5 +1,7 @@
 package com.example.admin.project;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,20 +26,37 @@ import java.util.ArrayList;
 public class ExpensesMonthSortPieChartFragment extends Fragment  {
 
     private static final String TAG="IncomeSortFragment";
-    private float[] yData = {20.5f, 10.6f, 50.7f, 18.2f};
-    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey"};
     PieChart pieChart;
+
+    ArrayList<String> arrayListName = new ArrayList<>();
+    ArrayList<String> arrayListAmount = new ArrayList<>();
+    DBHelper DH;
+    SQLiteDatabase db;
+    Cursor cur;
+    float sum;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expenses_monthsortpiechart_fragment,container,false);
-
         pieChart = (PieChart) view.findViewById(R.id.idPieChart);
 
+        //讀取資料
+        DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
+        Query("SELECT name,amount FROM mbr_accounting,sys_sort WHERE memberID=1 " +
+                "AND mbr_accounting.type=0 AND mbr_accounting.sortID=sys_sort._id");
+        sum=0f;
+        for(String elem:arrayListAmount)
+            sum+=Float.parseFloat(elem);
+        for(int i=0;i<arrayListAmount.size();i++){
+            float percent=Float.parseFloat(arrayListAmount.get(i))/sum*10000f;
+            percent=Math.round(percent)/100f;
+            arrayListAmount.set(i,String.valueOf(percent));
+        }
 
         //右下標題
-        pieChart.setDescription("總計：-$1952");
+        pieChart.setDescription("總計："+(sum>=0?"$":"-$")+String.valueOf(sum));
         pieChart.setDescriptionColor(Color.WHITE);
         pieChart.setDescriptionTextSize(30);
         pieChart.setRotationEnabled(true);
@@ -58,7 +77,7 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
         //pieChart.setEntryLabelTextSize(30);
         //More options just check out the documentation!
 
-        addDataSet();
+        AddDataSet();
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -68,16 +87,17 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
                 Log.d(TAG, "onValueSelected: " + h.toString());
 
                 int pos1 = e.toString().indexOf("(sum): ");
-                String sales = e.toString().substring(pos1 + 7);
+                String showAmount = e.toString().substring(pos1 + 7);
 
-                for(int i = 0; i < yData.length; i++){
-                    if(yData[i] == Float.parseFloat(sales)){
+                for(int i = 0; i < arrayListAmount.size(); i++){
+                    if(Float.parseFloat(arrayListAmount.get(i)) == Float.parseFloat(showAmount)){
                         pos1 = i;
                         break;
                     }
                 }
-                String employee = xData[pos1];
-                Toast.makeText(getActivity(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
+                String showName = arrayListName.get(pos1);
+                Toast.makeText(getActivity(),  showName + "："+showAmount + "%", Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -87,21 +107,21 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
         });
         return view;
     }
-    private void addDataSet() {
-        Log.d(TAG, "addDataSet started");
+    private void AddDataSet() {
+        Log.d(TAG, "AddDataSet started");
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
         ArrayList<String> xEntrys = new ArrayList<>();
 
-        for(int i = 0; i < yData.length; i++){
-            yEntrys.add(new PieEntry(yData[i] , i));
+        for(int i = 0; i < arrayListAmount.size(); i++){
+            yEntrys.add(new PieEntry(Float.parseFloat(arrayListAmount.get(i)) , i));
         }
 
-        for(int i = 1; i < xData.length; i++){
-            xEntrys.add(xData[i]);
+        for(int i = 1; i < arrayListName.size(); i++){
+            xEntrys.add(arrayListName.get(i));
         }
 
         //create the data set
-        PieDataSet pieDataSet = new PieDataSet(yEntrys, "總計：-$1952");
+        PieDataSet pieDataSet = new PieDataSet(yEntrys,"");
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(12);
 
@@ -126,7 +146,24 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieChart.invalidate();
+
     }
 
-
+    private void Query(String sqlCmd) {
+        try {
+            cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayListName.add(cur.getString(0));
+                    arrayListAmount.add(Integer.toString(cur.getInt(1)));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

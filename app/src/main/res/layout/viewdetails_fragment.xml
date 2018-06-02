@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView34"
+                android:id="@+id/textView33"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,7 +39,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/textView34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -49,12 +49,12 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/txvDetailCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="right"
-                android:text="筆數:16000"
+                android:text="筆數:16"
                 android:textColor="@android:color/background_light"
                 android:textSize="16dp" />
 
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView34"
+                android:id="@+id/textView35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -79,7 +79,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/textView36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
@@ -88,7 +88,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/txvDetialTotalAsset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -114,8 +114,8 @@
         app:layout_constraintTop_toBottomOf="@+id/bar">
 
         <ListView
-            android:id="@+id/revenue_lv"
-            android:layout_width="wrap_content"
+            android:id="@+id/detail_lv"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
     </LinearLayout>

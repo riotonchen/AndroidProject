@@ -39,7 +39,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.incomesort_fragment,container,false);
-        btnTab = (Button) view.findViewById(R.id.btnTab);
+        btnTab = view.findViewById(R.id.btnTab);
         btnTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,7 +53,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         adapter = new SimpleAdapter(getActivity(), sortList, R.layout.sort_item, new String[]{"name", "budget", "cost"},
                 new int[]{R.id.name, R.id.budget, R.id.cost});
         Requery();
-        lv = (ListView) view.findViewById(R.id.revenue_lv);
+        lv = view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
         DH.close();

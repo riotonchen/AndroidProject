@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.TabLayout;
 import android.view.View;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
+    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
 
 
@@ -156,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
         TB_NAME = "mbr_memberaccount";
         col = new String[]{"memberID", "accountID", "accountTypeID", "initialAmount", "balance", "FX", "comment"};
         data = new String[]{"1", "1", "1", "72500", "72355", "1:1", null,
-                "1", "3", "2", "55000", "92000", "1:1", null};
+                            "1", "2", "3", "500", "500", "1:1", null,
+                            "1", "3", "2", "55000", "92000", "1:1", null};
         AddData(TB_NAME, col, data);
         //新增mbr_memberbudget資料
         TB_NAME = "mbr_memberbudget";
@@ -177,11 +181,11 @@ public class MainActivity extends AppCompatActivity {
         //新增mbr_accounting資料
         TB_NAME = "mbr_accounting";
         col = new String[]{"memberID", "time", "type", "sortID", "subsortID", "amount",
-                "accountID", "projectID", "invoiceNum", "picture", "comment"};
+                             "accountID", "projectID", "invoiceNum", "picture", "comment"};
         data = new String[]{
-                "1", datetime.getTime().toString(), "0", "1", null, "65", "1", "1", "EV54838339", null, null,
-                "1", datetime.getTime().toString(), "0", "3", "1", "80", "2", "1", "EV58635266", null, null,
-                "1", datetime.getTime().toString(), "1", "11", "42", "37000", "2", "1", null, null, null};
+                "1", "2018-05-12", "0", "1", "1", "65", "1", "1", "EV54838339", null, null,
+                "1", "2018-06-02", "0", "3", "3", "80", "2", "1", "EV58635266", null, null,
+                "1", "2018-06-03", "1", "11", "42", "37000", "3", "1", null, null, null};
         AddData(TB_NAME, col, data);
         /*//新增mbr_income資料
         TB_NAME = "mbr_income";
@@ -193,9 +197,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AddData(String tableName, String[] columnName, String[] data) {
-        db = openOrCreateDatabase(DB_NAME, android.content.Context.MODE_PRIVATE, null);
-        ContentValues cv = new ContentValues(columnName.length);
+        //db = openOrCreateDatabase(DB_NAME, android.content.Context.MODE_PRIVATE, null);
+        ContentValues cv ;
         for (int i = 0; i < data.length; ) {
+            cv = new ContentValues(columnName.length);
             for (int j = 0; j < columnName.length; j++) {
                 cv.put(columnName[j], data[i++]);
             }

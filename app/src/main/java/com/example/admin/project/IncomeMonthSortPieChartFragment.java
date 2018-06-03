@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -23,9 +25,13 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class IncomeMonthSortPieChartFragment extends Fragment {
@@ -33,6 +39,8 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
     private static final String TAG = "IncomeSortFragment";
     PieChart pieChart;
     private String monthstart, monthend;
+    private TextView txtMonthIncomePieChart;
+    private ImageView imvMonthIncomePieArrowLeft,imvMonthIncomePieArrowRight;
 
     ArrayList<String> arrayListName = new ArrayList<>();
     ArrayList<String> arrayListAmount = new ArrayList<>();
@@ -44,6 +52,9 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
     SimpleAdapter adapter;
     List<Map<String, String>> sortValue = new ArrayList<Map<String, String>>();
     Toast tos;
+    Calendar calendar;
+    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("yyyy-MM-dd", Locale.TAIWAN);
+    ListView lv;
 
     @Nullable
     @Override
@@ -53,6 +64,61 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
         monthstart = getActivity().getIntent().getExtras().getString("monthstart");
         monthend = getActivity().getIntent().getExtras().getString("monthend");
         tos=Toast.makeText(getActivity(),"",Toast.LENGTH_LONG);
+        txtMonthIncomePieChart=view.findViewById(R.id.txtMonthIncomePieChart);
+        imvMonthIncomePieArrowLeft=view.findViewById(R.id.imvMonthIncomePieArrowLeft);
+        imvMonthIncomePieArrowRight=view.findViewById(R.id.imvMonthIncomePieArrowRight);
+        txtMonthIncomePieChart.setText(monthstart+"~"+monthend);
+        calendar= Calendar.getInstance(Locale.TAIWAN);
+
+        imvMonthIncomePieArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,-1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,-1);
+                    monthend=yyyymmdd.format(calendar.getTime());
+                    txtMonthIncomePieChart.setText(monthstart+"~"+monthend);
+                    ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
+
+        imvMonthIncomePieArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    //先清除
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();
+
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthend=yyyymmdd.format(calendar.getTime());
+                    txtMonthIncomePieChart.setText(monthstart+"~"+monthend);
+                    ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
 
         //讀取資料
         DH = new DBHelper(getActivity());
@@ -76,7 +142,7 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
         adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
                 new int[]{R.id.name, R.id.budget, R.id.cost});
         Query();
-        ListView lv = view.findViewById(R.id.monthIncomePieChart_lv);
+        lv = view.findViewById(R.id.monthIncomePieChart_lv);
         lv.setAdapter(adapter);
 
         //右下標題
@@ -202,5 +268,32 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
                 sortValue.add(row);
             }
         }
+    }
+
+    private void ReSetMonth(){
+        Query("SELECT name,SUM(amount) AS amount FROM mbr_accounting,sys_sort WHERE memberID=1 " +
+                "AND mbr_accounting.type=1 AND mbr_accounting.sortID=sys_sort._id " +
+                "AND time BETWEEN '"+monthstart.replace('/','-')+
+                "' AND '"+monthend.replace('/','-')+"' "+
+                "GROUP BY name");
+        sum=0f;
+        for(String elem:arrayListAmount)
+            sum+=Float.parseFloat(elem);
+        for(int i=0;i<arrayListAmount.size();i++){
+            originalAmount.add(Float.parseFloat(arrayListAmount.get(i)));//先儲存原本的金額
+            float percent=Float.parseFloat(arrayListAmount.get(i))/sum*10000f;
+            percent=Math.round(percent)/100f;
+            arrayListAmount.set(i,String.valueOf(percent));
+        }
+        //設定ListView
+        //讀取分類資料
+        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+                new int[]{R.id.name, R.id.budget, R.id.cost});
+        Query();
+        lv.setAdapter(adapter);
+
+        //右下標題
+        pieChart.setDescription("總計："+(sum>=0?"$":"-$")+String.valueOf(sum));
+        AddDataSet();
     }
 }

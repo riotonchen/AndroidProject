@@ -162,7 +162,7 @@ public class IncomeFragment extends Fragment {
                     db = DH.getReadableDatabase();
                     ContentValues cv=new ContentValues();
                     cv.put("memberID","1");
-                    cv.put("time",calendar.getTime().toString());
+                    cv.put("time",txvDate.getText().toString().replace('/','-'));
                     cv.put("type","1");//1為支出
                     cv.put("sortID",Query("sys_sort",spnSort.getSelectedItem().toString()));//要先找出代號
                     String temp1=Query("sys_sort",spnSort.getSelectedItem().toString());

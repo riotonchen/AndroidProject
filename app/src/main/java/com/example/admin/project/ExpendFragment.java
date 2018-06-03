@@ -60,6 +60,7 @@ public class ExpendFragment extends Fragment {
     private String today, scanresult;
     Calendar calendar=Calendar.getInstance(Locale.TAIWAN);
     private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -188,7 +189,7 @@ public class ExpendFragment extends Fragment {
                     //"memberID", "time","type", "sortID", "subsortID", "amount",
                     //                "accountID", "projectID", "invoiceNum", "picture", "comment"
                     cv.put("memberID","1");
-                    cv.put("time",calendar.getTime().toString());
+                    cv.put("time",txvDate.getText().toString().replace('/','-'));
                     cv.put("type","0");//0為支出
                     cv.put("sortID",Query("sys_sort",spnSort.getSelectedItem().toString()));//要先找出代號
                     String temp1=Query("sys_sort",spnSort.getSelectedItem().toString());

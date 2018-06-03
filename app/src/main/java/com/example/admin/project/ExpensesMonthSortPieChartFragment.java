@@ -1,4 +1,4 @@
-﻿package com.example.admin.project;
+package com.example.admin.project;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,7 +46,6 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
     ArrayList<String> arrayListAmount = new ArrayList<>();
     DBHelper DH;
     SQLiteDatabase db;
-    private String monthstart, monthend;
     Cursor cur;
     float sum;
     ArrayList<Float> originalAmount=new ArrayList<>();
@@ -75,8 +74,12 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 try{
-                    lv = view.findViewById(R.id.monthExpensePieChart_lv);
-                    lv.removeAllViews();
+                    //先清除
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();
+
                     Date date=yyyymmdd.parse(monthstart.replace('/','-'));
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,-1);
@@ -90,7 +93,30 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
                 }
+            }
+        });
 
+        imvMonthExpensePieArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthend=yyyymmdd.format(calendar.getTime());
+                    txtMonthExpensePieChart.setText(monthstart+"~"+monthend);
+                    ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
             }
         });
 

@@ -121,8 +121,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(projectID) REFERENCES sys_Project(_id))";
         db.execSQL(CREATE_TABLE_mbr_memberproject);
 
-        final String CREATE_TABLE_mbr_expend = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNTING +
-                "(memberID INTEGER," +
+        final String CREATE_TABLE_mbr_accounting = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_ACCOUNTING +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "memberID INTEGER," +
                 "time DATETIME," +
                 "type BOOLEAN," +
                 "sortID INTEGER," +
@@ -133,12 +134,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "invoiceNum CHAR(10)," +
                 "picture VARCHAR(64)," +
                 "comment VARCHAR(32)," +
-                "PRIMARY KEY(memberID,time)," +
                 "FOREIGN KEY(sortID) REFERENCES mbr_MemberSort(_id)," +
                 "FOREIGN KEY(subsortID) REFERENCES mbr_MemberSubSort(_id)," +
                 "FOREIGN KEY(accountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(projectID) REFERENCES mbr_MemberProject(_id))";
-        db.execSQL(CREATE_TABLE_mbr_expend);
+        db.execSQL(CREATE_TABLE_mbr_accounting);
 
         /*final String CREATE_TABLE_mbr_income = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_INCOME +
                 "(memberID INTEGER," +

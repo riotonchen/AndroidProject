@@ -2,6 +2,8 @@ package com.example.admin.project;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -32,9 +34,13 @@ public class MainFragment extends Fragment {
     private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
     private Button btn1,btn2,btn3,btn4,btnScan,btnFriend,btnMember,btnInvoice,btnSet;
     private TextView txv2,txv6,txv10,txv14;
+    private TextView txvMainTodayExpense,txvMainTodayIncome,txvMainWeekExpense,txvMainWeekIncome,
+            txvMainMonthExpense,txvMainMonthIncome,txvMainYearExpense,txvMainYearIncome;
     private Intent it;
     private LinearLayout daydetails,weekdetails,monthdetails,yeardetails;
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
+    DBHelper DH;
+    SQLiteDatabase db;
 
     @Nullable
     @Override
@@ -59,6 +65,15 @@ public class MainFragment extends Fragment {
         weekdetails = (LinearLayout)view.findViewById(R.id.weekdetails);
         monthdetails = (LinearLayout)view.findViewById(R.id.monthdetails);
         yeardetails = (LinearLayout)view.findViewById(R.id.yeardetails);
+        txvMainTodayExpense=view.findViewById(R.id.txvMainTodayExpense);
+        txvMainTodayIncome=view.findViewById(R.id.txvMainTodayIncome);
+        txvMainWeekExpense=view.findViewById(R.id.txvMainWeekExpense);
+        txvMainWeekIncome=view.findViewById(R.id.txvMainWeekIncome);
+        txvMainMonthExpense=view.findViewById(R.id.txvMainMonthExpense);
+        txvMainMonthIncome=view.findViewById(R.id.txvMainMonthIncome);
+        txvMainYearExpense=view.findViewById(R.id.txvMainYearExpense);
+        txvMainYearIncome=view.findViewById(R.id.txvMainYearIncome);
+
 
         //設置刪除線
         btnFriend.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -135,6 +150,18 @@ public class MainFragment extends Fragment {
             }
         });
 
+        //讀取範圍明細收支
+        DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
+        /*txvMainTodayExpense.setText(SetListViewBalance(today,today,false));
+        txvMainTodayIncome.setText(SetListViewBalance(today,today,true));
+        txvMainWeekExpense.setText(SetListViewBalance(weekstart,weekend,false));
+        txvMainWeekIncome.setText(SetListViewBalance(weekstart,weekend,true));
+        txvMainMonthExpense.setText(SetListViewBalance(monthstart,monthend,false));
+        txvMainMonthIncome.setText(SetListViewBalance(monthstart,monthend,true));
+        txvMainYearExpense.setText(SetListViewBalance(yearstart,yearend,false));
+        txvMainYearIncome.setText(SetListViewBalance(yearstart,yearend,true));*/
+
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +233,7 @@ public class MainFragment extends Fragment {
         {
             if (result.getContents()==null)
             {
-                Toast.makeText(getActivity(), "You cancelled the scanning", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "已取消掃描發票", Toast.LENGTH_SHORT).show();
             }
             else
             {
@@ -225,4 +252,24 @@ public class MainFragment extends Fragment {
 
     }
 
+    private String SetListViewBalance(String start,String end,Boolean type) {
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        String sqlCmd = "";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayList.add(cur.getString(0));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        return arrayList.get(0);
+    }
 }

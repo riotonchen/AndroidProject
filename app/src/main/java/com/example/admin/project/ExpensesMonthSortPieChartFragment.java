@@ -1,4 +1,4 @@
-package com.example.admin.project;
+﻿package com.example.admin.project;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,6 +46,7 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
     ArrayList<String> arrayListAmount = new ArrayList<>();
     DBHelper DH;
     SQLiteDatabase db;
+    private String monthstart, monthend;
     Cursor cur;
     float sum;
     ArrayList<Float> originalAmount=new ArrayList<>();
@@ -111,6 +112,7 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
             arrayListAmount.set(i,String.valueOf(percent));
         }
 
+
         //設定ListView
         //讀取分類資料
         adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
@@ -118,6 +120,7 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
         Query();
         lv = view.findViewById(R.id.monthExpensePieChart_lv);
         lv.setAdapter(adapter);
+
 
         //右下標題
         pieChart.setDescription("總計："+(sum>=0?"$":"-$")+String.valueOf(sum));

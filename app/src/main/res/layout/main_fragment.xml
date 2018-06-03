@@ -202,8 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:orientation="vertical"
-                android:paddingTop="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -304,8 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:orientation="vertical"
-                android:paddingTop="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView7"
@@ -406,8 +404,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.05"
-                android:orientation="vertical"
-                android:paddingTop="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView11"
@@ -510,8 +507,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_weight="0.05"
-                android:orientation="vertical"
-                android:paddingTop="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView15"

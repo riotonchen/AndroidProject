@@ -326,7 +326,7 @@
         android:paddingTop="60dp"
         android:text="拍照"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
+        app:layout_constraintEnd_toStartOf="@+id/txtIncomeMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -341,9 +341,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/photo_camera"
-        app:layout_constraintBottom_toBottomOf="@+id/photoshoot"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/textView17"
+        app:layout_constraintEnd_toEndOf="@+id/photoshoot"
+        app:layout_constraintStart_toStartOf="@+id/photoshoot"
         app:layout_constraintTop_toTopOf="@+id/photoshoot"
         app:layout_constraintVertical_bias="0.0" />
 

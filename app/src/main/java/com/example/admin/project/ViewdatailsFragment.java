@@ -31,7 +31,7 @@ public class ViewdatailsFragment extends Fragment {
     DBHelper DH;
     SQLiteDatabase db;
     SimpleAdapter adapter;
-    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
+    //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     List<Map<String,String>> detailList=new ArrayList<Map<String,String>>();
     Cursor cur;
 

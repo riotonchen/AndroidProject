@@ -85,10 +85,9 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
                     calendar.add(calendar.MONTH,-1);
                     monthstart=yyyymmdd.format(calendar.getTime());
                     date=yyyymmdd.parse(monthend.replace('/','-'));
-                    calendar.setTime(date);
-                    calendar.add(calendar.MONTH,-1);
-                    monthend=yyyymmdd.format(calendar.getTime());
-                    txtMonthExpensePieChart.setText(monthstart+"~"+monthend);
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtMonthExpensePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
                     ReSetMonth();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
@@ -109,10 +108,9 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
                     calendar.add(calendar.MONTH,+1);
                     monthstart=yyyymmdd.format(calendar.getTime());
                     date=yyyymmdd.parse(monthend.replace('/','-'));
-                    calendar.setTime(date);
-                    calendar.add(calendar.MONTH,+1);
-                    monthend=yyyymmdd.format(calendar.getTime());
-                    txtMonthExpensePieChart.setText(monthstart+"~"+monthend);
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtMonthExpensePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
                     ReSetMonth();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());

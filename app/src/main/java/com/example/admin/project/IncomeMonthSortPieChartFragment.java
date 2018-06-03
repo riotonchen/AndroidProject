@@ -78,15 +78,15 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
                     arrayListName.clear();
                     originalAmount.clear();
                     arrayListAmount.clear();
+
                     Date date=yyyymmdd.parse(monthstart.replace('/','-'));
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,-1);
                     monthstart=yyyymmdd.format(calendar.getTime());
                     date=yyyymmdd.parse(monthend.replace('/','-'));
-                    calendar.setTime(date);
-                    calendar.add(calendar.MONTH,-1);
-                    monthend=yyyymmdd.format(calendar.getTime());
-                    txtMonthIncomePieChart.setText(monthstart+"~"+monthend);
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtMonthIncomePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
                     ReSetMonth();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
@@ -103,16 +103,14 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
                     arrayListName.clear();
                     originalAmount.clear();
                     arrayListAmount.clear();
-
                     Date date=yyyymmdd.parse(monthstart.replace('/','-'));
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,+1);
                     monthstart=yyyymmdd.format(calendar.getTime());
                     date=yyyymmdd.parse(monthend.replace('/','-'));
-                    calendar.setTime(date);
-                    calendar.add(calendar.MONTH,+1);
-                    monthend=yyyymmdd.format(calendar.getTime());
-                    txtMonthIncomePieChart.setText(monthstart+"~"+monthend);
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtMonthIncomePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
                     ReSetMonth();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());

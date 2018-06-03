@@ -153,14 +153,14 @@ public class MainFragment extends Fragment {
         //讀取範圍明細收支
         DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
-        /*txvMainTodayExpense.setText(SetListViewBalance(today,today,false));
-        txvMainTodayIncome.setText(SetListViewBalance(today,today,true));
-        txvMainWeekExpense.setText(SetListViewBalance(weekstart,weekend,false));
-        txvMainWeekIncome.setText(SetListViewBalance(weekstart,weekend,true));
-        txvMainMonthExpense.setText(SetListViewBalance(monthstart,monthend,false));
-        txvMainMonthIncome.setText(SetListViewBalance(monthstart,monthend,true));
-        txvMainYearExpense.setText(SetListViewBalance(yearstart,yearend,false));
-        txvMainYearIncome.setText(SetListViewBalance(yearstart,yearend,true));*/
+        txvMainTodayExpense.setText(SetListViewBalance(today,today,0));
+        txvMainTodayIncome.setText(SetListViewBalance(today,today,1));
+        txvMainWeekExpense.setText(SetListViewBalance(weekstart,weekend,0));
+        txvMainWeekIncome.setText(SetListViewBalance(weekstart,weekend,1));
+        txvMainMonthExpense.setText(SetListViewBalance(monthstart,monthend,0));
+        txvMainMonthIncome.setText(SetListViewBalance(monthstart,monthend,1));
+        txvMainYearExpense.setText(SetListViewBalance(yearstart,yearend,0));
+        txvMainYearIncome.setText(SetListViewBalance(yearstart,yearend,1));
 
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,17 +252,19 @@ public class MainFragment extends Fragment {
 
     }
 
-    private String SetListViewBalance(String start,String end,Boolean type) {
-
+    private String SetListViewBalance(String start,String end,int type) {
+        start = start.replace('/', '-');
+        end = end.replace('/', '-');
         ArrayList<String> arrayList = new ArrayList<>();
-        String sqlCmd = "";
+        String sqlCmd = "SELECT SUM(amount) AS amount FROM mbr_accounting WHERE memberID=1 " +
+                "AND type=" + String.valueOf(type) + " AND time BETWEEN '" + start + "' AND '" + end + "'";
         try {
             Cursor cur = db.rawQuery(sqlCmd, null);
             int rowsCount = cur.getCount();
             if (rowsCount != 0) {
                 cur.moveToFirst();
                 for (int i = 0; i < rowsCount; i++) {
-                    arrayList.add(cur.getString(0));
+                    arrayList.add((type == 0 ? "-$" : "+$") + String.valueOf(cur.getInt(0)));
                     cur.moveToNext();
                 }
             }

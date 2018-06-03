@@ -105,11 +105,12 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //分類管理
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), SortActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
                 startActivity(it);
             }
         });
@@ -118,9 +119,9 @@ public class MainFragment extends Fragment {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               it = new Intent(getActivity(), AccountActivity.class);
-               startActivity(it);
-           }
+                it = new Intent(getActivity(), AccountActivity.class);
+                startActivity(it);
+            }
         });
 
         //統計分析
@@ -128,6 +129,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), MonthSortPieChartActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
                 startActivity(it);
             }
         });

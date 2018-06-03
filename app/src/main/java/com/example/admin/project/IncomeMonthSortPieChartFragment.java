@@ -1,5 +1,7 @@
 package com.example.admin.project;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -20,24 +24,63 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class IncomeMonthSortPieChartFragment extends Fragment  {
+public class IncomeMonthSortPieChartFragment extends Fragment {
 
-    private static final String TAG="IncomeSortFragment";
-    private float[] yData = {20.5f, 10.6f, 50.7f, 18.2f};
-    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey"};
+    private static final String TAG = "IncomeSortFragment";
     PieChart pieChart;
+    private String monthstart, monthend;
+
+    ArrayList<String> arrayListName = new ArrayList<>();
+    ArrayList<String> arrayListAmount = new ArrayList<>();
+    DBHelper DH;
+    SQLiteDatabase db;
+    Cursor cur;
+    float sum;
+    ArrayList<Float> originalAmount = new ArrayList<>();
+    SimpleAdapter adapter;
+    List<Map<String, String>> sortValue = new ArrayList<Map<String, String>>();
+    Toast tos;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.income_monthsortpiechart_fragment,container,false);
-
+        View view = inflater.inflate(R.layout.income_monthsortpiechart_fragment, container, false);
         pieChart = (PieChart) view.findViewById(R.id.idPieChart);
+        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
+        monthend = getActivity().getIntent().getExtras().getString("monthend");
+        tos=Toast.makeText(getActivity(),"",Toast.LENGTH_LONG);
 
+        //讀取資料
+        DH = new DBHelper(getActivity());
+        db = DH.getReadableDatabase();
+        Query("SELECT name,SUM(amount) AS amount FROM mbr_accounting,sys_sort WHERE memberID=1 " +
+                "AND mbr_accounting.type=1 AND mbr_accounting.sortID=sys_sort._id " +
+                "AND time BETWEEN '"+monthstart.replace('/','-')+
+                "' AND '"+monthend.replace('/','-')+"' "+
+                "GROUP BY name");
+        sum = 0f;
+        for (String elem : arrayListAmount)
+            sum += Float.parseFloat(elem);
+        for (int i = 0; i < arrayListAmount.size(); i++) {
+            originalAmount.add(Float.parseFloat(arrayListAmount.get(i)));//先儲存原本的金額
+            float percent = Float.parseFloat(arrayListAmount.get(i)) / sum * 10000f;
+            percent = Math.round(percent) / 100f;
+            arrayListAmount.set(i, String.valueOf(percent));
+        }
+        //設定ListView
+        //讀取分類資料
+        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+                new int[]{R.id.name, R.id.budget, R.id.cost});
+        Query();
+        ListView lv = view.findViewById(R.id.monthIncomePieChart_lv);
+        lv.setAdapter(adapter);
 
         //右下標題
-        pieChart.setDescription("總計：-$1952");
+        pieChart.setDescription("總計："+(sum>=0?"$":"-$")+String.valueOf(sum));
         pieChart.setDescriptionColor(Color.WHITE);
         pieChart.setDescriptionTextSize(30);
         pieChart.setRotationEnabled(true);
@@ -58,7 +101,7 @@ public class IncomeMonthSortPieChartFragment extends Fragment  {
         //pieChart.setEntryLabelTextSize(30);
         //More options just check out the documentation!
 
-        addDataSet();
+        AddDataSet();
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -68,16 +111,17 @@ public class IncomeMonthSortPieChartFragment extends Fragment  {
                 Log.d(TAG, "onValueSelected: " + h.toString());
 
                 int pos1 = e.toString().indexOf("(sum): ");
-                String sales = e.toString().substring(pos1 + 7);
+                String showAmount = e.toString().substring(pos1 + 7);
 
-                for(int i = 0; i < yData.length; i++){
-                    if(yData[i] == Float.parseFloat(sales)){
+                for (int i = 0; i < arrayListAmount.size(); i++) {
+                    if (Float.parseFloat(arrayListAmount.get(i)) == Float.parseFloat(showAmount)) {
                         pos1 = i;
                         break;
                     }
                 }
-                String employee = xData[pos1];
-                Toast.makeText(getActivity(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
+                String showName = arrayListName.get(pos1);
+                tos.setText(showName + "：" + showAmount + "%");
+                tos.show();
             }
 
             @Override
@@ -87,33 +131,35 @@ public class IncomeMonthSortPieChartFragment extends Fragment  {
         });
         return view;
     }
-    private void addDataSet() {
-        Log.d(TAG, "addDataSet started");
+
+    private void AddDataSet() {
+        Log.d(TAG, "AddDataSet started");
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
         ArrayList<String> xEntrys = new ArrayList<>();
 
-        for(int i = 0; i < yData.length; i++){
-            yEntrys.add(new PieEntry(yData[i] , i));
+        for (int i = 0; i < arrayListAmount.size(); i++) {
+            yEntrys.add(new PieEntry(Float.parseFloat(arrayListAmount.get(i)), i));
         }
 
-        for(int i = 1; i < xData.length; i++){
-            xEntrys.add(xData[i]);
+        for (int i = 1; i < arrayListName.size(); i++) {
+            xEntrys.add(arrayListName.get(i));
         }
 
         //create the data set
-        PieDataSet pieDataSet = new PieDataSet(yEntrys, "總計：-$1952");
+        PieDataSet pieDataSet = new PieDataSet(yEntrys, "");
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(12);
 
         //add colors to dataset
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.GRAY);
-        colors.add(Color.BLUE);
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
-        colors.add(Color.CYAN);
-        colors.add(Color.YELLOW);
-        colors.add(Color.MAGENTA);
+        colors.add(Color.rgb(0,153,198));
+        colors.add(Color.rgb(221,68,119));
+        colors.add(Color.rgb(102,170,0));
+        colors.add(Color.rgb(184,46,46));
+        colors.add(Color.rgb(230,115,0));
+        colors.add(Color.rgb(59,62,172));
+        colors.add(Color.rgb(170,170,17));
+        colors.add(Color.rgb(220,57,18));
 
         pieDataSet.setColors(colors);
 
@@ -128,5 +174,33 @@ public class IncomeMonthSortPieChartFragment extends Fragment  {
         pieChart.invalidate();
     }
 
+    private void Query(String sqlCmd) {
+        try {
+            cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayListName.add(cur.getString(0));
+                    arrayListAmount.add(Integer.toString(cur.getInt(1)));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void Query() {
+        if (arrayListName.size() != 0) {
+            for (int i = 0; i < arrayListName.size(); i++) {
+                Map<String, String> row = new HashMap<String, String>();
+                row.put("name", arrayListName.get(i));
+                row.put("budget", "總計");
+                row.put("cost", "$" + originalAmount.get(i));
+                sortValue.add(row);
+            }
+        }
+    }
 }

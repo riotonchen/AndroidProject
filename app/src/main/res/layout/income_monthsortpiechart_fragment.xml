@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/idPieChart">
 
         <ListView
-            android:id="@+id/sort_lv"
+            android:id="@+id/monthIncomePieChart_lv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1" />

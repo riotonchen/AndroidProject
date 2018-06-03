@@ -27,6 +27,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
 
     private static final String TAG="IncomeSortFragment";
     private Button btnTab;
+    private String monthstart, monthend;
     static final String DB_NAME = "MYLOCALDB";
     DBHelper DH;
     SQLiteDatabase db;
@@ -47,6 +48,9 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             }
         });
 
+
+        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
+        monthend = getActivity().getIntent().getExtras().getString("monthend");
         //讀取分類資料
 		DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();

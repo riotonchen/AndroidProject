@@ -110,6 +110,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), SortActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
                 startActivity(it);
             }
         });
@@ -128,6 +130,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), MonthSortPieChartActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
                 startActivity(it);
             }
         });

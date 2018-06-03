@@ -32,6 +32,7 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
     ArrayList<String> arrayListAmount = new ArrayList<>();
     DBHelper DH;
     SQLiteDatabase db;
+    private String monthstart, monthend;
     Cursor cur;
     float sum;
 
@@ -54,6 +55,9 @@ public class ExpensesMonthSortPieChartFragment extends Fragment  {
             percent=Math.round(percent)/100f;
             arrayListAmount.set(i,String.valueOf(percent));
         }
+
+        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
+        monthend = getActivity().getIntent().getExtras().getString("monthend");
 
         //右下標題
         pieChart.setDescription("總計："+(sum>=0?"$":"-$")+String.valueOf(sum));

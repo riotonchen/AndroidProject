@@ -30,6 +30,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     private static final String TAG="ExpenseSortFragment";
     private Button btnTab,create;
     private TextView txvExpenseBudget,txvExpenseExpense,txvExpenseBalance;
+    private String monthstart, monthend;
     static final String DB_NAME = "MYLOCALDB";
     //static String [] From = new String[]{"name","budget","cost"};
     DBHelper DH;
@@ -53,6 +54,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
             }
         });
+
+        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
+        monthend = getActivity().getIntent().getExtras().getString("monthend");
 
         //新增分類 第二次有閃退問題
         create.setOnClickListener(new View.OnClickListener() {

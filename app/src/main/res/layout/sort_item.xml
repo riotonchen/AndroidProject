@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="$124"
+                android:text="$214"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="18dp" />
 

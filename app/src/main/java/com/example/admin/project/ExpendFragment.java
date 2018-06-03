@@ -367,14 +367,22 @@ public class ExpendFragment extends Fragment {
                 Toast.makeText(getActivity(), "You cancelled the scanning", Toast.LENGTH_SHORT).show();
             } else {
                 String all = result.getContents();
-                number.setText(all.substring(0, 10));
-                txvDate.setText(Integer.parseInt(all.substring(10, 13)) + 1911 + "/" + all.substring(13, 15) + "/" + all.substring(15, 17));
-                String money_temp = all.substring(30, 37);
-                int money_int = Integer.parseInt(money_temp, 16);
-                money.setText(String.valueOf(money_int));
-                //txv.setText(all+"\n"+number+"\n"+date+"\n"+money);
-                //Toast.makeText(getActivity(),all+"\n"+number+"\n"+date+"\n"+money,Toast.LENGTH_SHORT).show();
+                all = all.replace(" ", "");
+                if (all.length() > 40) {
+                    number.setText(all.substring(0, 10));
+                    txvDate.setText(Integer.parseInt(all.substring(10, 13)) + 1911 + "/" + all.substring(13, 15) + "/" + all.substring(15, 17));
+                    String money_temp = all.substring(30, 37);
+                    int money_int = Integer.parseInt(money_temp, 16);
+                    money.setText(String.valueOf(money_int));
+                    String uni = all.substring(93, 94);
+                    String buy = all.substring(95, all.length());
+                    int flag = uni.compareTo("1");
+                    if(flag == 0 ) {
+                        //buy = buy.replaceAll("\\s+", "");
+                        remark.setText(buy);
+                    }
 
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

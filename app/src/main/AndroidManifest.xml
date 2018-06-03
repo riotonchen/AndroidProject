@@ -27,7 +27,8 @@
         <activity
             android:name=".AccountingActivity"
             android:label="AccountingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
         <activity
             android:name=".SortActivity"
             android:label="SortActivity"

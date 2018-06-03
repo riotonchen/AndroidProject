@@ -118,9 +118,9 @@ public class MainFragment extends Fragment {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), AccountActivity.class);
-                startActivity(it);
-            }
+               it = new Intent(getActivity(), AccountActivity.class);
+               startActivity(it);
+           }
         });
 
         //統計分析

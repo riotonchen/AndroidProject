@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
-    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
+    //嚴禁 'Y'
+    //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
 
 

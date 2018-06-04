@@ -2,6 +2,7 @@ package com.example.admin.project;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ import java.util.Map;
 public class ExpenseSortFragment extends Fragment implements OnItemClickListener {
 
     private static final String TAG="ExpenseSortFragment";
-    private Button btnTab,create;
+    private Button btnProject,create;
     private TextView txvExpenseBudget,txvExpenseExpense,txvExpenseBalance;
     private String monthstart, monthend;
     static final String DB_NAME = "MYLOCALDB";
@@ -40,18 +41,20 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     SimpleAdapter adapter;
     ListView lv;
     List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
+    private Intent it;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expensesort_fragment, container, false);
-        btnTab = view.findViewById(R.id.btnTab);
+        btnProject = view.findViewById(R.id.btnProject);
         create = view.findViewById(R.id.create);
         final View item = LayoutInflater.from(getActivity()).inflate(R.layout.createsort, null);
-        btnTab.setOnClickListener(new View.OnClickListener() {
+        btnProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
+                it = new Intent(getActivity(), ProjectActivity.class);
+                startActivity(it);
             }
         });
 

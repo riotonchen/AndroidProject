@@ -104,4 +104,5 @@
     <string name="統計分析">統計分析</string>
     <string name="記一筆">記一筆</string>
     <string name="title_activity_month_sort_pie_chart">MonthSortPieChart</string>
+    <string name="title_activity_project">ProjectActivity</string>
 </resources>

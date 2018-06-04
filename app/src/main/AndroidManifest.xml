@@ -27,8 +27,7 @@
         <activity
             android:name=".AccountingActivity"
             android:label="AccountingActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SortActivity"
             android:label="SortActivity"
@@ -48,10 +47,14 @@
             tools:replace="screenOrientation" />
         <activity
             android:name=".PieChartActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MonthSortPieChartActivity"
             android:label="@string/title_activity_month_sort_pie_chart"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProjectActivity"
+            android:label="@string/title_activity_project"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

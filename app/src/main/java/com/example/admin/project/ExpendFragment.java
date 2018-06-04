@@ -164,9 +164,6 @@ public class ExpendFragment extends Fragment {
         spnProject.setAdapter(adapter);
         db.close();
 
-        /*//設定日期
-        today = getActivity().getIntent().getExtras().getString("today");
-        date.setText(today);*/
 
         //接收首頁掃描資料
         scanresult = getActivity().getIntent().getExtras().getString("scanresult");
@@ -176,6 +173,18 @@ public class ExpendFragment extends Fragment {
             String money_temp = scanresult.substring(30, 37);
             int money_int = Integer.parseInt(money_temp, 16);
             money.setText(String.valueOf(money_int));
+        }
+
+        //接收首頁語音資料-備註
+        String result = getActivity().getIntent().getExtras().getString("remark");
+        if (result != null) {
+            remark.setText(result);
+        }
+
+        //接收首頁語音資料-金額
+        String amount = getActivity().getIntent().getExtras().getString("amount");
+        if (amount != null) {
+            money.setText(amount);
         }
 
         //儲存
@@ -224,7 +233,7 @@ public class ExpendFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "請說話..."); //語音辨識 Dialog 上要顯示的提示文字
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "請說商品與金額"); //語音辨識 Dialog 上要顯示的提示文字
 
                 startActivityForResult(intent, 1);
 

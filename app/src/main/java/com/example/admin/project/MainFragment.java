@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -109,6 +111,21 @@ public class MainFragment extends Fragment {
         datetime.roll(Calendar.DAY_OF_YEAR,-1);
         yearend = yyyyMMdd.format(datetime.getTime());
         txv14.setText(yearstart+"~"+yearend);
+
+        //記一筆長按語音
+        btn1.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "請說商品與金額"); //語音辨識 Dialog 上要顯示的提示文字
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.TAIWAN.toString());
+
+                startActivityForResult(intent, 1);
+                return true;
+
+            }
+        });
 
         //記一筆
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +243,27 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //語音
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //把所有辨識的可能結果印出來看一看，第一筆是最 match 的。
+                ArrayList result2 = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                it = new Intent(getActivity(), AccountingActivity.class);
+                String all = "";
+                String r = "";
+                all = all + result2.get(0);
+                String regEx = "[^0-9]";
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(all);
+                String amount = m.replaceAll("").trim();
+                if (amount != "")
+                    it.putExtra("amount", amount);
+                it.putExtra("remark", all);
+                startActivity(it);
+                //Toast.makeText(getActivity(), all,Toast.LENGTH_SHORT).show();
+            }
+        }
 
         //掃描
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);

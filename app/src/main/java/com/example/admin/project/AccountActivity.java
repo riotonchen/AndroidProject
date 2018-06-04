@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AccountActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class AccountActivity extends AppCompatActivity {
     private static final String TAG="AccountActivity";
     private com.example.admin.project.SectionsPagerAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
+    private ImageView imvBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,13 @@ public class AccountActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container3);
         setupViewPager(mViewPager);
 
+        imvBack = (ImageView) findViewById(R.id.imvAccountBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

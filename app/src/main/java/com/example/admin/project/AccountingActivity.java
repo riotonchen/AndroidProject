@@ -32,7 +32,7 @@ public class AccountingActivity extends AppCompatActivity {
     private static final String TAG="AccountingActivity";
     private SectionsPagerAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
-
+    private ImageView imvBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,14 @@ public class AccountingActivity extends AppCompatActivity {
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container2);
         setupViewPager(mViewPager);
+
+        imvBack = (ImageView) findViewById(R.id.imvAccountingBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);

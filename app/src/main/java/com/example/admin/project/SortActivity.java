@@ -6,18 +6,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 public class SortActivity extends AppCompatActivity {
 
     private static final String TAG="SortActivity";
     private SectionsPagerAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
+    private ImageView imvBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sort);
         Log.d(TAG,"onCreate: Starting.");
+        imvBack = (ImageView) findViewById(R.id.imvSortBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -37,4 +47,5 @@ public class SortActivity extends AppCompatActivity {
     public void OnClick(View view){
         finish();
     }
+
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -18,9 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class IncomeSortFragment extends Fragment implements OnItemClickListener {
@@ -35,7 +40,11 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     SimpleAdapter adapter;
     ListView lv;
     List<Map<String,String>> sortList=new ArrayList<Map<String,String>>();
-
+    private TextView txtIncomeSortDate;
+    private ImageView imvIncomeSortArrowLeft,imvIncomeSortArrowRight;
+    Calendar calendar;
+    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("yyyy-MM-dd", Locale.TAIWAN);
+    Toast tos;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -48,9 +57,62 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             }
         });
 
-
         monthstart = getActivity().getIntent().getExtras().getString("monthstart");
         monthend = getActivity().getIntent().getExtras().getString("monthend");
+        txtIncomeSortDate=view.findViewById(R.id.txtIncomeSortDate);
+        imvIncomeSortArrowLeft=view.findViewById(R.id.imvIncomeSortArrowLeft);
+        imvIncomeSortArrowRight=view.findViewById(R.id.imvIncomeSortArrowRight);
+        txtIncomeSortDate.setText(monthstart+"~"+monthend);
+        calendar= Calendar.getInstance(Locale.TAIWAN);
+
+        imvIncomeSortArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    /*//先清除
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();*/
+
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,-1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtIncomeSortDate.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
+                    //ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
+
+        imvIncomeSortArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    /*sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();*/
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtIncomeSortDate .setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
+                    //ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
+
         //讀取分類資料
 		DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();

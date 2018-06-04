@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/txtIncomeSortDate"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -37,7 +37,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/txtIncomeSortDate" />
 
     <TextView
         android:id="@+id/textView20"
@@ -165,22 +165,22 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/imvIncomeSortArrowLeft"
         android:layout_width="20dp"
         android:layout_height="36dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/txtIncomeSortDate"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imvIncomeSortArrowRight"
         android:layout_width="20dp"
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintStart_toEndOf="@+id/txtIncomeSortDate"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/right" />
 

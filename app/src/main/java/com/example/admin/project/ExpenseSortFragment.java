@@ -15,15 +15,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ExpenseSortFragment extends Fragment implements OnItemClickListener {
@@ -32,6 +37,8 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     private Button btnProject,create;
     private TextView txvExpenseBudget,txvExpenseExpense,txvExpenseBalance;
     private String monthstart, monthend;
+    private TextView txtExpenseSortDate;
+    private ImageView imvExpenseSortArrowLeft,imvExpenseSortArrowRight;
     static final String DB_NAME = "MYLOCALDB";
     //static String [] From = new String[]{"name","budget","cost"};
     DBHelper DH;
@@ -42,7 +49,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     ListView lv;
     List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
     private Intent it;
-
+    Calendar calendar;
+    private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("yyyy-MM-dd", Locale.TAIWAN);
+    Toast tos;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -50,16 +59,74 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         btnProject = view.findViewById(R.id.btnProject);
         create = view.findViewById(R.id.create);
         final View item = LayoutInflater.from(getActivity()).inflate(R.layout.createsort, null);
+        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
+        monthend = getActivity().getIntent().getExtras().getString("monthend");
+        txtExpenseSortDate=view.findViewById(R.id.txtExpenseSortDate);
+        imvExpenseSortArrowLeft=view.findViewById(R.id.imvExpenseSortArrowLeft);
+        imvExpenseSortArrowRight=view.findViewById(R.id.imvExpenseSortArrowRight);
+        txtExpenseSortDate.setText(monthstart+"~"+monthend);
+        calendar= Calendar.getInstance(Locale.TAIWAN);
+
+        imvExpenseSortArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    /*//先清除
+                    sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();*/
+
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,-1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtExpenseSortDate.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
+                    //ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
+
+        imvExpenseSortArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    /*sortValue.clear();
+                    arrayListName.clear();
+                    originalAmount.clear();
+                    arrayListAmount.clear();*/
+                    Date date=yyyymmdd.parse(monthstart.replace('/','-'));
+                    calendar.setTime(date);
+                    calendar.add(calendar.MONTH,+1);
+                    monthstart=yyyymmdd.format(calendar.getTime());
+                    date=yyyymmdd.parse(monthend.replace('/','-'));
+                    calendar.roll(Calendar.DAY_OF_MONTH,-1);
+                    monthend = yyyymmdd.format(calendar.getTime());
+                    txtExpenseSortDate.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
+                    //ReSetMonth();
+                }catch (Exception ex){
+                    tos.setText("Error:"+ex.toString());
+                }
+            }
+        });
+
+        //專案管理
         btnProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), ProjectActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
                 startActivity(it);
             }
         });
 
-        monthstart = getActivity().getIntent().getExtras().getString("monthstart");
-        monthend = getActivity().getIntent().getExtras().getString("monthend");
+
 
         //新增分類 第二次有閃退問題
         create.setOnClickListener(new View.OnClickListener() {

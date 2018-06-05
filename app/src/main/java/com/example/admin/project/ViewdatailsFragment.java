@@ -72,7 +72,8 @@ public class ViewdatailsFragment extends Fragment {
                     "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +
                     "WHERE sys_account._id=mbr_memberaccount.accountID) AS B " +
                     "ON A.accountID=B._id) AS D " +
-                    "ON C._id=D.subsortID ";
+                    "ON C._id=D.subsortID " +
+                    "ORDER BY date DESC ";
             cur = db.rawQuery(sqlCmd, null);
             int rowsCount = cur.getCount();
             txvDetailCount.setText("筆數:"+Integer.valueOf(rowsCount));

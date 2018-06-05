@@ -59,8 +59,8 @@
         app:layout_constraintTop_toBottomOf="@+id/txtProject">
 
         <ListView
-            android:id="@+id/Project_lv"
-            android:layout_width="wrap_content"
+            android:id="@+id/project_lv"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
     </LinearLayout>

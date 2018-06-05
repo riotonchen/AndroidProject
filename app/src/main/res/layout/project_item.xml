@@ -28,7 +28,7 @@
             android:layout_marginTop="5dp"
             android:layout_weight="0.05"
             android:gravity="center"
-            android:text="進修學習"
+            android:text="無特別專案"
             android:textColor="@android:color/background_dark"
             android:textSize="18dp" />
 
@@ -41,7 +41,7 @@
             android:paddingTop="5dp">
 
             <TextView
-                android:id="@+id/budget"
+                android:id="@+id/expense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -51,7 +51,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/cost"
+                android:id="@+id/income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -64,9 +64,9 @@
 
         <TextView
             android:id="@+id/textView28"
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.05"
+            android:layout_weight="0.01"
             android:text="　" />
 
     </LinearLayout>

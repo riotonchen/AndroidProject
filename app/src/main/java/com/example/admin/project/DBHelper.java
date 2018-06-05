@@ -63,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "memberID INTEGER ," +
                 "sortID INTEGER," +
                 "budget INTEGER," +
+                "amount INTEGER," +
                 "icon VARCHAR(64)," +
                 "FOREIGN KEY(sortID) REFERENCES sys_Sort(_id))";
         db.execSQL(CREATE_TABLE_mbr_membersort);
@@ -73,6 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "memberSortID INTEGER," +
                 "subsortID INTEGER," +
                 "budget INTEGER," +
+                "amount INTEGER," +
                 "icon VARCHAR(64)," +
                 "FOREIGN KEY(subsortID) REFERENCES sys_SubSort(_id)," +
                 "FOREIGN KEY(memberSortID) REFERENCES mbr_MemberSort(_id))";
@@ -139,24 +141,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(accountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(projectID) REFERENCES mbr_MemberProject(_id))";
         db.execSQL(CREATE_TABLE_mbr_accounting);
-
-        /*final String CREATE_TABLE_mbr_income = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_INCOME +
-                "(memberID INTEGER," +
-                "time DATETIME," +
-                "sortID INTEGER," +
-                "subsortID INTEGER," +
-                "amount INTEGER," +
-                "accountID INTEGER," +
-                "projectID INTEGER," +
-                "invoiceNum CHAR(10)," +
-                "picture VARCHAR(64)," +
-                "comment VARCHAR(32)," +
-                "PRIMARY KEY(memberID,time)," +
-                "FOREIGN KEY(sortID) REFERENCES mbr_MemberSort(_id)," +
-                "FOREIGN KEY(subsortID) REFERENCES mbr_MemberSubSort(_id)," +
-                "FOREIGN KEY(accountID) REFERENCES mbr_MemberAccount(_id)," +
-                "FOREIGN KEY(projectID) REFERENCES mbr_MemberProject(_id))";
-        db.execSQL(CREATE_TABLE_mbr_income);*/
 
         final String CREATE_TABLE_mbr_transfer = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TRANSFER +
                 "(memberID INTEGER," +

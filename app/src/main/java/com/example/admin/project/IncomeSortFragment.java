@@ -39,7 +39,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     Cursor cur;
     SimpleAdapter adapter;
     ListView lv;
-    List<Map<String,String>> sortList=new ArrayList<Map<String,String>>();
+    List<Map<String,String>> sortValue=new ArrayList<Map<String,String>>();
     private TextView txtIncomeSortDate;
     private ImageView imvIncomeSortArrowLeft,imvIncomeSortArrowRight;
     Calendar calendar;
@@ -64,26 +64,28 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         imvIncomeSortArrowRight=view.findViewById(R.id.imvIncomeSortArrowRight);
         txtIncomeSortDate.setText(monthstart+"~"+monthend);
         calendar= Calendar.getInstance(Locale.TAIWAN);
+        lv = view.findViewById(R.id.revenue_lv);
 
         imvIncomeSortArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
-                    /*//先清除
-                    sortValue.clear();
-                    arrayListName.clear();
-                    originalAmount.clear();
-                    arrayListAmount.clear();*/
-
+                    DH = new DBHelper(getActivity());
+                    db = DH.getReadableDatabase();
+                    sortValue.clear();//先清除
                     Date date=yyyymmdd.parse(monthstart.replace('/','-'));
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,-1);
                     monthstart=yyyymmdd.format(calendar.getTime());
-                    date=yyyymmdd.parse(monthend.replace('/','-'));
                     calendar.roll(Calendar.DAY_OF_MONTH,-1);
                     monthend = yyyymmdd.format(calendar.getTime());
                     txtIncomeSortDate.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
-                    //ReSetMonth();
+                    UpdateSortAmount(monthstart,monthend);
+                    adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+                            new int[]{R.id.name, R.id.budget, R.id.cost});
+                    Requery();
+                    lv.setAdapter(adapter);
+                    DH.close();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
                 }
@@ -94,19 +96,22 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
             @Override
             public void onClick(View view) {
                 try{
-                    /*sortValue.clear();
-                    arrayListName.clear();
-                    originalAmount.clear();
-                    arrayListAmount.clear();*/
+                    DH = new DBHelper(getActivity());
+                    db = DH.getReadableDatabase();
+                    sortValue.clear();
                     Date date=yyyymmdd.parse(monthstart.replace('/','-'));
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,+1);
                     monthstart=yyyymmdd.format(calendar.getTime());
-                    date=yyyymmdd.parse(monthend.replace('/','-'));
                     calendar.roll(Calendar.DAY_OF_MONTH,-1);
                     monthend = yyyymmdd.format(calendar.getTime());
                     txtIncomeSortDate .setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
-                    //ReSetMonth();
+                    UpdateSortAmount(monthstart,monthend);
+                    adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+                            new int[]{R.id.name, R.id.budget, R.id.cost});
+                    Requery();
+                    lv.setAdapter(adapter);
+                    DH.close();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
                 }
@@ -114,12 +119,12 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
         });
 
         //讀取分類資料
-		DH = new DBHelper(getActivity());
+        DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
-        adapter = new SimpleAdapter(getActivity(), sortList, R.layout.sort_item, new String[]{"name", "budget", "cost"},
+        UpdateSortAmount(monthstart,monthend);
+        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
                 new int[]{R.id.name, R.id.budget, R.id.cost});
         Requery();
-        lv = view.findViewById(R.id.revenue_lv);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
         DH.close();
@@ -127,10 +132,10 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     }
 
     private void Requery() {
-        String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,0 AS cost" +
+        String sqlCmd ="SELECT name,IFNULL(B.budget,0) AS budget,amount AS cost" +
                 "        FROM (SELECT * FROM sys_sort WHERE type=1) AS A" +
                 "        INNER JOIN" +
-                "                (SELECT sortID,budget FROM mbr_membersort WHERE memberID=1) AS B" +
+                "                (SELECT sortID,budget,amount FROM mbr_membersort WHERE memberID=1) AS B" +
                 "        ON A._id=B.sortID";
 
         cur = db.rawQuery(sqlCmd, null);
@@ -142,7 +147,7 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
                 row.put("name",cur.getString(0));
                 row.put("budget","預算:"+Integer.toString(cur.getInt(1)));
                 row.put("cost","$"+Integer.toString(cur.getInt(2)));
-                sortList.add(row);
+                sortValue.add(row);
                 cur.moveToNext();
             }
         }
@@ -150,5 +155,16 @@ public class IncomeSortFragment extends Fragment implements OnItemClickListener 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    private void UpdateSortAmount(String start,String end){
+        start = start.replace('/', '-');
+        end = end.replace('/', '-');
+        //UPDATE ... FROM is not support
+        String sqlCmd="UPDATE mbr_membersort SET amount= " +
+                "IFNULL((SELECT SUM(amount) AS amount FROM mbr_accounting WHERE memberID=1 " +
+                "AND type=1 AND mbr_membersort.sortID=sortID " +
+                "AND time BETWEEN '" + start + "' AND '" + end + "' GROUP BY sortID),0)";
+        db.execSQL(sqlCmd);
     }
 }

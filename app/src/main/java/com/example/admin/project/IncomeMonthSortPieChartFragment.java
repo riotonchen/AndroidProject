@@ -83,7 +83,6 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,-1);
                     monthstart=yyyymmdd.format(calendar.getTime());
-                    date=yyyymmdd.parse(monthend.replace('/','-'));
                     calendar.roll(Calendar.DAY_OF_MONTH,-1);
                     monthend = yyyymmdd.format(calendar.getTime());
                     txtMonthIncomePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
@@ -107,7 +106,6 @@ public class IncomeMonthSortPieChartFragment extends Fragment {
                     calendar.setTime(date);
                     calendar.add(calendar.MONTH,+1);
                     monthstart=yyyymmdd.format(calendar.getTime());
-                    date=yyyymmdd.parse(monthend.replace('/','-'));
                     calendar.roll(Calendar.DAY_OF_MONTH,-1);
                     monthend = yyyymmdd.format(calendar.getTime());
                     txtMonthIncomePieChart.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));

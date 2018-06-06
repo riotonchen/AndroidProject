@@ -73,8 +73,8 @@ public class AccountFragment extends Fragment {
     }
 
     private void SetTextView() {
-        int totalAsset = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
-        int totalLiability = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
+        int totalAsset = Query("SELECT IFNUll(SUM(balance),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
+        int totalLiability = Query("SELECT IFNUll(SUM(balance),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
         txvTotalAsset.setText(String.valueOf(totalAsset));
         txvTotalLiability.setText(String.valueOf(totalLiability));
         txvNetAsset.setText(String.valueOf(totalAsset - totalLiability));

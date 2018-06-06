@@ -215,9 +215,12 @@ public class ExpendFragment extends Fragment {
                         cv.put("comment",value);
                     long result=db.insert(TABLE_NAME_ACCOUNTING,null,cv);
                     if(result==-1){
+                        db.close();
                         Toast.makeText(getActivity(), "新增失敗", Toast.LENGTH_LONG).show();
                     }else{
                         Toast.makeText(getActivity(), "新增成功", Toast.LENGTH_LONG).show();
+                        UpdateAccountBalance();//更新會員帳戶剩餘金額
+                        db.close();
                         Intent it=new Intent(getActivity(),MainActivity.class);
                         startActivity(it);
                     }
@@ -448,5 +451,13 @@ public class ExpendFragment extends Fragment {
             Toast.makeText(getActivity(), "需要權限", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void UpdateAccountBalance(){
+        String sqlCmd="UPDATE mbr_memberaccount SET balance = balance- (SELECT amount FROM mbr_accounting WHERE memberID=1  " +
+                "        AND type=0 ORDER BY _id DESC LIMIT 1) " +
+                "  WHERE mbr_memberaccount.accountID=(SELECT accountID FROM mbr_accounting WHERE memberID=1  " +
+                "        AND type=0 ORDER BY _id DESC LIMIT 1)";
+        db.execSQL(sqlCmd);
     }
 }

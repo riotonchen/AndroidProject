@@ -155,6 +155,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(sourceAccountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(targetAccountID) REFERENCES mbr_MemberAccount(_id))";
         db.execSQL(CREATE_TABLE_mbr_transfer);
+
+        /*final String CREATE_TRIGGER_UpdateAccount="CREATE TRIGGER UpdateAccount AFTER INSERT ON mbr_accounting " +
+                " BEGIN " +
+                "  UPDATE mbr_memberaccount SET balance=balance- " +
+                "  NEW.amount " +
+                "  WHERE mbr_memberaccount.accountID=NEW.accountID;   " +
+                " END ";
+        db.execSQL(CREATE_TRIGGER_UpdateAccount);*/
     }
 
     @Override

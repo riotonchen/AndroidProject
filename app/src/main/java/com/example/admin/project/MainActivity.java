@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         //新增mbr_memberaccount資料
         TB_NAME = "mbr_memberaccount";
         col = new String[]{"memberID", "accountID", "accountTypeID", "initialAmount", "balance", "FX", "comment"};
-        data = new String[]{"1", "1", "1", "3500", "3435", "1:1", null,
-                            "1", "2", "3", "500", "420", "1:1", null,
-                            "1", "3", "2", "55000", "91750", "1:1", null};
+        data = new String[]{"1", "1", "1", "72500", "72500", "1:1", null,
+                            "1", "2", "3", "500", "500", "1:1", null,
+                            "1", "3", "2", "55000", "55000", "1:1", null};
         AddData(TB_NAME, col, data);
         //新增mbr_memberbudget資料
         TB_NAME = "mbr_memberbudget";

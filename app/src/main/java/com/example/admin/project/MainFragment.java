@@ -49,7 +49,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment,container,false);
 
-        datetime.setFirstDayOfWeek(Calendar.MONDAY);
+        //datetime.setFirstDayOfWeek(Calendar.MONDAY);
         btn1 = (Button) view.findViewById(R.id.button);//記一筆
         btn2 = (Button) view.findViewById(R.id.button2);//分類管理
         btn3 = (Button) view.findViewById(R.id.button3);//帳戶管理
@@ -92,9 +92,9 @@ public class MainFragment extends Fragment {
 
 
         //本週日期
-        datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        weekstart = yyyyMMdd.format(datetime.getTime());
         datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        weekstart = yyyyMMdd.format(datetime.getTime());
+        datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         weekend = yyyyMMdd.format(datetime.getTime());
         txv6.setText(weekstart+"~"+weekend);
 

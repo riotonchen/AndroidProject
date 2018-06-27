@@ -67,6 +67,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         txtExpenseSortDate.setText(monthstart+"~"+monthend);
         calendar= Calendar.getInstance(Locale.TAIWAN);
         lv = view.findViewById(R.id.expenses_lv);
+        txvExpenseBudget=view.findViewById(R.id.txtExpenseBudget);
+        txvExpenseExpense=view.findViewById(R.id.txvExpenseExpense);
+        txvExpenseBalance=view.findViewById(R.id.txvExpenseBalance);
 
         imvExpenseSortArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,10 +176,10 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
         //讀取預算相關
-        txvExpenseBudget=view.findViewById(R.id.txtExpenseBudget);
-        txvExpenseExpense=view.findViewById(R.id.txvExpenseExpense);
-        txvExpenseBalance=view.findViewById(R.id.txvExpenseBalance);
-        txvExpenseBudget.setText(Query("SELECT budget FROM mbr_memberbudget WHERE month=6"));
+        //txvExpenseBudget=view.findViewById(R.id.txtExpenseBudget);
+        //txvExpenseExpense=view.findViewById(R.id.txvExpenseExpense);
+        //txvExpenseBalance=view.findViewById(R.id.txvExpenseBalance);
+        //txvExpenseBudget.setText(Query("SELECT budget FROM mbr_memberbudget WHERE month=6"));
         //....................notfinished
 
         DH.close();
@@ -193,6 +196,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         cur = db.rawQuery(sqlCmd, null);
         int rowsCount = cur.getCount();
         //strSort = new String[rowsCount][4];
+        String SingleExpenseBudget=""; String SingleExpenseBalance="";
+        String TotalExpenseBudget=""; String TotalExpenseBalance=""; String TotalExpenseExpense="";
+        int intTotalExpenseBudget=0; int intTotalExpenseBalance=0; int intTotalExpenseExpense=0;
         if (rowsCount != 0) {
             cur.moveToFirst();
             for (int i = 0; i < rowsCount; i++) {
@@ -205,8 +211,25 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 row.put("budget", "預算:" + Integer.toString(cur.getInt(1)));
                 row.put("cost", "$" + Integer.toString(cur.getInt(2)));
                 sortValue.add(row);
+
+                SingleExpenseBudget=Integer.toString(cur.getInt(1));
+                intTotalExpenseBudget+=Integer.parseInt(SingleExpenseBudget);
+                //算出總預算
+                SingleExpenseBalance=Integer.toString(cur.getInt(2));
+                intTotalExpenseBalance+=Integer.parseInt(SingleExpenseBalance);
+                //算出總支出
+                intTotalExpenseExpense+=Integer.parseInt(SingleExpenseBudget);
+                intTotalExpenseExpense-=Integer.parseInt(SingleExpenseBalance);
+                //算出餘額
+
                 cur.moveToNext();
             }
+            TotalExpenseBudget=Integer.toString(intTotalExpenseBudget);
+            TotalExpenseBalance=Integer.toString(intTotalExpenseBalance);
+            TotalExpenseExpense=Integer.toString(intTotalExpenseExpense);
+            txvExpenseBudget.setText(TotalExpenseBudget);
+            txvExpenseBalance.setText(TotalExpenseBalance);
+            txvExpenseExpense.setText(TotalExpenseExpense);
         }
         //adapter.changeCursor(cur);
     }

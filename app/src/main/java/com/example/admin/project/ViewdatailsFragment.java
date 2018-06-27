@@ -34,7 +34,6 @@ public class ViewdatailsFragment extends Fragment {
     //14785private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     List<Map<String,String>> detailList=new ArrayList<Map<String,String>>();
     Cursor cur;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class ViewdatailsFragment extends Fragment {
         date_end = getActivity().getIntent().getExtras().getString("date_end");
         txv_date.setText(date_start + "~" + date_end);
         txvDetailCount=view.findViewById(R.id.txvDetailCount);
-
+        txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
         //帶入明細
         DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
@@ -54,10 +53,10 @@ public class ViewdatailsFragment extends Fragment {
         Query();
         lv.setAdapter(adapter);
         //設定訊息
-        txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
-        int totalAsset = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
-        int totalLiability = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
-        txvDetialTotalAsset.setText("淨資產：$"+Integer.valueOf(totalAsset-totalLiability));
+        //txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
+        //int totalAsset = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
+        //nt totalLiability = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
+        //txvDetialTotalAsset.setText("淨資產：$"+Integer.valueOf(totalAsset-totalLiability));
         return view;
     }
 
@@ -74,6 +73,9 @@ public class ViewdatailsFragment extends Fragment {
                     "ON A.accountID=B._id) AS D " +
                     "ON C._id=D.subsortID " +
                     "ORDER BY date DESC ";
+            String SingleDetailAsset="";
+            String TotalDetailAsset="";
+            int intTotalDetailAsset=0;
             cur = db.rawQuery(sqlCmd, null);
             int rowsCount = cur.getCount();
             txvDetailCount.setText("筆數:"+Integer.valueOf(rowsCount));
@@ -86,11 +88,24 @@ public class ViewdatailsFragment extends Fragment {
                     row.put("money", (cur.getInt(5)==0?"-$":"+$") + Integer.toString(cur.getInt(3)));
                     row.put("date", cur.getString(4).replace('-','/'));
                     detailList.add(row);
+
+                    SingleDetailAsset=Integer.toString(cur.getInt(3));
+                    if(cur.getInt(5)==0){
+                        intTotalDetailAsset-=Integer.parseInt(SingleDetailAsset);
+                    }
+                    else {
+                        intTotalDetailAsset+=Integer.parseInt(SingleDetailAsset);
+                    }
+                    //算出總計
+
                     cur.moveToNext();
                 }
+                TotalDetailAsset=Integer.toString(intTotalDetailAsset);
+                txvDetialTotalAsset.setText("總計：$"+TotalDetailAsset);
             }
             else{
                 Toast.makeText(getActivity().getApplicationContext(), "無資料", Toast.LENGTH_SHORT).show();
+                txvDetialTotalAsset.setText("總計：$0");
             }
             cur.close();
         }catch(Exception ex){

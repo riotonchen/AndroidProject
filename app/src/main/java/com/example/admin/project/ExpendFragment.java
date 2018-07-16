@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,8 @@ public class ExpendFragment extends Fragment {
     private String today, scanresult;
     Calendar calendar=Calendar.getInstance(Locale.TAIWAN);
     private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
-
+    private String result;
+    boolean ifvoice;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -139,15 +141,16 @@ public class ExpendFragment extends Fragment {
         //SubSort，預設帶食品主分類的子分類
         String sortName = spnSort.getSelectedItem().toString();
         sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
-                "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
-                "       (SELECT _id FROM sys_sort WHERE name=\"" + sortName + "\") " +
-                "       AND " +
-                "       memberID=1" +
-                "   ) AS B " +
-                "ON A._id=B.subsortID";
+                    "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                    "       (SELECT _id FROM sys_sort WHERE name=\"" + sortName + "\") " +
+                    "       AND " +
+                    "       memberID=1" +
+                    "   ) AS B " +
+                    "ON A._id=B.subsortID";
         arrayList = Query(sqlCmd);
         adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
         spnSubSort.setAdapter(adapter);
+
         //spnAccount
         sqlCmd="SELECT name FROM sys_account WHERE _id IN " +
                 "(SELECT accountID FROM mbr_memberaccount " +
@@ -175,10 +178,73 @@ public class ExpendFragment extends Fragment {
             money.setText(String.valueOf(money_int));
         }
 
-        //接收首頁語音資料-備註
-        String result = getActivity().getIntent().getExtras().getString("remark");
+
+        //接收首頁語音資料-分類
+        result = getActivity().getIntent().getExtras().getString("product");
         if (result != null) {
             remark.setText(result);
+            String Name = result.toString();
+            db = DH.getWritableDatabase();
+            boolean isSort=false;
+
+            //語音結果(分類)帶入分類
+            sqlCmd ="SELECT * FROM sys_sort WHERE name=\"" + Name + "\"";
+            int i=0;
+            Cursor C=db.rawQuery(sqlCmd,null);
+            if (C.getCount()>0) {
+                isSort=true;
+                C.moveToFirst();    // 移到第 1 筆資料
+                do {        // 逐筆讀出資料(只會有一筆)
+                    i =C.getInt(0);
+                } while (C.moveToNext());    // 有一下筆就繼續迴圈
+            }
+            else
+                i=1;
+            spnSort.setSelection(i-1);
+
+            //語音結果(子分類)帶入分類
+            if(!isSort) {
+                sqlCmd = "SELECT * FROM sys_sort WHERE _id IN (" +
+                        "SELECT memberSortID FROM mbr_membersubsort WHERE subsortID IN(" +
+                        "SELECT _id FROM sys_subsort WHERE name=\"" + Name + "\"))";
+
+                String str = "";
+                i = 0;
+                C = db.rawQuery(sqlCmd, null);
+                if (C.getCount() > 0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        i = C.getInt(0);
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                } else
+                    i = 1;
+                spnSort.setSelection(i - 1);
+            }
+            ///顯示子分類
+            sortName = spnSort.getSelectedItem().toString();
+            sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
+                    "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                    "       (SELECT _id FROM sys_sort WHERE name=\"" + sortName + "\") " +
+                    "       AND " +
+                    "       memberID=1" +
+                    "   ) AS B " +
+                    "ON A._id=B.subsortID";
+            arrayList = Query(sqlCmd);
+            adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+            spnSubSort.setAdapter(adapter);
+
+            //語音結果帶入子分類
+
+            /*sqlCmd ="SELECT * FROM sys_subsort WHERE name=\"" + subsortName + "\"";
+            C=db.rawQuery(sqlCmd,null);
+            if(C.getCount()>0) {
+                C.moveToFirst();    // 移到第 1 筆資料
+                do {
+                    i = C.getInt(0);
+                } while (C.moveToNext());
+                spnSubSort.setSelection(3);//子分類ID多達48個 無法使用i-1的方法
+            }*/
+            db.close();
         }
 
         //接收首頁語音資料-金額
@@ -186,6 +252,17 @@ public class ExpendFragment extends Fragment {
         if (amount != null) {
             money.setText(amount);
         }
+        //接收首頁語音資料-備註
+        String all=getActivity().getIntent().getExtras().getString("all");
+        if(all!=null){
+            remark.setText(all);
+        }
+
+
+
+
+
+
 
         //儲存
         btnTab.setOnClickListener(new View.OnClickListener() {

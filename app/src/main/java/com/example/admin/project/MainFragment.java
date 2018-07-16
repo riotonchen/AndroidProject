@@ -49,7 +49,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment,container,false);
 
-        datetime.setFirstDayOfWeek(Calendar.MONDAY);
+        //datetime.setFirstDayOfWeek(Calendar.MONDAY);
         btn1 = (Button) view.findViewById(R.id.button);//記一筆
         btn2 = (Button) view.findViewById(R.id.button2);//分類管理
         btn3 = (Button) view.findViewById(R.id.button3);//帳戶管理
@@ -92,9 +92,9 @@ public class MainFragment extends Fragment {
 
 
         //本週日期
-        datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        weekstart = yyyyMMdd.format(datetime.getTime());
         datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        weekstart = yyyyMMdd.format(datetime.getTime());
+        datetime.set(java.util.Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         weekend = yyyyMMdd.format(datetime.getTime());
         txv6.setText(weekstart+"~"+weekend);
 
@@ -251,15 +251,39 @@ public class MainFragment extends Fragment {
                 ArrayList result2 = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 it = new Intent(getActivity(), AccountingActivity.class);
                 String all = "";
-                String r = "";
-                all = all + result2.get(0);
+                //String r = "";
+                String product = "";
+
+                all = all + result2.get(0);//第一筆
+
+                /*if(all.length()>=4) {
+                    product = all.substring(0, 4);
+                }
+                else {
+                    product=all.substring(0,3);
+                }*/
+                String regEX1 ="[0-9]";
+                Pattern p1=Pattern.compile(regEX1);
+                Matcher m1=p1.matcher(all);
+                product=m1.replaceAll("").trim();
+                //字串中只提取字元
+                String productreplace1=product.replaceAll("塊","");
+                String productreplace2=productreplace1.replaceAll("元","");
+                String productreplace3=productreplace2.replaceAll("圓","");
+                String productreplace4=productreplace3.replaceAll("錢","");
+                //取代字串的冗言贅字
+
                 String regEx = "[^0-9]";
                 Pattern p = Pattern.compile(regEx);
                 Matcher m = p.matcher(all);
                 String amount = m.replaceAll("").trim();
+                //字串中只提取數字
+
                 if (amount != "")
                     it.putExtra("amount", amount);
-                it.putExtra("remark", all);
+                it.putExtra("product", productreplace4);
+
+                it.putExtra("all",all);
                 startActivity(it);
                 //Toast.makeText(getActivity(), all,Toast.LENGTH_SHORT).show();
             }

@@ -68,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
         String[] data;
         String cmd;
         Cursor cur;
+        //新增mbr_membertype資料
+        //TB_NAME = "mbr_membertype";
+        //col = new String[]{"membertype_id", "name", "renew_time"};
+        //data = new String[]{"1", "FB帳號", datetime.getTime().toString(),
+                //"2", "Google帳號", datetime.getTime().toString(),
+                //"3", "本站帳號", datetime.getTime().toString(),
+                //"4", "管理員", datetime.getTime().toString()};
+        //AddData(TB_NAME, col, data);
+        //新增mbr_member資料
+        TB_NAME = "mbr_membertype";
+        col = new String[]{"membertype_id", "name"};
+        data = new String[]{"1", "FB帳號",
+                "2", "Google帳號",
+                "3", "本站帳號",
+                "4", "管理員"};
+        AddData(TB_NAME, col, data);
         //新增mbr_member資料
         TB_NAME = "mbr_member";
         col = new String[]{"name", "nickname", "email", "password", "renew_time"};

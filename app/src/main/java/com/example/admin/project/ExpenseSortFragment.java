@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,17 +54,21 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     Calendar calendar;
     private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("yyyy-MM-dd", Locale.TAIWAN);
     Toast tos;
+    ProgressBar TotalProgressBar;
+    private TextView txvTotalPercent;
+    ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expensesort_fragment, container, false);
         btnProject = view.findViewById(R.id.btnProject);
         create = view.findViewById(R.id.create);
+        imvExpenseSortArrowLeft=view.findViewById(R.id.imvExpenseSortArrowLeft);
         final View item = LayoutInflater.from(getActivity()).inflate(R.layout.createsort, null);
         monthstart = getActivity().getIntent().getExtras().getString("monthstart");
         monthend = getActivity().getIntent().getExtras().getString("monthend");
         txtExpenseSortDate=view.findViewById(R.id.txtExpenseSortDate);
-        imvExpenseSortArrowLeft=view.findViewById(R.id.imvExpenseSortArrowLeft);
         imvExpenseSortArrowRight=view.findViewById(R.id.imvExpenseSortArrowRight);
         txtExpenseSortDate.setText(monthstart+"~"+monthend);
         calendar= Calendar.getInstance(Locale.TAIWAN);
@@ -70,6 +76,9 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         txvExpenseBudget=view.findViewById(R.id.txtExpenseBudget);
         txvExpenseExpense=view.findViewById(R.id.txvExpenseExpense);
         txvExpenseBalance=view.findViewById(R.id.txvExpenseBalance);
+        TotalProgressBar=view.findViewById(R.id.TotalprogressBar);
+        txvTotalPercent=view.findViewById(R.id.txvTotalPercent);
+
 
         imvExpenseSortArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +96,14 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                     txtExpenseSortDate.setText(monthstart.replace('-','/')+"~"+monthend.replace('-','/'));
                     UpdateSortAmount(monthstart,monthend);
                     adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost"},
-                            new int[]{R.id.name, R.id.budget, R.id.cost});
+                            new int[]{R.id.name, R.id.budget, R.id.cost,});
                     Requery();
                     lv.setAdapter(adapter);
+
+
+                    //View itemView=lv.getChildAt(lv.getFirstVisiblePosition());
+                    //progressBar=itemView.findViewById(R.id.progressBar);
+
                     DH.close();
                 }catch (Exception ex){
                     tos.setText("Error:"+ex.toString());
@@ -196,9 +210,11 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         cur = db.rawQuery(sqlCmd, null);
         int rowsCount = cur.getCount();
         //strSort = new String[rowsCount][4];
+
         String SingleExpenseBudget=""; String SingleExpenseBalance="";
         String TotalExpenseBudget=""; String TotalExpenseBalance=""; String TotalExpenseExpense="";
         int intTotalExpenseBudget=0; int intTotalExpenseBalance=0; int intTotalExpenseExpense=0;
+        int intSingleExpenseBudget=0;
         if (rowsCount != 0) {
             cur.moveToFirst();
             for (int i = 0; i < rowsCount; i++) {
@@ -222,14 +238,32 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 intTotalExpenseExpense-=Integer.parseInt(SingleExpenseBalance);
                 //算出餘額
 
+                int intSingleExpenseExpense=0;
+                //清空餘額
+                intSingleExpenseBudget=Integer.parseInt(SingleExpenseBudget);
+                //帶出單一分類預算
+                intSingleExpenseExpense+=Integer.parseInt(SingleExpenseBudget);
+                intSingleExpenseExpense-=Integer.parseInt(SingleExpenseBalance);
+                //算出單一分類餘額
+                float floatSingleExpenseBudget=(float)intSingleExpenseBudget; float floatSingleExpenseExpense=(float)intSingleExpenseExpense;
+                int intSinglePercent = (int)((floatSingleExpenseExpense/floatSingleExpenseBudget)*100);
+
+
+
+
+                //startActivity(intent);
+
                 cur.moveToNext();
             }
-            TotalExpenseBudget=Integer.toString(intTotalExpenseBudget);
-            TotalExpenseBalance=Integer.toString(intTotalExpenseBalance);
-            TotalExpenseExpense=Integer.toString(intTotalExpenseExpense);
-            txvExpenseBudget.setText(TotalExpenseBudget);
-            txvExpenseBalance.setText(TotalExpenseBalance);
-            txvExpenseExpense.setText(TotalExpenseExpense);
+            TotalExpenseBudget=Integer.toString(intTotalExpenseBudget);   txvExpenseBudget.setText(TotalExpenseBudget);
+            TotalExpenseBalance=Integer.toString(intTotalExpenseBalance); txvExpenseBalance.setText(TotalExpenseBalance);
+            TotalExpenseExpense=Integer.toString(intTotalExpenseExpense); txvExpenseExpense.setText(TotalExpenseExpense);
+
+            float floatTotalExpenseBudget=(float)intTotalExpenseBudget; float floatTotalExpenseExpense=(float)intTotalExpenseExpense;
+            int intTotalPercent = (int)((floatTotalExpenseExpense/floatTotalExpenseBudget)*100);
+            TotalProgressBar.setProgress(intTotalPercent); txvTotalPercent.setText(Integer.toString(intTotalPercent)+"%");
+            //處理TotalProgressBar
+
         }
         //adapter.changeCursor(cur);
     }
@@ -268,5 +302,6 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 "AND time BETWEEN '" + start + "' AND '" + end + "' GROUP BY sortID),0)";
         db.execSQL(sqlCmd);
     }
+
 
 }

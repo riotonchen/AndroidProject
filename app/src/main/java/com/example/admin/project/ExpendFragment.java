@@ -232,6 +232,10 @@ public class ExpendFragment extends Fragment {
             arrayList = Query(sqlCmd);
             adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
             spnSubSort.setAdapter(adapter);
+            if(Name!=null) {
+                int spinnerposition = adapter.getPosition(Name);
+                spnSubSort.setSelection(spinnerposition);
+            }
 
             //語音結果帶入子分類
 

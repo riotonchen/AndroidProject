@@ -119,18 +119,22 @@ public class ExpendFragment extends Fragment {
         spnSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                DBHelper DH = new DBHelper(getActivity());
-                db = DH.getReadableDatabase();
-                String sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
-                        "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
-                        "       (SELECT _id FROM sys_sort WHERE name=\"" + parent.getSelectedItem().toString() + "\") " +
-                        "       AND " +
-                        "       memberID=1" +
-                        "   ) AS B " +
-                        "ON A._id=B.subsortID";
-                ArrayList<String> arrayList = Query(sqlCmd);
-                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                spnSubSort.setAdapter(adapter);
+                if (ifvoice) {
+                    DBHelper DH = new DBHelper(getActivity());
+                    db = DH.getReadableDatabase();
+                    String sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
+                            "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                            "       (SELECT _id FROM sys_sort WHERE name=\"" + parent.getSelectedItem().toString() + "\") " +
+                            "       AND " +
+                            "       memberID=1" +
+                            "   ) AS B " +
+                            "ON A._id=B.subsortID";
+                    ArrayList<String> arrayList = Query(sqlCmd);
+                    ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                    spnSubSort.setAdapter(adapter);
+                }
+                else
+                    ifvoice=true;
             }
 
             @Override
@@ -178,11 +182,10 @@ public class ExpendFragment extends Fragment {
             money.setText(String.valueOf(money_int));
         }
 
-
         //接收首頁語音資料-分類
         result = getActivity().getIntent().getExtras().getString("product");
         if (result != null) {
-            remark.setText(result);
+            //remark.setText(result);
             String Name = result.toString();
             db = DH.getWritableDatabase();
             boolean isSort=false;
@@ -248,8 +251,8 @@ public class ExpendFragment extends Fragment {
                 } while (C.moveToNext());
                 spnSubSort.setSelection(3);//子分類ID多達48個 無法使用i-1的方法
             }*/
-            db.close();
         }
+        db.close();
 
         //接收首頁語音資料-金額
         String amount = getActivity().getIntent().getExtras().getString("amount");
@@ -261,7 +264,42 @@ public class ExpendFragment extends Fragment {
         if(all!=null){
             remark.setText(all);
         }
-
+        //接收首頁語音資料-專案
+        String project=getActivity().getIntent().getExtras().getString("project");
+        if(project!=null){
+            db = DH.getWritableDatabase();
+            sqlCmd ="SELECT * FROM sys_project WHERE name=\"" + project + "\"";
+            int i=0;
+            Cursor C=db.rawQuery(sqlCmd,null);
+            if (C.getCount()>0) {
+                C.moveToFirst();    // 移到第 1 筆資料
+                do {        // 逐筆讀出資料(只會有一筆)
+                    i =C.getInt(0);
+                } while (C.moveToNext());    // 有一下筆就繼續迴圈
+            }
+            else
+                i=1;
+            spnProject.setSelection(i-1);
+            db.close();
+        }
+        //接收首頁語音資料-帳戶
+        String account=getActivity().getIntent().getExtras().getString("account");
+        if(account!=null){
+            db = DH.getWritableDatabase();
+            sqlCmd ="SELECT * FROM sys_account WHERE name=\"" + account + "\"";
+            int i=0;
+            Cursor C=db.rawQuery(sqlCmd,null);
+            if (C.getCount()>0) {
+                C.moveToFirst();    // 移到第 1 筆資料
+                do {        // 逐筆讀出資料(只會有一筆)
+                    i =C.getInt(0);
+                } while (C.moveToNext());    // 有一下筆就繼續迴圈
+            }
+            else
+                i=1;
+            spnAccount.setSelection(i-1);
+            db.close();
+        }
 
 
 

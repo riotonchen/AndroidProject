@@ -251,27 +251,73 @@ public class MainFragment extends Fragment {
                 ArrayList result2 = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 it = new Intent(getActivity(), AccountingActivity.class);
                 String all = "";
-                //String r = "";
                 String product = "";
+                String subsort = "";
+                String subsortName = "";
+                String project = "";
+                String projectName = "";
+                String account = "";
+                String accountName = "";
+
 
                 all = all + result2.get(0);//第一筆
-
-                /*if(all.length()>=4) {
-                    product = all.substring(0, 4);
-                }
-                else {
-                    product=all.substring(0,3);
-                }*/
                 String regEX1 ="[0-9]";
                 Pattern p1=Pattern.compile(regEX1);
                 Matcher m1=p1.matcher(all);
                 product=m1.replaceAll("").trim();
                 //字串中只提取字元
+
+
+                DBHelper DH = new DBHelper(getActivity());
+                db = DH.getReadableDatabase();
+                String sqlCmd;
+                sqlCmd="SELECT * FROM sys_subsort";
+                Cursor C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        subsortName =C.getString(1);
+                        if(product.indexOf(subsortName)!=-1){
+                            subsort=subsortName;
+                        }
+                        //判斷語音結果內是否有分類或子分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_project";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        projectName =C.getString(1);
+                        if(product.indexOf(projectName)!=-1){
+                            project=projectName;
+                        }
+                        //判斷語音結果內是否有分類或子分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_account";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        accountName =C.getString(1);
+                        if(product.indexOf(accountName)!=-1){
+                            account=accountName;
+                        }
+                        if(product.indexOf("新台幣")!=-1){
+                            account="現金(新台幣)";
+                        }
+                        //判斷語音結果內是否有分類或子分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+
+
+                /*
                 String productreplace1=product.replaceAll("塊","");
                 String productreplace2=productreplace1.replaceAll("元","");
                 String productreplace3=productreplace2.replaceAll("圓","");
                 String productreplace4=productreplace3.replaceAll("錢","");
-                //取代字串的冗言贅字
+                //取代字串的冗言贅字*/
 
                 String regEx = "[^0-9]";
                 Pattern p = Pattern.compile(regEx);
@@ -281,9 +327,10 @@ public class MainFragment extends Fragment {
 
                 if (amount != "")
                     it.putExtra("amount", amount);
-                it.putExtra("product", productreplace4);
-
+                it.putExtra("product", subsort);
                 it.putExtra("all",all);
+                it.putExtra("project",project);
+                it.putExtra("account",account);
                 startActivity(it);
                 //Toast.makeText(getActivity(), all,Toast.LENGTH_SHORT).show();
             }

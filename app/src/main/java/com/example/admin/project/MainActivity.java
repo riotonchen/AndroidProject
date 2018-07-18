@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
         TB_NAME = "mbr_memberproject";
         col = new String[]{"memberID", "projectID"};
         data = new String[]{"1", "1",
+                "1", "2",
+                "1", "3",
                 "1", "4"};
         AddData(TB_NAME, col, data);
         //新增mbr_accounting資料

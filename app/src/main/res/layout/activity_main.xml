@@ -21,7 +21,7 @@
             android:background="@android:color/background_light">
 
             <Button
-                android:id="@+id/btnHead"
+                android:id="@+id/button8"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="16dp"

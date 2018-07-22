@@ -10,11 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.TabLayout;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -25,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
-    private Button btnHead;
     //嚴禁 'Y'
     //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
@@ -36,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
-        btnHead=(Button)findViewById(R.id.btnHead);
 
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -50,35 +45,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("isFirst", false);
             editor.commit();
         }
-
-        DBHelper DH = new DBHelper(this);
-        db = DH.getReadableDatabase();
-        ArrayList<String> arraylist=new ArrayList<>();
-        String sqlCmd ="SELECT * FROM mbr_member WHERE id=1";
-        Cursor C=db.rawQuery(sqlCmd,null);
-        final String name;
-        int rowCount=C.getCount();
-        if(rowCount!=0){
-            C.moveToFirst();
-            for(int i=0;i<rowCount;i++){
-                arraylist.add(C.getString(4));
-                arraylist.add(C.getString(5));
-                C.moveToNext();
-            }
-            C.close();
-        }
-        name ="歡迎您"+arraylist.get(0)+"("+arraylist.get(1)+")";
-        btnHead.setOnClickListener(new View.OnClickListener() {//點擊頭像
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
-            }
-        });
-        db.close();
-
     }
-
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -119,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         AddData(TB_NAME, col, data);
         //新增mbr_member資料
         TB_NAME = "mbr_member";
-        col = new String[]{ "account",          "identifier",          "membertype_id",  "name",   "nickname", "password",  "localpicture",           "dbpicture"};
-        data = new String[]{"a123@gmail.com", "668292110191597",  "1",               "王大明", "Avalon",   "p4545487", "images/usr/pic001.jpg", "images/usr/pic020.jpg",};
+        col = new String[]{"name", "nickname", "email", "password", "renew_time"};
+        data = new String[]{"王小明", "小明", "A1234567@pccu.edu.tw", "pwd123", datetime.getTime().toString()};
         AddData(TB_NAME, col, data);
         //新增sys_sort資料
         TB_NAME = "sys_sort";
@@ -260,5 +227,4 @@ public class MainActivity extends AppCompatActivity {
             db.insert(tableName, null, cv);
         }
     }
-
 }

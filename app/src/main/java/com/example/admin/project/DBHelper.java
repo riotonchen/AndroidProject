@@ -57,17 +57,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_mbr_membertype);
 
         final String CREATE_TABLE_mbr_member = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MEMBER +
-                "(id INTEGER PRIMARY KEY AUTOINCREMENT ," +
-                "account VARCHAR(50)," +
-                "identifier VARCHAR(22)," +
-                "membertype_id TINYINT(1)," +
-                "name VARCHAR(20)," +
-                "nickname VARCHAR(20)," +
-                "password VARCAHR(128)," +
-                "localpicture VARCAHR(64)," +
-                "dbpicture VARCAHR(64)," +
-                "renew_time TIMESTAMP(4))";
-
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "name NVARCHAR(32)," +
+                "nickname NVARCHAR(20)," +
+                "email VARCHAR(100)," +
+                "password VARCAHR(30)," +
+                "renew_time DATETIME)";
         db.execSQL(CREATE_TABLE_mbr_member);
 
         final String CREATE_TABLE_mbr_friendship = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_FRIENDSHIP +

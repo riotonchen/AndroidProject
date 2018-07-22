@@ -149,7 +149,7 @@ public class TransferFragment extends Fragment {
                         int expense=Integer.valueOf(ExpenseMoney);
                         String Fee=txvFee.getText().toString();
                         int fee;
-                        if(TextUtils.isEmpty(txvFee.getText())){//目前不輸入手續費會失敗
+                        if(TextUtils.isEmpty(txvFee.getText())){
                             fee=0;
                         }
                         else {

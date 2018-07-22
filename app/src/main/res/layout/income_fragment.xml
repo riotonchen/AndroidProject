@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnTergetAccount"
+        android:id="@+id/spnAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnSourceAccount"
+        android:id="@+id/spnSubSort"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -180,7 +180,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnSourceAccount"
+        app:layout_constraintEnd_toStartOf="@+id/spnSubSort"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -189,15 +189,15 @@
     <TextView
         android:id="@+id/txvExpenseBalance"
         android:layout_width="130dp"
-        android:layout_height="34dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="307dp"
+        android:layout_marginTop="310dp"
         android:gravity="right"
         android:text="發票號碼："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/remark"
+        app:layout_constraintEnd_toStartOf="@+id/number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -213,7 +213,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnTergetAccount"
+        app:layout_constraintEnd_toStartOf="@+id/spnAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -364,9 +364,9 @@
         android:layout_width="27dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spnSourceAccount"
-        app:layout_constraintEnd_toEndOf="@+id/spnSourceAccount"
-        app:layout_constraintTop_toTopOf="@+id/spnSourceAccount"
+        app:layout_constraintBottom_toBottomOf="@+id/spnSubSort"
+        app:layout_constraintEnd_toEndOf="@+id/spnSubSort"
+        app:layout_constraintTop_toTopOf="@+id/spnSubSort"
         app:srcCompat="@drawable/chevron_sign_down" />
 
     <ImageView
@@ -374,9 +374,9 @@
         android:layout_width="27dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spnTergetAccount"
-        app:layout_constraintEnd_toEndOf="@+id/spnTergetAccount"
-        app:layout_constraintTop_toTopOf="@+id/spnTergetAccount"
+        app:layout_constraintBottom_toBottomOf="@+id/spnAccount"
+        app:layout_constraintEnd_toEndOf="@+id/spnAccount"
+        app:layout_constraintTop_toTopOf="@+id/spnAccount"
         app:srcCompat="@drawable/chevron_sign_down" />
 
     <ImageView

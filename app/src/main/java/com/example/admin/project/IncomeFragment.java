@@ -65,8 +65,8 @@ public class IncomeFragment extends Fragment {
         //today = getActivity().getIntent().getExtras().getString("today");
         btnTab =  view.findViewById(R.id.btnTab);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
-        final Spinner spnSubSort = view.findViewById(R.id.spnSourceAccount);
-        final Spinner spnAccount=view.findViewById(R.id.spnTergetAccount);
+        final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
+        final Spinner spnAccount=view.findViewById(R.id.spnAccount);
         final Spinner spnProject=view.findViewById(R.id.spnProject);
 
         //設定txvDate預設日期

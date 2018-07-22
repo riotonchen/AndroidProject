@@ -77,8 +77,8 @@ public class ExpendFragment extends Fragment {
         number =  view.findViewById(R.id.number);
         remark =  view.findViewById(R.id.remark);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
-        final Spinner spnSubSort = view.findViewById(R.id.spnSourceAccount);
-        final Spinner spnAccount=view.findViewById(R.id.spnTergetAccount);
+        final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
+        final Spinner spnAccount=view.findViewById(R.id.spnAccount);
         final Spinner spnProject=view.findViewById(R.id.spnProject);
 
         //設定txvDate預設日期
@@ -480,8 +480,8 @@ public class ExpendFragment extends Fragment {
                 String accountName = "";
                 String sortName="";
                 Spinner spnSort = getActivity().findViewById(R.id.spnSort);
-                Spinner spnSubSort =  getActivity().findViewById(R.id.spnSourceAccount);
-                Spinner spnAccount = getActivity().findViewById(R.id.spnTergetAccount);
+                Spinner spnSubSort =  getActivity().findViewById(R.id.spnSubSort);
+                Spinner spnAccount = getActivity().findViewById(R.id.spnAccount);
                 Spinner spnProject = getActivity().findViewById(R.id.spnProject);
                 ArrayList<String> arrayList;
                 ArrayAdapter adapter;

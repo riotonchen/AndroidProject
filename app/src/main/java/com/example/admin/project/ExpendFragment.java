@@ -74,7 +74,7 @@ public class ExpendFragment extends Fragment {
         photoshoot2 = view.findViewById(R.id.button12);
         money = view.findViewById(R.id.txvExpenseMoney);
         txvDate =  view.findViewById(R.id.txvDate);
-        number =  view.findViewById(R.id.remark);
+        number =  view.findViewById(R.id.number);
         remark =  view.findViewById(R.id.remark);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
         final Spinner spnSubSort = view.findViewById(R.id.spnSourceAccount);

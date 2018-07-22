@@ -113,7 +113,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/remark"
+        android:id="@+id/number"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -189,16 +189,17 @@
     <TextView
         android:id="@+id/txvExpenseBalance"
         android:layout_width="130dp"
-        android:layout_height="36dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="307dp"
         android:gravity="right"
         android:text="發票號碼："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/remark"
         app:layout_constraintEnd_toStartOf="@+id/remark"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView20"

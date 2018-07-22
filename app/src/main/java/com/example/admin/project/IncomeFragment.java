@@ -60,7 +60,7 @@ public class IncomeFragment extends Fragment {
         photoshoot2 = view.findViewById(R.id.button12);
         money = view.findViewById(R.id.txtIncomeMoney);
         txvDate =  view.findViewById(R.id.txvDate);
-        number =  view.findViewById(R.id.remark);
+        number =  view.findViewById(R.id.number);
         remark =  view.findViewById(R.id.remark);
         //today = getActivity().getIntent().getExtras().getString("today");
         btnTab =  view.findViewById(R.id.btnTab);

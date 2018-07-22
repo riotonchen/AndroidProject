@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <EditText
-        android:id="@+id/txtExpenseMoney"
+        android:id="@+id/txvExpenseMoney"
         android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
@@ -73,7 +73,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnAccount"
+        android:id="@+id/spnTergetAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -105,7 +105,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnSubSort"
+        android:id="@+id/spnSourceAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/number"
+        android:id="@+id/remark"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -187,7 +187,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnSubSort"
+        app:layout_constraintEnd_toStartOf="@+id/spnSourceAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -201,8 +201,8 @@
         android:text="發票號碼："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/number"
-        app:layout_constraintEnd_toStartOf="@+id/number"
+        app:layout_constraintBaseline_toBaselineOf="@+id/remark"
+        app:layout_constraintEnd_toStartOf="@+id/remark"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -218,7 +218,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnAccount"
+        app:layout_constraintEnd_toStartOf="@+id/spnTergetAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -358,7 +358,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
+        app:layout_constraintEnd_toStartOf="@+id/txvExpenseMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -376,7 +376,7 @@
         android:paddingTop="60dp"
         android:text="拍照"
         app:layout_constraintBottom_toTopOf="@+id/textView17"
-        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
+        app:layout_constraintEnd_toStartOf="@+id/txvExpenseMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -418,9 +418,9 @@
         android:layout_width="27dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spnSubSort"
-        app:layout_constraintEnd_toEndOf="@+id/spnSubSort"
-        app:layout_constraintTop_toTopOf="@+id/spnSubSort"
+        app:layout_constraintBottom_toBottomOf="@+id/spnSourceAccount"
+        app:layout_constraintEnd_toEndOf="@+id/spnSourceAccount"
+        app:layout_constraintTop_toTopOf="@+id/spnSourceAccount"
         app:srcCompat="@drawable/chevron_sign_down" />
 
     <ImageView
@@ -428,9 +428,9 @@
         android:layout_width="27dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spnAccount"
-        app:layout_constraintEnd_toEndOf="@+id/spnAccount"
-        app:layout_constraintTop_toTopOf="@+id/spnAccount"
+        app:layout_constraintBottom_toBottomOf="@+id/spnTergetAccount"
+        app:layout_constraintEnd_toEndOf="@+id/spnTergetAccount"
+        app:layout_constraintTop_toTopOf="@+id/spnTergetAccount"
         app:srcCompat="@drawable/chevron_sign_down" />
 
     <ImageView

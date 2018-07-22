@@ -20,14 +20,14 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnSubSort"
+        app:layout_constraintEnd_toStartOf="@+id/spnSourceAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/txtExpenseMoney"
+        android:id="@+id/txvExpenseMoney"
         android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
@@ -36,11 +36,11 @@
         android:background="@drawable/greenbackground"
         android:ems="10"
         android:gravity="right"
+        android:hint="0"
         android:inputType="number"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:text="0"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/edittext"
+        android:id="@+id/txvFee"
         android:layout_width="190dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
@@ -58,11 +58,11 @@
         android:background="@drawable/greenbackground"
         android:ems="10"
         android:gravity="right"
+        android:hint="0"
         android:inputType="date"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:text="0"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnAccount"
+        android:id="@+id/spnTergetAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spnSubSort"
+        android:id="@+id/spnSourceAccount"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -113,7 +113,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/number"
+        android:id="@+id/remark"
         android:layout_width="190dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
@@ -130,23 +130,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="190dp"
-        android:layout_height="36dp"
+    <Button
+        android:id="@+id/btnDatePicker"
+        android:layout_width="191dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="122dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/et"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="18sp"
+        android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.254" />
+
+    <TextView
+        android:id="@+id/txvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDatePicker"
+        app:layout_constraintEnd_toEndOf="@+id/btnDatePicker"
+        app:layout_constraintTop_toTopOf="@+id/btnDatePicker" />
 
     <TextView
         android:id="@+id/textView17"
@@ -160,7 +167,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/txtExpenseMoney"
+        app:layout_constraintEnd_toStartOf="@+id/txvExpenseMoney"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -171,6 +178,7 @@
         android:layout_width="130dp"
         android:layout_height="42dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="75dp"
         android:gravity="right"
@@ -178,7 +186,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintEnd_toStartOf="@+id/txvFee"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -196,7 +204,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spnAccount"
+        app:layout_constraintEnd_toStartOf="@+id/spnTergetAccount"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -204,17 +212,22 @@
 
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="130dp"
-        android:layout_height="36dp"
+        android:layout_width="129dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:gravity="right"
         android:text="日期："
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/date"
-        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDatePicker"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.254" />
 
     <TextView
         android:id="@+id/textView21"
@@ -246,7 +259,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/number"
+        app:layout_constraintEnd_toStartOf="@+id/remark"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -19,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,13 +72,13 @@ public class ExpendFragment extends Fragment {
         imv = (ImageView) view.findViewById(R.id.imageView);
         photoshoot =  view.findViewById(R.id.photoshoot);
         photoshoot2 = view.findViewById(R.id.button12);
-        money = view.findViewById(R.id.txtExpenseMoney);
+        money = view.findViewById(R.id.txvExpenseMoney);
         txvDate =  view.findViewById(R.id.txvDate);
-        number =  view.findViewById(R.id.number);
+        number =  view.findViewById(R.id.remark);
         remark =  view.findViewById(R.id.remark);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
-        final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
-        final Spinner spnAccount=view.findViewById(R.id.spnAccount);
+        final Spinner spnSubSort = view.findViewById(R.id.spnSourceAccount);
+        final Spinner spnAccount=view.findViewById(R.id.spnTergetAccount);
         final Spinner spnProject=view.findViewById(R.id.spnProject);
 
         //設定txvDate預設日期
@@ -185,7 +184,6 @@ public class ExpendFragment extends Fragment {
         //接收首頁語音資料-分類
         result = getActivity().getIntent().getExtras().getString("product");
         if (result != null) {
-            //remark.setText(result);
             String Name = result.toString();
             db = DH.getWritableDatabase();
             boolean isSort=false;
@@ -473,12 +471,178 @@ public class ExpendFragment extends Fragment {
                 //把所有辨識的可能結果印出來看一看，第一筆是最 match 的。
                 ArrayList result2 = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String all = "";
-                String r = "";
+                String product = "";
+                String subsort = "";
+                String subsortName = "";
+                String project = "";
+                String projectName = "";
+                String account = "";
+                String accountName = "";
+                String sortName="";
+                Spinner spnSort = getActivity().findViewById(R.id.spnSort);
+                Spinner spnSubSort =  getActivity().findViewById(R.id.spnSourceAccount);
+                Spinner spnAccount = getActivity().findViewById(R.id.spnTergetAccount);
+                Spinner spnProject = getActivity().findViewById(R.id.spnProject);
+                ArrayList<String> arrayList;
+                ArrayAdapter adapter;
 
-                all = all + result2.get(0);
-                /*for(int i = 0; i < result2.size(); i++){
-                    all = all + result2.get(0) + "\n";
-                }*/
+
+                all = all + result2.get(0);//第一筆
+                String regEX1 ="[0-9]";
+                Pattern p1=Pattern.compile(regEX1);
+                Matcher m1=p1.matcher(all);
+                product=m1.replaceAll("").trim();
+                //字串中只提取字元
+
+                DBHelper DH = new DBHelper(getActivity());
+                db = DH.getReadableDatabase();
+                String sqlCmd;
+                sqlCmd="SELECT * FROM sys_sort";
+                Cursor C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        subsortName =C.getString(1);
+                        if(product.indexOf(subsortName)!=-1){
+                            subsort=subsortName;
+                        }
+                        //判斷語音結果內是否有分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_subsort";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        subsortName =C.getString(1);
+                        if(product.indexOf(subsortName)!=-1){
+                            subsort=subsortName;
+                        }
+                        //判斷語音結果內是否有子分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_project";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        projectName =C.getString(1);
+                        if(product.indexOf(projectName)!=-1){
+                            project=projectName;
+                        }
+                        //判斷語音結果內是否有專案
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_account";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        accountName =C.getString(1);
+                        if(product.indexOf(accountName)!=-1){
+                            account=accountName;
+                        }
+                        if(product.indexOf("新台幣")!=-1){
+                            account="現金(新台幣)";
+                        }
+                        //判斷語音結果內是否有帳戶
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+
+                if (subsort != null) {
+                    String Name = subsort.toString();
+                    db = DH.getWritableDatabase();
+                    boolean isSort=false;
+
+                    //語音結果(分類)帶入分類
+                    sqlCmd ="SELECT * FROM sys_sort WHERE name=\"" + Name + "\"";
+                    int i=0;
+                    C=db.rawQuery(sqlCmd,null);
+                    if (C.getCount()>0) {
+                        isSort=true;
+                        C.moveToFirst();    // 移到第 1 筆資料
+                        do {        // 逐筆讀出資料(只會有一筆)
+                            i =C.getInt(0);
+                        } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                    }
+                    else
+                        i=1;
+                    spnSort.setSelection(i-1);
+
+                    //語音結果(子分類)帶入分類
+                    if(!isSort) { //若不是語音結果(分類)
+                        sqlCmd = "SELECT * FROM sys_sort WHERE _id IN (" +
+                                "SELECT memberSortID FROM mbr_membersubsort WHERE subsortID IN(" +
+                                "SELECT _id FROM sys_subsort WHERE name=\"" + Name + "\"))";
+
+                        String str = "";
+                        i = 0;
+                        C = db.rawQuery(sqlCmd, null);
+                        if (C.getCount() > 0) {
+                            C.moveToFirst();    // 移到第 1 筆資料
+                            do {        // 逐筆讀出資料(只會有一筆)
+                                i = C.getInt(0);
+                            } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                        } else
+                            i = 1;
+                        spnSort.setSelection(i - 1);
+                    }
+                    ///顯示子分類
+                    sortName = spnSort.getSelectedItem().toString();
+                    sqlCmd = "SELECT name FROM sys_subsort AS A INNER JOIN " +
+                            "   (SELECT subsortID FROM mbr_membersubsort WHERE memberSortID=" +
+                            "       (SELECT _id FROM sys_sort WHERE name=\"" + sortName + "\") " +
+                            "       AND " +
+                            "       memberID=1" +
+                            "   ) AS B " +
+                            "ON A._id=B.subsortID";
+                    arrayList = Query(sqlCmd);
+                    adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                    spnSubSort.setAdapter(adapter);
+                    if(Name!=null) {
+                        int spinnerposition = adapter.getPosition(Name);
+                        spnSubSort.setSelection(spinnerposition);
+                    }
+                }
+                db.close();
+
+                //接收語音資料-專案
+                if(project!=null){
+                    db = DH.getWritableDatabase();
+                    sqlCmd ="SELECT * FROM sys_project WHERE name=\"" + project + "\"";
+                    int i=0;
+                    C=db.rawQuery(sqlCmd,null);
+                    if (C.getCount()>0) {
+                        C.moveToFirst();    // 移到第 1 筆資料
+                        do {        // 逐筆讀出資料(只會有一筆)
+                            i =C.getInt(0);
+                        } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                    }
+                    else
+                        i=1;
+                    spnProject.setSelection(i-1);
+                    db.close();
+                }
+
+                //接收語音資料-帳戶
+                if(account!=null){
+                    db = DH.getWritableDatabase();
+                    sqlCmd ="SELECT * FROM sys_account WHERE name=\"" + account + "\"";
+                    int i=0;
+                    C=db.rawQuery(sqlCmd,null);
+                    if (C.getCount()>0) {
+                        C.moveToFirst();    // 移到第 1 筆資料
+                        do {        // 逐筆讀出資料(只會有一筆)
+                            i =C.getInt(0);
+                        } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                    }
+                    else
+                        i=1;
+                    spnAccount.setSelection(i-1);
+                    db.close();
+                }
+
+
                 remark.setText(all, TextView.BufferType.EDITABLE);
 
                 String regEx = "[^0-9]";

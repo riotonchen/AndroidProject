@@ -60,13 +60,13 @@ public class IncomeFragment extends Fragment {
         photoshoot2 = view.findViewById(R.id.button12);
         money = view.findViewById(R.id.txtIncomeMoney);
         txvDate =  view.findViewById(R.id.txvDate);
-        number =  view.findViewById(R.id.number);
+        number =  view.findViewById(R.id.remark);
         remark =  view.findViewById(R.id.remark);
         //today = getActivity().getIntent().getExtras().getString("today");
         btnTab =  view.findViewById(R.id.btnTab);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
-        final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
-        final Spinner spnAccount=view.findViewById(R.id.spnAccount);
+        final Spinner spnSubSort = view.findViewById(R.id.spnSourceAccount);
+        final Spinner spnAccount=view.findViewById(R.id.spnTergetAccount);
         final Spinner spnProject=view.findViewById(R.id.spnProject);
 
         //設定txvDate預設日期

@@ -271,7 +271,7 @@ public class MainFragment extends Fragment {
                 DBHelper DH = new DBHelper(getActivity());
                 db = DH.getReadableDatabase();
                 String sqlCmd;
-                sqlCmd="SELECT * FROM sys_subsort";
+                sqlCmd="SELECT * FROM sys_sort";
                 Cursor C=db.rawQuery(sqlCmd,null);
                 if (C.getCount()>0) {
                     C.moveToFirst();    // 移到第 1 筆資料
@@ -280,7 +280,19 @@ public class MainFragment extends Fragment {
                         if(product.indexOf(subsortName)!=-1){
                             subsort=subsortName;
                         }
-                        //判斷語音結果內是否有分類或子分類
+                        //判斷語音結果內是否有分類
+                    } while (C.moveToNext());    // 有一下筆就繼續迴圈
+                }
+                sqlCmd="SELECT * FROM sys_subsort";
+                C=db.rawQuery(sqlCmd,null);
+                if (C.getCount()>0) {
+                    C.moveToFirst();    // 移到第 1 筆資料
+                    do {        // 逐筆讀出資料(只會有一筆)
+                        subsortName =C.getString(1);
+                        if(product.indexOf(subsortName)!=-1){
+                            subsort=subsortName;
+                        }
+                        //判斷語音結果內是否有子分類
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
                 }
                 sqlCmd="SELECT * FROM sys_project";
@@ -292,7 +304,7 @@ public class MainFragment extends Fragment {
                         if(product.indexOf(projectName)!=-1){
                             project=projectName;
                         }
-                        //判斷語音結果內是否有分類或子分類
+                        //判斷語音結果內是否有專案
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
                 }
                 sqlCmd="SELECT * FROM sys_account";
@@ -307,17 +319,27 @@ public class MainFragment extends Fragment {
                         if(product.indexOf("新台幣")!=-1){
                             account="現金(新台幣)";
                         }
-                        //判斷語音結果內是否有分類或子分類
+                        //判斷語音結果內是否有帳戶
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
                 }
-
-
                 /*
                 String productreplace1=product.replaceAll("塊","");
                 String productreplace2=productreplace1.replaceAll("元","");
                 String productreplace3=productreplace2.replaceAll("圓","");
                 String productreplace4=productreplace3.replaceAll("錢","");
                 //取代字串的冗言贅字*/
+                it.putExtra("all",all);
+                all=all.replaceAll("一","1");
+                all=all.replaceAll("二","2");
+                all=all.replaceAll("三","3");
+                all=all.replaceAll("四","4");
+                all=all.replaceAll("五","5");
+                all=all.replaceAll("六","6");
+                all=all.replaceAll("七","7");
+                all=all.replaceAll("八","8");
+                all=all.replaceAll("九","9");
+                all=all.replaceAll("萬","0000");
+
 
                 String regEx = "[^0-9]";
                 Pattern p = Pattern.compile(regEx);
@@ -328,7 +350,7 @@ public class MainFragment extends Fragment {
                 if (amount != "")
                     it.putExtra("amount", amount);
                 it.putExtra("product", subsort);
-                it.putExtra("all",all);
+                //it.putExtra("all",all);
                 it.putExtra("project",project);
                 it.putExtra("account",account);
                 startActivity(it);

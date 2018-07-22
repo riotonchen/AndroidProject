@@ -191,7 +191,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_mbr_accounting);
 
         final String CREATE_TABLE_mbr_transfer = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TRANSFER +
-                "(memberID INTEGER," +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "memberID INTEGER," +
                 "time DATETIME," +
                 "sourceAccountID INTEGER," +
                 "targetAccountID INTEGER," +
@@ -199,7 +200,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "fee INTEGER," +
                 "projectID INTEGER," +
                 "comment VARCHAR(32)," +
-                "PRIMARY KEY(memberID,time)," +
                 "FOREIGN KEY(sourceAccountID) REFERENCES mbr_MemberAccount(_id)," +
                 "FOREIGN KEY(targetAccountID) REFERENCES mbr_MemberAccount(_id))";
         db.execSQL(CREATE_TABLE_mbr_transfer);

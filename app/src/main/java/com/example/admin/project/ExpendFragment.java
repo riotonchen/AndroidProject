@@ -468,11 +468,12 @@ public class ExpendFragment extends Fragment {
         //語音
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
+                ifvoice=false;
                 //把所有辨識的可能結果印出來看一看，第一筆是最 match 的。
                 ArrayList result2 = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String all = "";
                 String product = "";
-                String subsort = "";
+                String subsortORsort = "";
                 String subsortName = "";
                 String project = "";
                 String projectName = "";
@@ -504,7 +505,7 @@ public class ExpendFragment extends Fragment {
                     do {        // 逐筆讀出資料(只會有一筆)
                         subsortName =C.getString(1);
                         if(product.indexOf(subsortName)!=-1){
-                            subsort=subsortName;
+                            subsortORsort=subsortName;
                         }
                         //判斷語音結果內是否有分類
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
@@ -516,7 +517,7 @@ public class ExpendFragment extends Fragment {
                     do {        // 逐筆讀出資料(只會有一筆)
                         subsortName =C.getString(1);
                         if(product.indexOf(subsortName)!=-1){
-                            subsort=subsortName;
+                            subsortORsort=subsortName;
                         }
                         //判斷語音結果內是否有子分類
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
@@ -549,8 +550,8 @@ public class ExpendFragment extends Fragment {
                     } while (C.moveToNext());    // 有一下筆就繼續迴圈
                 }
 
-                if (subsort != null) {
-                    String Name = subsort.toString();
+                if (subsortORsort != null) {
+                    String Name = subsortORsort.toString();
                     db = DH.getWritableDatabase();
                     boolean isSort=false;
 
@@ -570,13 +571,13 @@ public class ExpendFragment extends Fragment {
                     spnSort.setSelection(i-1);
 
                     //語音結果(子分類)帶入分類
-                    if(!isSort) { //若不是語音結果(分類)
+                    if(isSort==false) { //若不是語音結果(分類)
                         sqlCmd = "SELECT * FROM sys_sort WHERE _id IN (" +
                                 "SELECT memberSortID FROM mbr_membersubsort WHERE subsortID IN(" +
                                 "SELECT _id FROM sys_subsort WHERE name=\"" + Name + "\"))";
 
-                        String str = "";
-                        i = 0;
+                        //String str = "";
+                        //i = 0;
                         C = db.rawQuery(sqlCmd, null);
                         if (C.getCount() > 0) {
                             C.moveToFirst();    // 移到第 1 筆資料

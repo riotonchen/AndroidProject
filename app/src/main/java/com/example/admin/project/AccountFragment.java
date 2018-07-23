@@ -1,5 +1,6 @@
 package com.example.admin.project;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 public class AccountFragment extends Fragment {
     private static final String TAG = "AccountFragment";
-    private Button btnTab;
+    private Button btnTab,btnTransfer;
     static final String DB_NAME = "MYLOCALDB";
     DBHelper DH;
     SQLiteDatabase db;
@@ -30,6 +31,7 @@ public class AccountFragment extends Fragment {
     ListView lv;
     List<Map<String, String>> accountList = new ArrayList<Map<String, String>>();
     TextView txvTotalAsset, txvTotalLiability, txvNetAsset;
+    Intent it;
 
     @Nullable
     @Override
@@ -50,6 +52,16 @@ public class AccountFragment extends Fragment {
         SetTextView();
 
         DH.close();
+        btnTransfer=view.findViewById(R.id.btnTransfer);
+        btnTransfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//跳轉至轉帳畫面
+                it =new Intent(getActivity(), AccountingActivity.class);
+                it.putExtra("transferId",1);
+                startActivity(it);
+            }
+        });
+
         return view;
     }
 

@@ -54,6 +54,11 @@ public class AccountingActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        int transferId=getIntent().getIntExtra("transferId",0);
+        if(transferId==1){//目前只會跳到支出畫面
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2,new TransferFragment()).commit();
+        }
+
     }
     private void setupViewPager(ViewPager viewPager){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());

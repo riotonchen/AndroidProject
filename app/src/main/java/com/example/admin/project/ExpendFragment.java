@@ -323,7 +323,11 @@ public class ExpendFragment extends Fragment {
                     cv.put("amount",money.getText().toString());
                     cv.put("accountID",Query("sys_account",spnAccount.getSelectedItem().toString()));
                     cv.put("projectID",Query("sys_project",spnProject.getSelectedItem().toString()));
-                    cv.put("invoiceNum",number.getText().toString());
+                    String invoiceNum=number.getText().toString();
+                    if(invoiceNum==""){
+                        cv.putNull("invoiceNum");
+                    }else
+                        cv.put("invoiceNum",invoiceNum);
                     //cv.put("picture","");
                     String value=remark.getText().toString();
                     if(value==""){

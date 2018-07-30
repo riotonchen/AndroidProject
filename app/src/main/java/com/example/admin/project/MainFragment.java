@@ -80,7 +80,7 @@ public class MainFragment extends Fragment {
         //設置刪除線
         btnFriend.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         btnMember.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        btnInvoice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        //btnInvoice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         btnSet.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
 
@@ -235,7 +235,13 @@ public class MainFragment extends Fragment {
             }
 
         });
-
+        btnInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it =new Intent(getActivity(),InvoiceActivity.class);
+                startActivity(it);
+            }
+        });
 
 
         return view;

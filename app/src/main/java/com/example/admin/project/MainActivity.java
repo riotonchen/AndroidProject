@@ -11,6 +11,8 @@ import android.util.Log;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 
+import org.apache.http.client.methods.HttpGet;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -103,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 "金融保險", "0", null,
                 "其他雜項", "0", null,
                 "工作收入", "1", null,
-                "其他收入", "1", null};
+                "其他收入", "1", null,
+                "電子發票帶入", "0", null};
         AddData(TB_NAME, col, data);
 
         //新增sys_subsort資料
@@ -124,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 "稅捐支出", "0", null, "賠償罰款", "0", null, "其他支出", "0", null,
                 "遺失拾獲", "0", null, "呆帳損失", "0", null, "薪水收入", "1", null,
                 "利息收入", "1", null, "兼職收入", "1", null, "獎金收入", "1", null,
-                "禮金收入", "1", null, "意外收入", "1", null, "投資收入", "1", null};
+                "禮金收入", "1", null, "意外收入", "1", null, "投資收入", "1", null,
+                "電子發票", "0", null};
         AddData(TB_NAME, col, data);
         //新增mbr_membersort資料
         TB_NAME = "mbr_membersort";
@@ -140,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 "1", "9", "0", "0", null,
                 "1", "10", "0", "0", null,
                 "1", "11", "0", "0", null,
-                "1", "12", "0", "0", null};
+                "1", "12", "0", "0", null,
+                "1", "13", "0", "0", null};
         AddData(TB_NAME, col, data);
         //新增mbr_membersubsort資料
         TB_NAME = "mbr_membersubsort";
@@ -160,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
                 "1", "9", "37", "0", "0", null, "1", "9", "38", "0", "0", null, "1", "10", "39", "0", "0", null,
                 "1", "10", "40", "0", "0", null, "1", "10", "41", "0", "0", null, "1", "11", "42", "0", "0", null,
                 "1", "11", "43", "0", "0", null, "1", "11", "44", "0", "0", null, "1", "11", "45", "0", "0", null,
-                "1", "12", "46", "0", "0", null, "1", "12", "47", "0", "0", null, "1", "12", "48", "0", "0", null};
+                "1", "12", "46", "0", "0", null, "1", "12", "47", "0", "0", null, "1", "12", "48", "0", "0", null,
+                "1", "13", "49", "0", "0", null};
         AddData(TB_NAME, col, data);
         //新增sys_account資料
         TB_NAME = "sys_account";

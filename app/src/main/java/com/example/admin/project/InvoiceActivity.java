@@ -112,7 +112,6 @@ public class InvoiceActivity extends AppCompatActivity {
                             bundle.putStringArray("GetReturnValue", HttpUtils.SendGetRequest(path, colName));
                             message.setData(bundle);
                             mainHandler.sendMessage(message);
-
                             mainHandler.sendEmptyMessage(MyMessages.Disconnect);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -141,6 +140,7 @@ public class InvoiceActivity extends AppCompatActivity {
                 final MainHandler mainHandler = new MainHandler();
                 Long tsLong = System.currentTimeMillis()/1000+25;
                 final String ts = tsLong.toString();
+                ifSearch=true;
 
                 //建立多執行緒進行網路Server API串接的資料傳輸與讀取
                 new Thread(new Runnable()
@@ -244,28 +244,34 @@ public class InvoiceActivity extends AppCompatActivity {
                                 String[] Amount = HttpUtils.SendGetRequestAmount(path, colName);//發票的金額
                                 String[] Number = HttpUtils.SendGetRequestNumber(path, colName);//發票的號碼
                                 long result = 0;
-
+                                int haveData=1;
                                 String dbInvoice = "";
-                                for (int i = 0; i < Number.length; i++) {
-                                    DBHelper DH = new DBHelper(getApplicationContext());
+                                for (int i = 0; i < Number.length; i++) {//帶入的發票號碼
+                                    DBHelper DH = new DBHelper(InvoiceActivity.this);
                                     db = DH.getReadableDatabase();
                                     ContentValues cv = new ContentValues();
 
                                     Cursor cur = db.rawQuery("SELECT invoiceNum FROM mbr_accounting", null);
+                                    Log.i("InProgress","READY");
                                     int rowsCount = cur.getCount();
                                     if (rowsCount != 0) {
+                                        Log.i("InProgress","OK");
                                         cur.moveToFirst();
-                                        for (int j = 0; j < rowsCount; j++) {
-                                            dbInvoice = (cur.getString(0));
-                                            if (dbInvoice == Number[i]) {
-                                                result = -1;
+                                        for (int j = 0; j < rowsCount; j++) {//帳務資料表內所有的發票號碼
+                                            dbInvoice = cur.getString(0);
+                                            Log.i("InProgress","COMPARISON");
+                                            if(Number[i].equals(dbInvoice)){
+                                                Log.i("InProgress","HAVEDATA");
+                                                haveData=0;
+                                                break;
                                             }
                                             cur.moveToNext();
                                         }
                                     }
-                                    cur.close();
 
-                                    if (result != -1) {
+
+                                    if(haveData==1) {
+                                        Log.i("InProgress","DONTHAVEDATA");
                                         cv.put("memberID", "1");
                                         cv.put("time", (Date[i].substring(0, 4) + "/" + Date[i].substring(4, 6) + "/" + Date[i].substring(6)).replace('/', '-'));
                                         cv.put("type", "0");//0為支出
@@ -283,12 +289,12 @@ public class InvoiceActivity extends AppCompatActivity {
                                 if (result == -1) {
                                     db.close();
                                     Looper.prepare();
-                                    Toast.makeText(getApplicationContext(), "新增失敗", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(InvoiceActivity.this, "新增失敗", Toast.LENGTH_LONG).show();
                                     Looper.loop();
                                 } else {
                                     db.close();
                                     Looper.prepare();
-                                    Toast.makeText(getApplicationContext(), "新增成功", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(InvoiceActivity.this, "新增完畢", Toast.LENGTH_LONG).show();
                                     Looper.loop();
                                 }
                             } catch (Exception e) {
@@ -297,10 +303,14 @@ public class InvoiceActivity extends AppCompatActivity {
 
                         }
                     }).start();
+                    /*Intent intent = new Intent(InvoiceActivity.this, MainActivity.class);
+                    intent.putExtra("id",1);
+                    startActivity(intent);*/
                 }
                 else {
-                    Toast.makeText(getApplicationContext(),"請先查詢或重新查詢", Toast.LENGTH_LONG).show();
+                    Toast.makeText(InvoiceActivity.this,"請先查詢或重新查詢", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
     }

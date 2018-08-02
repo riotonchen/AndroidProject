@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("isFirst", false);
             editor.commit();
         }
+        /*int id = getIntent().getIntExtra("id", 0);
+        if (id == 1) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container,new MainFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }*/
+
     }
 
     private void setupViewPager(ViewPager viewPager) {

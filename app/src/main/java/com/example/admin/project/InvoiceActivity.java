@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -88,6 +89,7 @@ public class InvoiceActivity extends AppCompatActivity {
         btnGet2=(Button)findViewById(R.id.btnGet2);
         btnGet3=(Button)findViewById(R.id.btnGet3);
         ifSearch=false;
+        txvShow.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         btnGet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,7 +220,7 @@ public class InvoiceActivity extends AppCompatActivity {
         btnGet3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ifSearch == true) {
+                //if (ifSearch == true) {
                     ifSearch=false;
                     final MainHandler mainHandler = new MainHandler();
                     Long tsLong = System.currentTimeMillis() / 1000 + 25;
@@ -306,10 +308,10 @@ public class InvoiceActivity extends AppCompatActivity {
                     /*Intent intent = new Intent(InvoiceActivity.this, MainActivity.class);
                     intent.putExtra("id",1);
                     startActivity(intent);*/
-                }
-                else {
-                    Toast.makeText(InvoiceActivity.this,"請先查詢或重新查詢", Toast.LENGTH_LONG).show();
-                }
+                //}
+                //else {
+                    //Toast.makeText(InvoiceActivity.this,"請先查詢或重新查詢", Toast.LENGTH_LONG).show();
+                //}
 
             }
         });

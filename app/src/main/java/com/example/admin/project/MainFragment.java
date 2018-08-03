@@ -83,6 +83,14 @@ public class MainFragment extends Fragment {
         //btnInvoice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         btnSet.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
+        btnSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), UpdateAccountActivity.class);
+                startActivity(it);
+            }
+        });
+
 
         //今日日期
         datetime.set(java.util.Calendar.HOUR_OF_DAY, 0);

@@ -105,4 +105,6 @@
     <string name="記一筆">記一筆</string>
     <string name="title_activity_month_sort_pie_chart">MonthSortPieChart</string>
     <string name="title_activity_project">ProjectActivity</string>
+    <string name="title_activity_update_account">UpdateAccountActivity</string>
+    <string name="title_activity_update_account2">UpdateAccount2</string>
 </resources>

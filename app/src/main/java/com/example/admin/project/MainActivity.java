@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         data = new String[]{
                 "1", "2018-05-12", "0", "1", "1", "65", "1", "1", "EV54838339", null, null,
                 "1", "2018-05-18", "0", "1", "3", "80", "2", "1", "EV58635266", null, null,
-                "1", "2018-05-23", "0", "3", "10", "250", "3", "1", "GE63412385", null, null,
+                "1", "2018-05-23", "0", "3", "10", "250", "3", "1", null, null, null,
                 "1", "2018-06-03", "1", "11", "42", "37000", "3", "1", null, null, null};
         AddData(TB_NAME, col, data);
         /*//新增mbr_income資料

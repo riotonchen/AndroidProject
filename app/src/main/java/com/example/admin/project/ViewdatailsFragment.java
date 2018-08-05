@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,6 +29,7 @@ public class ViewdatailsFragment extends Fragment {
     private Button btnTab;
     private TextView txv_date,txvDetailCount,txvDetialTotalAsset;
     private String date_start, date_end;
+    private ListView listView;
     DBHelper DH;
     SQLiteDatabase db;
     SimpleAdapter adapter;
@@ -44,12 +46,13 @@ public class ViewdatailsFragment extends Fragment {
         txv_date.setText(date_start + "~" + date_end);
         txvDetailCount=view.findViewById(R.id.txvDetailCount);
         txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
+        listView=view.findViewById(R.id.detail_lv);
         //帶入明細
         DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
         ListView lv = view.findViewById(R.id.detail_lv);
-        adapter = new SimpleAdapter(getActivity(), detailList, R.layout.details_item, new String[]{"subsortName", "account", "money", "date"},
-                new int[]{R.id.subsortName, R.id.account, R.id.money, R.id.date});
+        adapter = new SimpleAdapter(getActivity(), detailList, R.layout.details_item, new String[]{"subsortName", "account", "money", "date", "txvId"},
+                new int[]{R.id.subsortName, R.id.account, R.id.money, R.id.date, R.id.txvId});
         Query();
         lv.setAdapter(adapter);
         //設定訊息
@@ -57,15 +60,41 @@ public class ViewdatailsFragment extends Fragment {
         //int totalAsset = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
         //nt totalLiability = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
         //txvDetialTotalAsset.setText("淨資產：$"+Integer.valueOf(totalAsset-totalLiability));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String id=((TextView) view.findViewById(R.id.txvId)).getText().toString();
+                String money=((TextView) view.findViewById(R.id.money)).getText().toString();
+                String date=((TextView)view.findViewById(R.id.date)).getText().toString();
+                String sp=Integer.toString(position);//測試用
+                if(money.indexOf("-")!=-1){//如果為支出
+                    Intent it = new Intent(getActivity(), UpdateAccountActivity.class);
+                    it.putExtra("id",id);
+                    it.putExtra("money",money.substring(2));
+                    it.putExtra("date" ,date);
+                    startActivity(it);
+                }
+                else{//如果為收入
+                    Intent it = new Intent(getActivity(), UpdateAccount2.class);
+                    it.putExtra("money",money.substring(2));
+                    it.putExtra("id",id);
+                    it.putExtra("money",money.substring(2));
+                    it.putExtra("date" ,date);
+                    startActivity(it);
+                }
+                //Toast.makeText(getActivity(),"你點擊了第"+sp+"項"+"id為"+id+"金額為"+money.substring(2),Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
     private void Query() {
         try{
-            String sqlCmd = "SELECT subsortName,account,FX,money,date,type FROM (SELECT _id,name AS subsortName FROM sys_subsort) AS C " +
+            String sqlCmd = "SELECT subsortName,account,FX,money,date,type,id FROM (SELECT _id,name AS subsortName FROM sys_subsort) AS C " +
                     "INNER JOIN " +
-                    "(SELECT B.name AS account,A.amount AS money,B.FX,A.subsortID,A.time AS date,A.type FROM " +
-                    "(SELECT subsortID,amount,accountID,time,type FROM mbr_accounting WHERE memberID=1 " +
+                    "(SELECT B.name AS account,A.amount AS money,B.FX,A.subsortID,A.time AS date,A.type,A._id AS id FROM " +
+                    "(SELECT subsortID,amount,accountID,time,type,_id FROM mbr_accounting WHERE memberID=1 " +
                     "AND time BETWEEN '"+date_start.replace('/','-')+"' AND '"+date_end.replace('/','-')+"') AS A " +
                     "INNER JOIN " +
                     "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +
@@ -87,6 +116,7 @@ public class ViewdatailsFragment extends Fragment {
                     row.put("account", cur.getString(1)+"("+cur.getString(2)+")");
                     row.put("money", (cur.getInt(5)==0?"-$":"+$") + Integer.toString(cur.getInt(3)));
                     row.put("date", cur.getString(4).replace('-','/'));
+                    row.put("txvId",cur.getString(6));
                     detailList.add(row);
 
                     SingleDetailAsset=Integer.toString(cur.getInt(3));

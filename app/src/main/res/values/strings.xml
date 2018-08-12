@@ -107,4 +107,5 @@
     <string name="title_activity_project">ProjectActivity</string>
     <string name="title_activity_update_account">UpdateAccountActivity</string>
     <string name="title_activity_update_account2">UpdateAccount2</string>
+    <string name="title_activity_new_main">NewMainActivity</string>
 </resources>

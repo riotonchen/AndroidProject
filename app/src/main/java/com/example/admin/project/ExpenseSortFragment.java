@@ -154,14 +154,16 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LayoutInflater inflater=LayoutInflater.from(getActivity());
+                View ExpenseSortView=inflater.inflate(R.layout.createsort,null);
+                final EditText et1=(EditText)ExpenseSortView.findViewById(R.id.edit_text);
                 new AlertDialog.Builder(getActivity())
                         .setTitle("新增分類")
-                        .setView(item)
+                        .setView(ExpenseSortView)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                EditText editText = (EditText) item.findViewById(R.id.edit_text);
-                                String name = editText.getText().toString();
+                                String name = et1.getText().toString();
                                 if (TextUtils.isEmpty(name)) {
                                     Toast.makeText(getActivity().getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
                                 } else {

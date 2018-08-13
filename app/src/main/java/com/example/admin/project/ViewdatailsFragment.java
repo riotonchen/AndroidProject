@@ -1,5 +1,7 @@
 package com.example.admin.project;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -86,6 +88,43 @@ public class ViewdatailsFragment extends Fragment {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DH=new DBHelper(getActivity());
+                db=DH.getWritableDatabase();
+                final String txvId=((TextView)view.findViewById(R.id.txvId)).getText().toString();
+
+                TextView txv=new TextView(getActivity());
+                txv.setText("確定要刪除這筆帳務?");txv.setTextSize(24);
+                new AlertDialog.Builder(getActivity())
+                        .setView(txv)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                db.delete("mbr_accounting","_id="+txvId,null);
+                                Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
+                                db.close();
+                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                startActivity(it);
+                                //Intent it = new Intent(getActivity(), MainActivity.class);
+                                //startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getActivity().getApplicationContext(), "取消", Toast.LENGTH_SHORT).show();
+                                db.close();
+                            }
+                        })
+                        .show();
+
+
+                return true;
+            }
+        });
+
         return view;
     }
 
@@ -161,6 +200,8 @@ public class ViewdatailsFragment extends Fragment {
         }
         return Integer.valueOf(arrayList.get(0));
     }
+
+
 
 
 }

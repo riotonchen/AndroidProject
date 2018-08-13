@@ -1,7 +1,9 @@
 package com.example.admin.project;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,7 +39,7 @@ public class UpdateAccountFragment extends Fragment {
     private String ExpenseMoney, ID, DATE, AccountID;
     private EditText txvExpenseMoney;
     private TextView txvRemark, txvDate, txvNumber;
-    private Button btnDatePicker, btnTab;
+    private Button btnDatePicker, btnTab,btnDelete;
     Calendar calendar = Calendar.getInstance(Locale.TAIWAN);
     private SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy/MM/dd", Locale.TAIWAN);
     private SQLiteDatabase db;
@@ -55,6 +57,7 @@ public class UpdateAccountFragment extends Fragment {
         txvNumber = view.findViewById(R.id.number);
         btnDatePicker = view.findViewById(R.id.btnDatePicker);
         btnTab = view.findViewById(R.id.btnTab);
+        btnDelete=view.findViewById(R.id.btnDelete);
         final Spinner spnSort = view.findViewById(R.id.spnSort);
         final Spinner spnSubSort = view.findViewById(R.id.spnSubSort);
         spnAccount = view.findViewById(R.id.spnAccount);
@@ -312,9 +315,9 @@ public class UpdateAccountFragment extends Fragment {
                     long result = db.update("mbr_accounting", cv, "_id" + "=" + ID, null);
                     if (result == -1) {
                         db.close();
-                        Toast.makeText(getActivity(), "新增失敗", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "修改失敗", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getActivity(), "新增成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_LONG).show();
 
                         UpdateAccountBalance();//更新會員帳戶剩餘金額
                         db.close();
@@ -327,6 +330,36 @@ public class UpdateAccountFragment extends Fragment {
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DBHelper DH=new DBHelper(getActivity());
+                db=DH.getWritableDatabase();
+
+                TextView txv=new TextView(getActivity());
+                txv.setText("確定要刪除帳戶?");txv.setTextSize(24);
+                new AlertDialog.Builder(getActivity())
+                        .setView(txv)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                db.delete("mbr_accounting","_id="+ID,null);
+                                Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
+                                db.close();
+                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getActivity().getApplicationContext(), "取消", Toast.LENGTH_SHORT).show();
+                                db.close();
+                            }
+                        })
+                        .show();
+            }
+        });
 
         return view;
     }

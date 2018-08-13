@@ -81,11 +81,12 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/accountID"
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.01"
-            android:text="　" />
+            android:text="　"
+            android:visibility="invisible" />
 
     </LinearLayout>
 </LinearLayout>

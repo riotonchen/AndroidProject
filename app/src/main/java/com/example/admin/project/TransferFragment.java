@@ -174,7 +174,7 @@ public class TransferFragment extends Fragment {
                         db.update(TABLE_NAME_MEMBERACCOUNT,sourceValues,"accountID="+Query("sys_account",spnSourceAccount.getSelectedItem().toString()),null);
                         db.update(TABLE_NAME_MEMBERACCOUNT,tergetValues,"accountID="+Query("sys_account",spnTergetAccount.getSelectedItem().toString()),null);
                         db.close();
-                        Intent it=new Intent(getActivity(),MainActivity.class);
+                        Intent it=new Intent(getActivity(),NewMainActivity.class);
                         startActivity(it);
                     }
 

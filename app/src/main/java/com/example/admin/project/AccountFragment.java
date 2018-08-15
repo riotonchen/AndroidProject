@@ -80,19 +80,45 @@ public class AccountFragment extends Fragment {
                 final String accountID=((TextView)view.findViewById(R.id.accountID)).getText().toString();
 
                 TextView txv=new TextView(getActivity());
-                txv.setText("確定要刪除帳戶?");txv.setTextSize(24);
-                new AlertDialog.Builder(getActivity())
+                txv.setText("刪除此帳戶，也會一併刪除所有此帳戶底下所有的收支紀錄");txv.setTextSize(15);
+                TextView txvTitle=new TextView(getActivity());
+                txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
+
+                new AlertDialog.Builder(getActivity())//雙重確認
                         .setView(txv)
+                        .setCustomTitle(txvTitle)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                db.delete("mbr_accounting","accountID="+accountID,null);
-                                db.delete("mbr_memberaccount", "accountID="+accountID , null);
-                                db.delete("sys_account","_id="+accountID,null);
-                                Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
-                                db.close();
-                                it = new Intent(getActivity(), MainActivity.class);
-                                startActivity(it);
+                                TextView txv=new TextView(getActivity());
+                                txv.setText("最終確認，確定要刪除帳戶?");txv.setTextSize(15);
+                                TextView txvTitle=new TextView(getActivity());
+                                txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
+
+                                new AlertDialog.Builder(getActivity())
+                                        .setView(txv)
+                                        .setCustomTitle(txvTitle)
+                                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                db.delete("mbr_accounting","accountID="+accountID,null);
+                                                db.delete("mbr_memberaccount", "accountID="+accountID , null);
+                                                db.delete("sys_account","_id="+accountID,null);
+                                                Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
+                                                db.close();
+                                                it = new Intent(getActivity(), NewMainActivity.class);
+                                                startActivity(it);
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Toast.makeText(getActivity().getApplicationContext(), "取消", Toast.LENGTH_SHORT).show();
+                                                db.close();
+                                            }
+                                        })
+                                        .show();
+
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -127,6 +153,7 @@ public class AccountFragment extends Fragment {
                 spnAccountType.setAdapter(adapter);
 
                 final EditText edit_initialAmount=(EditText)AccountView.findViewById(R.id.edit_initialAmount);
+                final EditText edit_FX=(EditText)AccountView.findViewById(R.id.edit_FX);
                 //設定彈出視窗裡的選項
 
                 new AlertDialog.Builder(getActivity())
@@ -153,6 +180,11 @@ public class AccountFragment extends Fragment {
                                 String initialAmount=edit_initialAmount.getText().toString();
                                 if(initialAmount==""){
                                     initialAmount="0";
+                                }
+
+                                String FX=edit_FX.getText().toString();
+                                if(TextUtils.isEmpty(FX)){
+                                    FX="1:1";
                                 }
 
                                 if (TextUtils.isEmpty(name)) {
@@ -185,11 +217,11 @@ public class AccountFragment extends Fragment {
 
                                     TB_NAME = "mbr_memberaccount";
                                     col = new String[]{"memberID", "accountID", "accountTypeID", "initialAmount", "balance", "FX", "comment"};
-                                    data = new String[]{"1", newAccountID, accountTypeID, initialAmount, initialAmount, "1:1", null,};//之前做到的地方
+                                    data = new String[]{"1", newAccountID, accountTypeID, initialAmount, initialAmount, FX, null,};//之前做到的地方
                                     AddData(TB_NAME, col, data);
 
                                     db.close();
-                                    it = new Intent(getActivity(), MainActivity.class);
+                                    it = new Intent(getActivity(), NewMainActivity.class);
                                     startActivity(it);
                                 }
                             }

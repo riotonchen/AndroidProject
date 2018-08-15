@@ -311,7 +311,7 @@ public class UpdateAccount2Fragment extends Fragment {
 
                         UpdateAccountBalance();//更新會員帳戶剩餘金額
                         db.close();
-                        Intent it = new Intent(getActivity(), MainActivity.class);
+                        Intent it = new Intent(getActivity(), NewMainActivity.class);
                         startActivity(it);
                     }
                 } catch (Exception ex) {
@@ -336,7 +336,7 @@ public class UpdateAccount2Fragment extends Fragment {
                                 db.delete("mbr_accounting","_id="+ID,null);
                                 Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
                                 db.close();
-                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                Intent it = new Intent(getActivity(), NewMainActivity.class);
                                 startActivity(it);
                             }
                         })

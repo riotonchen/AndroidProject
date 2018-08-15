@@ -94,6 +94,7 @@ public class ViewdatailsFragment extends Fragment {
                 DH=new DBHelper(getActivity());
                 db=DH.getWritableDatabase();
                 final String txvId=((TextView)view.findViewById(R.id.txvId)).getText().toString();
+                final String money=((TextView) view.findViewById(R.id.money)).getText().toString();
 
                 TextView txv=new TextView(getActivity());
                 txv.setText("確定要刪除這筆帳務?");txv.setTextSize(24);
@@ -102,10 +103,60 @@ public class ViewdatailsFragment extends Fragment {
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                //讀取這筆帳務的帳戶
+                                String sqlCmd = "SELECT accountID FROM mbr_accounting WHERE _id=\"" + txvId + "\"";
+                                String accountID="";
+                                Cursor cur = db.rawQuery(sqlCmd, null);
+                                if (cur.getCount() > 0) {
+
+                                    cur.moveToFirst();    // 移到第 1 筆資料
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        accountID = cur.getString(0);
+                                    } while (cur.moveToNext());    // 有一下筆就繼續迴圈
+                                }
+                                //讀取這筆帳務的帳戶的balance
+                                sqlCmd = "SELECT balance FROM mbr_memberaccount WHERE accountID=\"" + accountID + "\"";
+                                String balance="";
+                                cur = db.rawQuery(sqlCmd, null);
+                                if (cur.getCount() > 0) {
+
+                                    cur.moveToFirst();    // 移到第 1 筆資料
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        balance = cur.getString(0);
+                                    } while (cur.moveToNext());    // 有一下筆就繼續迴圈
+                                }
+                                int iBalance=Integer.parseInt(balance);
+                                //讀取這筆帳務的金額
+                                sqlCmd = "SELECT amount FROM mbr_accounting WHERE _id=\"" + txvId + "\"";
+                                String amount="";
+                                cur = db.rawQuery(sqlCmd, null);
+                                if (cur.getCount() > 0) {
+
+                                    cur.moveToFirst();    // 移到第 1 筆資料
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        amount = cur.getString(0);
+                                    } while (cur.moveToNext());    // 有一下筆就繼續迴圈
+                                }
+                                int iAmount=Integer.parseInt(amount);
+                                //修改帳戶金額
+                                if(money.indexOf("-")!=-1){//如果為支出
+                                    String newBalance = Integer.toString(iBalance+iAmount);
+                                    sqlCmd="UPDATE mbr_memberaccount SET balance =\"" + newBalance + "\""+
+                                            "  WHERE mbr_memberaccount.accountID =\"" + accountID + "\"";
+                                    db.execSQL(sqlCmd);
+                                }
+                                else {//如果為收入
+                                    String newBalance = Integer.toString(iBalance-iAmount);
+                                    sqlCmd="UPDATE mbr_memberaccount SET balance =\"" + newBalance + "\""+
+                                            "  WHERE mbr_memberaccount.accountID =\"" + accountID + "\"";
+                                    db.execSQL(sqlCmd);
+                                }
+
+                                //刪除帳務
                                 db.delete("mbr_accounting","_id="+txvId,null);
                                 Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
                                 db.close();
-                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                Intent it = new Intent(getActivity(), NewMainActivity.class);
                                 startActivity(it);
                                 //Intent it = new Intent(getActivity(), MainActivity.class);
                                 //startActivity(it);
@@ -200,7 +251,6 @@ public class ViewdatailsFragment extends Fragment {
         }
         return Integer.valueOf(arrayList.get(0));
     }
-
 
 
 

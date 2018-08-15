@@ -17,12 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UpdateAccount2 extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private ImageView imvBack;
     private SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,14 @@ public class UpdateAccount2 extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
+        imvBack = (ImageView) findViewById(R.id.imvAccountingBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -41,4 +51,7 @@ public class UpdateAccount2 extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    public void OnClick(View view){
+        finish();
+    }
 }

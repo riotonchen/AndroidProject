@@ -36,6 +36,13 @@ public class UpdateAccountActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
+        imvBack = (ImageView) findViewById(R.id.imvAccountingBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -46,5 +53,8 @@ public class UpdateAccountActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    public void OnClick(View view){
+        finish();
+    }
 
 }

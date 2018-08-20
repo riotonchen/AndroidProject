@@ -132,7 +132,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btnTab3"
+            android:id="@+id/btnSearch"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"

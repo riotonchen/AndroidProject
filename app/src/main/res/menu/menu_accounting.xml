@@ -3,14 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.admin.project.AccountActivity">
     <item
-        android:id="@+id/Search"
-        android:title="查看帳戶明細" />
-    <item
         android:id="@+id/Edit"
-        android:title="編輯帳戶" />
+        android:title="編輯帳務" />
     <item
         android:id="@+id/Delete"
         android:orderInCategory="100"
-        android:title="刪除帳戶"
+        android:title="刪除帳務"
         app:showAsAction="never" />
 </menu>

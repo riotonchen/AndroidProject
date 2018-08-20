@@ -9,19 +9,17 @@
     <!-- hardwareAccelerated、largeHeap 解決OutOfMemory問題 -->
     <application
         android:allowBackup="true"
-        tools:replace="android:label"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="智慧記帳系統"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".AccountingActivity"
             android:label="AccountingActivity"
@@ -73,7 +71,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".SearchDetailActivity"
+            android:label="@string/title_activity_search_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

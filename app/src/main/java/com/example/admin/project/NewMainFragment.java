@@ -131,6 +131,7 @@ public class NewMainFragment extends Fragment {
                 it = new Intent(getActivity(), ViewDetails.class);
                 it.putExtra("date_start", today);
                 it.putExtra("date_end", today);
+                it.putExtra("Tag",9);
                 startActivity(it);
             }
 
@@ -142,6 +143,7 @@ public class NewMainFragment extends Fragment {
                 it = new Intent(getActivity(), ViewDetails.class);
                 it.putExtra("date_start", monthstart);
                 it.putExtra("date_end", monthend);
+                it.putExtra("Tag",9);
                 startActivity(it);
             }
 
@@ -153,6 +155,7 @@ public class NewMainFragment extends Fragment {
                 it = new Intent(getActivity(), ViewDetails.class);
                 it.putExtra("date_start", monthstart);
                 it.putExtra("date_end", monthend);
+                it.putExtra("Tag",9);
                 startActivity(it);
             }
 

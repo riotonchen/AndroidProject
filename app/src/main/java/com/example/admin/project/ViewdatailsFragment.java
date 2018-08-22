@@ -32,9 +32,9 @@ import java.util.concurrent.ExecutionException;
 public class ViewdatailsFragment extends Fragment {
     private static final String TAG="ViewdatailsFragment";
     private Button btnTab,btnSearch;
-    private TextView txv_date,txvDetailCount,txvDetialTotalAsset;
+    private TextView txv_date,txvDetailCount,txvDetialTotalAsset,txvCondition;
     private int Tag;
-    private String date_start, date_end,accountID;
+    private String date_start, date_end,accountID,condition;
     private ListView listView;
     DBHelper DH;
     SQLiteDatabase db;
@@ -50,10 +50,12 @@ public class ViewdatailsFragment extends Fragment {
         date_start = getActivity().getIntent().getExtras().getString("date_start");
         date_end = getActivity().getIntent().getExtras().getString("date_end");
         accountID = getActivity().getIntent().getExtras().getString("accountID");
+        condition=getActivity().getIntent().getExtras().getString("condition");
         Tag = getActivity().getIntent().getExtras().getInt("Tag");
         txv_date.setText(date_start + "~" + date_end);
         txvDetailCount=view.findViewById(R.id.txvDetailCount);
         txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
+        txvCondition=view.findViewById(R.id.txvCondition);
         btnSearch=view.findViewById(R.id.btnSearch);
         listView=view.findViewById(R.id.detail_lv);
         //帶入明細
@@ -69,6 +71,7 @@ public class ViewdatailsFragment extends Fragment {
         //int totalAsset = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID <> 4");
         //nt totalLiability = Query("SELECT IFNUll(SUM(initialAmount),0) AS col FROM mbr_memberaccount WHERE accountTypeID = 4");
         //txvDetialTotalAsset.setText("淨資產：$"+Integer.valueOf(totalAsset-totalLiability));
+        txvCondition.setText(condition);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -281,6 +284,9 @@ public class ViewdatailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(getActivity(), SearchDetailActivity.class);
+                it.putExtra("Tag",Tag);
+                it.putExtra("accountID",accountID);
+                it.putExtra("condition",condition);
                 startActivity(it);
             }
         });
@@ -299,6 +305,7 @@ public class ViewdatailsFragment extends Fragment {
                         "INNER JOIN " +
                         "(SELECT B.name AS account,A.amount AS money,B.FX,A.subsortID,A.time AS date,A.type,A._id AS id FROM " +
                         "(SELECT subsortID,amount,accountID,time,type,_id FROM mbr_accounting WHERE memberID=1 " +
+                         "AND time BETWEEN '" + date_start.replace('/', '-') + "' AND '" + date_end.replace('/', '-') + "'" +
                         "AND accountID='" + accountID + "') AS A " +
                         "INNER JOIN " +
                         "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +

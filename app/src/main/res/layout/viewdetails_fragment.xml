@@ -79,7 +79,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/txvCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"

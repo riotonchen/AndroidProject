@@ -29,7 +29,8 @@ import java.util.Locale;
 public class SearchDetailFragment extends Fragment {
     TextView txvDateStart,txvDateEnd;
     Button btnSearch,btnDateStart,btnDateEnd;
-    String monthstart,monthend;
+    String monthstart,monthend,accountID,condition;
+    private int Tag;
     Intent it;
     Calendar calendar=Calendar.getInstance(Locale.TAIWAN);
     Calendar datetime=Calendar.getInstance(Locale.TAIWAN);
@@ -44,6 +45,9 @@ public class SearchDetailFragment extends Fragment {
         btnDateEnd=view.findViewById(R.id.btnDateEnd);
         txvDateStart=view.findViewById(R.id.txvDateStart);
         txvDateEnd=view.findViewById(R.id.txvDateEnd);
+        Tag = getActivity().getIntent().getExtras().getInt("Tag");
+        accountID = getActivity().getIntent().getExtras().getString("accountID");
+        condition=getActivity().getIntent().getExtras().getString("condition");
 
         datetime.set(Calendar.DAY_OF_MONTH,1);
         txvDateStart.setText(yyyyMMdd.format(datetime.getTime()));
@@ -87,7 +91,9 @@ public class SearchDetailFragment extends Fragment {
                 it = new Intent(getActivity(), ViewDetails.class);
                 it.putExtra("date_start", txvDateStart.getText().toString());
                 it.putExtra("date_end", txvDateEnd.getText().toString());
-                it.putExtra("Tag",9);
+                it.putExtra("Tag",Tag);
+                it.putExtra("accountID",accountID);
+                it.putExtra("condition",condition);
                 startActivity(it);
             }
         });

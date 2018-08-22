@@ -26,15 +26,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AccountFragment extends Fragment {
     private static final String TAG = "AccountFragment";
     private Button btnTab, btnTransfer, btnAdd;
     static final String DB_NAME = "MYLOCALDB";
+    private String monthstart,monthend;
     DBHelper DH;
     SQLiteDatabase db;
     Cursor cur;
@@ -43,6 +47,8 @@ public class AccountFragment extends Fragment {
     List<Map<String, String>> accountList = new ArrayList<Map<String, String>>();
     TextView txvTotalAsset, txvTotalLiability, txvNetAsset;
     Intent it;
+    private Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
+    private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
 
     @Nullable
     @Override
@@ -75,21 +81,29 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        datetime.set(Calendar.DAY_OF_MONTH,1);
+        monthstart = yyyyMMdd.format(datetime.getTime());
+        datetime.roll(Calendar.DAY_OF_MONTH,-1);
+        monthend = yyyyMMdd.format(datetime.getTime());
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 DH=new DBHelper(getActivity());
                 db=DH.getWritableDatabase();
                 final String accountID=((TextView)view.findViewById(R.id.accountID)).getText().toString();
+                final String account=((TextView)view.findViewById(R.id.account)).getText().toString();
                 PopupMenu popup=new PopupMenu(getActivity(),view);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.Search:
+
                                 it = new Intent(getActivity(), ViewDetails.class);
-                                it.putExtra("date_start", "過去");
-                                it.putExtra("date_end", "現在");
+                                it.putExtra("date_start", monthstart);
+                                it.putExtra("date_end", monthend);
+                                it.putExtra("condition",account);
                                 it.putExtra("Tag","0");
                                 it.putExtra("accountID",accountID);
                                 startActivity(it);

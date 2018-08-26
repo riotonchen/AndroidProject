@@ -1,15 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.admin.project.ProjectActivity">
+    tools:context="com.example.admin.project.AccountActivity">
     <item
         android:id="@+id/Search"
-        android:title="查看專案明細" />
+        android:title="查看分類明細" />
     <item
         android:id="@+id/Edit"
-        android:title="編輯專案" />
+        android:title="編輯分類" />
     <item
         android:id="@+id/Delete"
         android:orderInCategory="100"
-        android:title="刪除專案" />
+        android:title="刪除分類"
+        app:showAsAction="never" />
 </menu>

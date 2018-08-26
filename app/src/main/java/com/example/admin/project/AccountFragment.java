@@ -99,12 +99,11 @@ public class AccountFragment extends Fragment {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.Search:
-
                                 it = new Intent(getActivity(), ViewDetails.class);
                                 it.putExtra("date_start", monthstart);
                                 it.putExtra("date_end", monthend);
                                 it.putExtra("condition",account);
-                                it.putExtra("Tag","0");
+                                it.putExtra("Tag",0);
                                 it.putExtra("accountID",accountID);
                                 startActivity(it);
                                 return true;

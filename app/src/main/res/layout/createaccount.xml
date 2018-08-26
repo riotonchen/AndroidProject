@@ -13,7 +13,7 @@
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
         android:layout_marginTop="20px"
-        android:text="新增帳戶"
+        android:text="帳戶管理"
         android:textSize="30sp" />
 
     <LinearLayout

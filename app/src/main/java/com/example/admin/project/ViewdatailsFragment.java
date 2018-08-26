@@ -34,7 +34,7 @@ public class ViewdatailsFragment extends Fragment {
     private Button btnTab,btnSearch;
     private TextView txv_date,txvDetailCount,txvDetialTotalAsset,txvCondition;
     private int Tag;
-    private String date_start, date_end,accountID,condition;
+    private String date_start, date_end,accountID,condition,MsortID,MprojectID;
     private ListView listView;
     DBHelper DH;
     SQLiteDatabase db;
@@ -52,6 +52,8 @@ public class ViewdatailsFragment extends Fragment {
         accountID = getActivity().getIntent().getExtras().getString("accountID");
         condition=getActivity().getIntent().getExtras().getString("condition");
         Tag = getActivity().getIntent().getExtras().getInt("Tag");
+        MsortID = getActivity().getIntent().getExtras().getString("MsortID");
+        MprojectID = getActivity().getIntent().getExtras().getString("MprojectID");
         txv_date.setText(date_start + "~" + date_end);
         txvDetailCount=view.findViewById(R.id.txvDetailCount);
         txvDetialTotalAsset=view.findViewById(R.id.txvDetialTotalAsset);
@@ -286,6 +288,8 @@ public class ViewdatailsFragment extends Fragment {
                 Intent it = new Intent(getActivity(), SearchDetailActivity.class);
                 it.putExtra("Tag",Tag);
                 it.putExtra("accountID",accountID);
+                it.putExtra("MsortID",MsortID);
+                it.putExtra("MprojectID",MprojectID);
                 it.putExtra("condition",condition);
                 startActivity(it);
             }
@@ -307,6 +311,34 @@ public class ViewdatailsFragment extends Fragment {
                         "(SELECT subsortID,amount,accountID,time,type,_id FROM mbr_accounting WHERE memberID=1 " +
                          "AND time BETWEEN '" + date_start.replace('/', '-') + "' AND '" + date_end.replace('/', '-') + "'" +
                         "AND accountID='" + accountID + "') AS A " +
+                        "INNER JOIN " +
+                        "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +
+                        "WHERE sys_account._id=mbr_memberaccount.accountID) AS B " +
+                        "ON A.accountID=B._id) AS D " +
+                        "ON C._id=D.subsortID " +
+                        "ORDER BY date DESC ";
+            }
+            else if (Tag==1){
+                sqlCmd="SELECT subsortName,account,FX,money,date,type,id FROM (SELECT _id,name AS subsortName FROM sys_subsort) AS C " +
+                        "INNER JOIN " +
+                        "(SELECT B.name AS account,A.amount AS money,B.FX,A.subsortID,A.time AS date,A.type,A._id AS id FROM " +
+                        "(SELECT subsortID,amount,accountID,time,type,_id FROM mbr_accounting WHERE memberID=1 " +
+                        "AND time BETWEEN '" + date_start.replace('/', '-') + "' AND '" + date_end.replace('/', '-') + "'" +
+                        "AND sortID='" + MsortID + "') AS A " +
+                        "INNER JOIN " +
+                        "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +
+                        "WHERE sys_account._id=mbr_memberaccount.accountID) AS B " +
+                        "ON A.accountID=B._id) AS D " +
+                        "ON C._id=D.subsortID " +
+                        "ORDER BY date DESC ";
+            }
+            else if(Tag==2){
+                sqlCmd="SELECT subsortName,account,FX,money,date,type,id FROM (SELECT _id,name AS subsortName FROM sys_subsort) AS C " +
+                        "INNER JOIN " +
+                        "(SELECT B.name AS account,A.amount AS money,B.FX,A.subsortID,A.time AS date,A.type,A._id AS id FROM " +
+                        "(SELECT subsortID,amount,accountID,time,type,_id FROM mbr_accounting WHERE memberID=1 " +
+                        "AND time BETWEEN '" + date_start.replace('/', '-') + "' AND '" + date_end.replace('/', '-') + "'" +
+                        "AND projectID='" + MprojectID + "') AS A " +
                         "INNER JOIN " +
                         "(SELECT mbr_memberaccount._id,name,FX FROM sys_account,mbr_memberaccount " +
                         "WHERE sys_account._id=mbr_memberaccount.accountID) AS B " +

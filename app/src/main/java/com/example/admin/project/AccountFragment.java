@@ -117,8 +117,8 @@ public class AccountFragment extends Fragment {
                                 final Spinner spnAccountType = (Spinner) AccountView.findViewById(R.id.spnAccountType);
                                 String sqlCmd = "SELECT name FROM sys_accounttype";
                                 ArrayList<String> arrayList = QueryA(sqlCmd);
-                                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                                spnAccountType.setAdapter(adapter);
+                                ArrayAdapter spnAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                                spnAccountType.setAdapter(spnAdapter);
                                 final EditText edit_initialAmount=(EditText)AccountView.findViewById(R.id.edit_initialAmount);
                                 final EditText edit_FX=(EditText)AccountView.findViewById(R.id.edit_FX);
 
@@ -194,9 +194,14 @@ public class AccountFragment extends Fragment {
                                                             "WHERE accountID=\""+ accountID +"\"";
                                                     db.execSQL(sqlCmd);
 
+                                                    accountList.clear();
+                                                    adapter = new SimpleAdapter(getActivity(), accountList, R.layout.account_item, new String[]{"accountID","account", "initialAmount", "FX", "balance"},
+                                                            new int[]{R.id.accountID,R.id.account, R.id.initialAmount, R.id.FX, R.id.balance});
+                                                    Requery();
+                                                    lv.setAdapter(adapter);
                                                     db.close();
-                                                    it = new Intent(getActivity(), NewMainActivity.class);
-                                                    startActivity(it);
+                                                    //it = new Intent(getActivity(), NewMainActivity.class);
+                                                    //startActivity(it);
                                                 }
                                             }
                                         })
@@ -235,9 +240,15 @@ public class AccountFragment extends Fragment {
                                                                 db.delete("mbr_memberaccount", "accountID="+accountID , null);
                                                                 db.delete("sys_account","_id="+accountID,null);
                                                                 Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
+
+                                                                accountList.clear();
+                                                                adapter = new SimpleAdapter(getActivity(), accountList, R.layout.account_item, new String[]{"accountID","account", "initialAmount", "FX", "balance"},
+                                                                        new int[]{R.id.accountID,R.id.account, R.id.initialAmount, R.id.FX, R.id.balance});
+                                                                Requery();
+                                                                lv.setAdapter(adapter);
                                                                 db.close();
-                                                                it = new Intent(getActivity(), NewMainActivity.class);
-                                                                startActivity(it);
+                                                                //it = new Intent(getActivity(), NewMainActivity.class);
+                                                                //startActivity(it);
                                                             }
                                                         })
                                                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -350,8 +361,8 @@ public class AccountFragment extends Fragment {
                 final Spinner spnAccountType = (Spinner) AccountView.findViewById(R.id.spnAccountType);
                 String sqlCmd = "SELECT name FROM sys_accounttype";
                 ArrayList<String> arrayList = QueryA(sqlCmd);
-                ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                spnAccountType.setAdapter(adapter);
+                ArrayAdapter spnAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                spnAccountType.setAdapter(spnAdapter);
 
                 final EditText edit_initialAmount=(EditText)AccountView.findViewById(R.id.edit_initialAmount);
                 final EditText edit_FX=(EditText)AccountView.findViewById(R.id.edit_FX);
@@ -421,9 +432,14 @@ public class AccountFragment extends Fragment {
                                     data = new String[]{"1", newAccountID, accountTypeID, initialAmount, initialAmount, FX, null,};//之前做到的地方
                                     AddData(TB_NAME, col, data);
 
+                                    accountList.clear();
+                                    adapter = new SimpleAdapter(getActivity(), accountList, R.layout.account_item, new String[]{"accountID","account", "initialAmount", "FX", "balance"},
+                                            new int[]{R.id.accountID,R.id.account, R.id.initialAmount, R.id.FX, R.id.balance});
+                                    Requery();
+                                    lv.setAdapter(adapter);
                                     db.close();
-                                    it = new Intent(getActivity(), NewMainActivity.class);
-                                    startActivity(it);
+                                    //it = new Intent(getActivity(), NewMainActivity.class);
+                                    //startActivity(it);
                                 }
                             }
                         })

@@ -193,17 +193,31 @@ public class NewMainFragment extends Fragment {
         start = start.replace('/', '-');
         end = end.replace('/', '-');
         ArrayList<String> arrayList = new ArrayList<>();
-        String sqlCmd = "SELECT SUM(amount) AS amount FROM mbr_accounting WHERE memberID=1 " +
-                "AND type=" + String.valueOf(type) + " AND time BETWEEN '" + start + "' AND '" + end + "'";
+        String sqlCmd = "SELECT amount,FX" +
+                "        FROM (SELECT amount,accountID FROM mbr_accounting WHERE memberID=1" +
+                "        AND type=0 AND time BETWEEN '" + start + "' AND '" + end + "') AS A " +
+                "        INNER JOIN" +
+                "                (SELECT _id,FX FROM mbr_memberaccount WHERE memberID=1) AS B" +
+                "        ON A.accountID=B._id";
         try {
             Cursor cur = db.rawQuery(sqlCmd, null);
             int rowsCount = cur.getCount();
+            float totalAmount=0;
             if (rowsCount != 0) {
                 cur.moveToFirst();
                 for (int i = 0; i < rowsCount; i++) {
-                    arrayList.add((type == 0 ? "$" : "$") + String.valueOf(cur.getInt(0)));
+                    int amount=cur.getInt(0);
+                    float fAmount=(float)amount;
+                    String FX=cur.getString(1);
+                    float fFX=Float.parseFloat(FX.substring(0,FX.indexOf(":")));
+                    totalAmount=totalAmount+(fAmount*fFX);
                     cur.moveToNext();
                 }
+                int iTotalAmount=(int)totalAmount;
+                arrayList.add((type == 0 ? "$" : "$") + String.valueOf(iTotalAmount));
+            }
+            else {
+                arrayList.add((type == 0 ? "$" : "$") + String.valueOf(0));
             }
             cur.close();
         } catch (Exception ex) {
@@ -211,5 +225,11 @@ public class NewMainFragment extends Fragment {
         }
         return arrayList.get(0);
     }
+
+
+
+
+
+
 
 }

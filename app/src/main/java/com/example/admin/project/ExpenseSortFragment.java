@@ -244,11 +244,18 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                                         data = new String[]{"1",newMemberSortID,newSubSortID,budget,"0",null};
                                         AddData(TB_NAME, col, data);
 
-
                                         Toast.makeText(getActivity().getApplicationContext(), "新增成功", Toast.LENGTH_SHORT).show();
+
+
+                                        sortValue.clear();
+
+                                        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost", "MsortID"},
+                                                new int[]{R.id.name, R.id.budget, R.id.cost,R.id.MsortID});
+                                        Requery();
+                                        lv.setAdapter(adapter);
                                         db.close();
-                                        it = new Intent(getActivity(), NewMainActivity.class);
-                                        startActivity(it);
+                                        //it = new Intent(getActivity(), NewMainActivity.class);
+                                        //startActivity(it);
                                     }
                                     else {
                                         Toast.makeText(getActivity().getApplicationContext(), "請勿在預算欄位輸入數字以外的文字", Toast.LENGTH_SHORT).show();
@@ -362,10 +369,18 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                                                         db.execSQL(sqlCmd);
 
 
-                                                        db.close();
                                                         Toast.makeText(getActivity().getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
-                                                        it = new Intent(getActivity(), NewMainActivity.class);
-                                                        startActivity(it);
+
+                                                        sortValue.clear();
+
+                                                        adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost", "MsortID"},
+                                                                new int[]{R.id.name, R.id.budget, R.id.cost,R.id.MsortID});
+                                                        Requery();
+                                                        lv.setAdapter(adapter);
+
+                                                        db.close();
+                                                        //it = new Intent(getActivity(), NewMainActivity.class);
+                                                        //startActivity(it);
                                                     }
                                                 }
                                             }
@@ -471,9 +486,16 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
 
 
                                                                     Toast.makeText(getActivity().getApplicationContext(), "刪除成功", Toast.LENGTH_SHORT).show();
+
+                                                                    sortValue.clear();
+
+                                                                    adapter = new SimpleAdapter(getActivity(), sortValue, R.layout.sort_item, new String[]{"name", "budget", "cost", "MsortID"},
+                                                                            new int[]{R.id.name, R.id.budget, R.id.cost,R.id.MsortID});
+                                                                    Requery();
+                                                                    lv.setAdapter(adapter);
                                                                     db.close();
-                                                                    it = new Intent(getActivity(), NewMainActivity.class);
-                                                                    startActivity(it);
+                                                                    //it = new Intent(getActivity(), NewMainActivity.class);
+                                                                    //startActivity(it);
 
                                                             }
                                                         })

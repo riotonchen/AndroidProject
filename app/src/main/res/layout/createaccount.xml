@@ -13,7 +13,7 @@
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
         android:layout_marginTop="20px"
-        android:text="新增帳戶"
+        android:text="帳戶管理"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="?:1"
+            android:hint="X:1"
             android:text="輸入匯率比例："
             android:textSize="18sp" />
 
@@ -96,6 +96,7 @@
             android:id="@+id/edit_FX"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:digits="1234567890.:"
             android:ems="10"
             android:hint="輸入?:1，不輸入則自動帶入1:1"
             android:inputType="textPersonName" />

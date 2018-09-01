@@ -29,7 +29,7 @@ import java.util.Locale;
 public class SearchDetailFragment extends Fragment {
     TextView txvDateStart,txvDateEnd;
     Button btnSearch,btnDateStart,btnDateEnd;
-    String monthstart,monthend,accountID,condition;
+    String monthstart,monthend,accountID,condition,MsortID,MprojectID;
     private int Tag;
     Intent it;
     Calendar calendar=Calendar.getInstance(Locale.TAIWAN);
@@ -48,6 +48,8 @@ public class SearchDetailFragment extends Fragment {
         Tag = getActivity().getIntent().getExtras().getInt("Tag");
         accountID = getActivity().getIntent().getExtras().getString("accountID");
         condition=getActivity().getIntent().getExtras().getString("condition");
+        MsortID=getActivity().getIntent().getExtras().getString("MsortID");
+        MprojectID = getActivity().getIntent().getExtras().getString("MprojectID");
 
         datetime.set(Calendar.DAY_OF_MONTH,1);
         txvDateStart.setText(yyyyMMdd.format(datetime.getTime()));
@@ -94,6 +96,8 @@ public class SearchDetailFragment extends Fragment {
                 it.putExtra("Tag",Tag);
                 it.putExtra("accountID",accountID);
                 it.putExtra("condition",condition);
+                it.putExtra("MsortID",MsortID);
+                it.putExtra("MprojectID",MprojectID);
                 startActivity(it);
             }
         });

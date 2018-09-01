@@ -80,11 +80,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txvprogressBar"
-            android:layout_width="wrap_content"
+            android:id="@+id/MsortID"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.01"
-            android:text="　" />
+            android:visibility="invisible" />
 
     </LinearLayout>
 </LinearLayout>

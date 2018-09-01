@@ -50,11 +50,12 @@
         android:background="#aaaaaa"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         tools:layout_editor_absoluteX="0dp" />
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,14 +65,14 @@
         <LinearLayout
             android:id="@+id/classification"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnInvoice"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:id="@+id/btnclassification"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_margin="0dp"
                 android:layout_marginBottom="8dp"
@@ -103,14 +104,14 @@
         <LinearLayout
             android:id="@+id/invoice"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/btnInvoice"
-                android:layout_width="35dp"
-                android:layout_height="25dp"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_margin="0dp"
                 android:layout_marginBottom="8dp"
@@ -142,12 +143,12 @@
         <LinearLayout
             android:id="@+id/analysis"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnInvoice"
+                android:id="@+id/btnanalysis"
                 android:layout_width="35dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -181,14 +182,14 @@
         <LinearLayout
             android:id="@+id/account"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnInvoice"
-                android:layout_width="35dp"
-                android:layout_height="25dp"
+                android:id="@+id/btnaccount"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_margin="0dp"
                 android:layout_marginBottom="8dp"
@@ -220,13 +221,13 @@
         <LinearLayout
             android:id="@+id/set"
             android:layout_width="190dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnInvoice"
-                android:layout_width="35dp"
+                android:id="@+id/btnset"
+                android:layout_width="30dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_margin="0dp"

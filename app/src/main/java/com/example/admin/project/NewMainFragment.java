@@ -44,7 +44,7 @@ public class NewMainFragment extends Fragment {
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
     private TextView txvMainTodayExpense,txvMainMonthExpense,textView32;
     private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis;
-    private ImageView todayExpense;
+    private ImageView todayExpense,login;
     DBHelper DH;
     SQLiteDatabase db;
 
@@ -67,6 +67,7 @@ public class NewMainFragment extends Fragment {
         txvMainTodayExpense=view.findViewById(R.id.textView12);
         txvMainMonthExpense=view.findViewById(R.id.textView39);
         todayExpense = view.findViewById(R.id.imageView15);
+        login = view.findViewById(R.id.login);
         textView32 = view.findViewById(R.id.textView32);
         //今日日期
         datetime.set(java.util.Calendar.HOUR_OF_DAY, 0);
@@ -77,6 +78,15 @@ public class NewMainFragment extends Fragment {
         monthstart = yyyyMMdd.format(datetime.getTime());
         datetime.roll(Calendar.DAY_OF_MONTH,-1);
         monthend = yyyyMMdd.format(datetime.getTime());
+
+        //登入
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), LoginActivity.class);
+                startActivity(it);
+            }
+        });
 
         //帳戶管理
         account.setOnClickListener(new View.OnClickListener() {

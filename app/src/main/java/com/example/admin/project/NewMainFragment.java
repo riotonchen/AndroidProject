@@ -43,8 +43,8 @@ public class NewMainFragment extends Fragment {
     public LinearLayout set,classification,account,invoice,analysis;
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
     private TextView txvMainTodayExpense,txvMainMonthExpense,textView32;
-    private Button btn1;
-    private ImageView todayExpense;
+    private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis;
+    private ImageView todayExpense,login;
     DBHelper DH;
     SQLiteDatabase db;
 
@@ -59,9 +59,15 @@ public class NewMainFragment extends Fragment {
         invoice = (LinearLayout) view.findViewById(R.id.invoice);
         analysis = (LinearLayout) view.findViewById(R.id.analysis);
         btn1 = (Button) view.findViewById(R.id.button21);//記一筆
+        btn2 = (Button) view.findViewById(R.id.button20);//記一筆
+        btnclassification = (Button) view.findViewById(R.id.btnclassification);
+        btnInvoice = (Button) view.findViewById(R.id.btnInvoice);
+        btnaccount = (Button) view.findViewById(R.id.btnaccount);
+        btnanalysis = (Button) view.findViewById(R.id.btnanalysis);
         txvMainTodayExpense=view.findViewById(R.id.textView12);
         txvMainMonthExpense=view.findViewById(R.id.textView39);
         todayExpense = view.findViewById(R.id.imageView15);
+        login = view.findViewById(R.id.login);
         textView32 = view.findViewById(R.id.textView32);
         //今日日期
         datetime.set(java.util.Calendar.HOUR_OF_DAY, 0);
@@ -73,6 +79,15 @@ public class NewMainFragment extends Fragment {
         datetime.roll(Calendar.DAY_OF_MONTH,-1);
         monthend = yyyyMMdd.format(datetime.getTime());
 
+        //登入
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), LoginActivity.class);
+                startActivity(it);
+            }
+        });
+
         //帳戶管理
         account.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +96,14 @@ public class NewMainFragment extends Fragment {
                 startActivity(it);
             }
         });
+        btnaccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), AccountActivity.class);
+                startActivity(it);
+            }
+        });
+
         //統計分析
         analysis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +114,16 @@ public class NewMainFragment extends Fragment {
                 startActivity(it);
             }
         });
+        btnanalysis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), MonthSortPieChartActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
+                startActivity(it);
+            }
+        });
+
         //分類管理
         classification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +134,16 @@ public class NewMainFragment extends Fragment {
                 startActivity(it);
             }
         });
+        btnclassification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), SortActivity.class);
+                it.putExtra("monthstart", monthstart);
+                it.putExtra("monthend", monthend);
+                startActivity(it);
+            }
+        });
+
         //發票
         invoice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +152,24 @@ public class NewMainFragment extends Fragment {
                 startActivity(it);
             }
         });
+        btnInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it =new Intent(getActivity(),InvoiceActivity.class);
+                startActivity(it);
+            }
+        });
+
         //記一筆
         btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(), AccountingActivity.class);
+                it.putExtra("today", today);
+                startActivity(it);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 it = new Intent(getActivity(), AccountingActivity.class);

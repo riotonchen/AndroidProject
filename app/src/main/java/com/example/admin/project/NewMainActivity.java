@@ -61,6 +61,7 @@ public class NewMainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new NewMainFragment(), "首頁");
+        adapter.addFragment(new CalenderFragment(),"月曆");
         viewPager.setAdapter(adapter);
     }
 

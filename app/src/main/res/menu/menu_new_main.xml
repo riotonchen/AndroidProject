@@ -2,9 +2,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.admin.project.NewMainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Member"
+            android:checked="true"
+            android:icon="@drawable/black"
+            android:title="會員" />
+
+        <item
+            android:id="@+id/Friend"
+            android:icon="@drawable/black"
+            android:title="好友" />
+
+        <item
+            android:id="@+id/Settings"
+            android:icon="@drawable/black"
+            android:title="設定" />
+
+        <item
+            android:id="@+id/About"
+            android:icon="@drawable/black"
+            android:title="關於" />
+    </group>
+
 </menu>

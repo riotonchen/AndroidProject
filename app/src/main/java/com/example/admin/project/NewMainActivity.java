@@ -1,14 +1,20 @@
 package com.example.admin.project;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.TabLayout;
+import android.view.MenuItem;
 import android.view.View;
 
 import org.apache.http.client.methods.HttpGet;
@@ -25,6 +31,9 @@ public class NewMainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SQLiteDatabase db;
     private final String DB_NAME = "MYLOCALDB";
+    private DrawerLayout drawerLayout;
+    private NavigationView navigation_view;
+    private Intent it;
     //嚴禁 'Y'
     //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
@@ -56,6 +65,28 @@ public class NewMainActivity extends AppCompatActivity {
                     .addToBackStack(null)
                     .commit();
         }*/
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigation_view = (NavigationView) findViewById(R.id.navigation_view);
+
+        // 為navigatin_view設置點擊事件
+        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                switch (item.getItemId()) {
+                    case R.id.Member:
+                        it = new Intent(NewMainActivity.this, LoginActivity.class);
+                        startActivity(it);
+                        return true;
+                    case R.id.Friend:
+                        it = new Intent(NewMainActivity.this, MainActivity.class);
+                        startActivity(it);
+                        return true;
+                }
+                return false;
+            }
+        });
+
 
     }
     private void setupViewPager(ViewPager viewPager) {

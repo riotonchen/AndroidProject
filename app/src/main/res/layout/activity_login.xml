@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/txtEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="164dp"
@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/txtPwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -69,27 +69,40 @@
             android:hint="請輸入密碼"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/txtPwdConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:visibility="invisible"
             android:hint="再次輸入密碼"
             android:inputType="textPassword"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText2" />
+            app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
 
         <Button
-            android:id="@+id/button13"
+            android:id="@+id/btnLogin"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/circleblue"
             android:text="登入"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/button11"
+            app:layout_constraintTop_toBottomOf="@+id/button5" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/circleblue"
+            android:text="註冊"
+            android:visibility="invisible"
             android:textColor="@android:color/background_light"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/button11"

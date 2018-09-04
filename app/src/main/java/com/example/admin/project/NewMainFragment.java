@@ -1,8 +1,10 @@
 package com.example.admin.project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -23,14 +25,20 @@ import com.google.zxing.integration.android.IntentResult;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ViewListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class NewMainFragment extends Fragment {
     private static final String TAG="MainFragment";
@@ -78,6 +86,42 @@ public class NewMainFragment extends Fragment {
         monthstart = yyyyMMdd.format(datetime.getTime());
         datetime.roll(Calendar.DAY_OF_MONTH,-1);
         monthend = yyyyMMdd.format(datetime.getTime());
+
+        //自動登入
+        SharedPreferences myPref = getActivity().getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+        if (myPref.getString("token", "").equals("")) {
+            //txvStatus.setText("狀態：未登入");
+            //txvStatus.setTextColor(Color.BLACK);
+        } else {
+            try {
+                String strPayload = myPref.getString("PAYLOAD", "");
+                JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                long exp = Long.valueOf(jsonPayload.getString("exp"));
+                long now = System.currentTimeMillis() / 1000L;  //系統時間
+                if (exp <= now) {    //逾期
+                    //txvStatus.setText("狀態：Token已逾期");
+                    //txvStatus.setTextColor(Color.RED);
+                } else {
+                    //txvStatus.setText("狀態：自動登入; user_id = " + String.valueOf(jsonPayload.getInt("user_id")));
+                    //txvStatus.setTextColor(Color.BLUE);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+                    sdf.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
+                    Date expiredDate = new Date(jsonPayload.getInt("exp") * 1000L); //Unix timestamp 轉 Date
+                    Date orig_iatDate = new Date(jsonPayload.getInt("orig_iat") * 1000L);
+                    Toast.makeText(getActivity(), "登入成功！", Toast.LENGTH_SHORT).show();
+                    //txvExpired.setText("Token Expired：" + sdf.format(expiredDate));
+                    //txvOrig_iat.setText("Token Issued At：" + sdf.format(orig_iatDate));
+                    //btnLogin.setEnabled(false); //已登入不允許再登入及註冊
+                    //btnRegister.setEnabled(false);
+                    //txtEmail.setEnabled(false);
+                    //txtPwd.setEnabled(false);
+                    //txtPwdConfirm.setEnabled(false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         //登入
         login.setOnClickListener(new View.OnClickListener() {
@@ -283,6 +327,9 @@ public class NewMainFragment extends Fragment {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
         }
         return arrayList.get(0);
+    }
+    private static JSONObject StringToJSON(String jsonString) throws JSONException {
+        return new JSONObject(jsonString);
     }
 
 

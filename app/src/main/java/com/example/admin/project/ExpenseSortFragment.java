@@ -153,10 +153,6 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
         });
 
 
-
-
-
-        //新增分類 第二次有閃退問題
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

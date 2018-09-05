@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -128,12 +129,16 @@ public class NewMainFragment extends Fragment {
             }
         }
 
+
+
+
+
         //登入
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                it = new Intent(getActivity(), LoginActivity.class);
-                startActivity(it);
+                //調用activity function
+                ((NewMainActivity) getActivity()).opendraw();
             }
         });
 
@@ -273,6 +278,7 @@ public class NewMainFragment extends Fragment {
         customCarouselView.setPageCount(2);
         customCarouselView.setSlideInterval(4000);
         customCarouselView.setViewListener(viewListener);
+
 
         return view;
 

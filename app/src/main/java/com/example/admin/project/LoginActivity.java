@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -337,6 +338,10 @@ public class LoginActivity extends AppCompatActivity {
         txtPwdConfirm = (EditText) findViewById(R.id.txtPwdConfirm);
         txtPwd = (EditText) findViewById(R.id.txtPwd);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
+
+        //View header = navigationView.getHeaderView(0);
+
+
         intent = new Intent(this, NewMainActivity.class);
         intent2 = new Intent(this, SearchFriendActivity.class);
 
@@ -373,6 +378,7 @@ public class LoginActivity extends AppCompatActivity {
                                 loginHandler.sendMessage(message);
 
                             }else{
+                                intent.putExtra("username","吳彥霆");
                                 startActivity(intent); //登入成功導向首頁
                                 DealToken(jsonObj.getString("token"));  //儲存Token
                                 bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle

@@ -14,8 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.TabLayout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.client.methods.HttpGet;
 
@@ -34,6 +38,8 @@ public class NewMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigation_view;
     private Intent it;
+    private String name;
+    private TextView username;
     //嚴禁 'Y'
     //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
@@ -48,6 +54,7 @@ public class NewMainActivity extends AppCompatActivity {
         mSectionsPageAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+        //username = (TextView) findViewById(R.id.username);
 
         SharedPreferences myPref = getPreferences(MODE_PRIVATE);
         boolean isFirst = myPref.getBoolean("isFirst", true);//第一次找不到為true
@@ -78,14 +85,43 @@ public class NewMainActivity extends AppCompatActivity {
                         it = new Intent(NewMainActivity.this, LoginActivity.class);
                         startActivity(it);
                         return true;
-                    case R.id.Friend:
-                        it = new Intent(NewMainActivity.this, MainActivity.class);
+                    case R.id.SearchFriend:
+                        it = new Intent(NewMainActivity.this, SearchFriendActivity.class);
+                        startActivity(it);
+                        return true;
+                    case R.id.sort:
+                        it = new Intent(NewMainActivity.this, SortActivity.class);
+                        startActivity(it);
+                        return true;
+                    case R.id.sta:
+                        it = new Intent(NewMainActivity.this, MonthSortPieChartActivity.class);
+                        startActivity(it);
+                        return true;
+                    case R.id.account2:
+                        it = new Intent(NewMainActivity.this, AccountActivity.class);
                         startActivity(it);
                         return true;
                 }
                 return false;
             }
         });
+
+
+
+        //改左側選單上方
+        if(navigation_view.getHeaderCount() > 0) {
+            View header = navigation_view.getHeaderView(0);
+
+            TextView username = (TextView) header.findViewById(R.id.username);
+            Intent intent = this.getIntent();
+            if(intent.hasExtra("username")){
+                name = this.getIntent().getExtras().getString("username");
+                username.setText(name);
+            }
+
+        }
+
+
 
 
     }
@@ -272,6 +308,10 @@ public class NewMainActivity extends AppCompatActivity {
             }
             db.insert(tableName, null, cv);
         }
+    }
+    public void opendraw(){
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout.openDrawer(Gravity.START);
     }
 
 

@@ -6,22 +6,45 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/Member"
-            android:checked="true"
+            android:checkable="false"
             android:icon="@drawable/black"
-            android:title="會員" />
+            android:title="會員中心" />
 
         <item
-            android:id="@+id/Friend"
+            android:id="@+id/SearchFriend"
+            android:checkable="false"
             android:icon="@drawable/black"
-            android:title="好友" />
+            android:title="搜尋好友" />
+        <item
+            android:id="@+id/Friend"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="好友列表" />
+        <item
+            android:id="@+id/sort"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="分類管理" />
+        <item
+            android:id="@+id/account2"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="帳戶管理" />
+        <item
+            android:id="@+id/sta"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="統計分析" />
 
         <item
             android:id="@+id/Settings"
+            android:checkable="false"
             android:icon="@drawable/black"
             android:title="設定" />
 
         <item
             android:id="@+id/About"
+            android:checkable="false"
             android:icon="@drawable/black"
             android:title="關於" />
     </group>

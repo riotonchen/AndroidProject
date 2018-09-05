@@ -34,11 +34,11 @@ import java.util.Set;
 import java.util.TimeZone;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button button15,btnLogin,btnRegister,button14;
+    private Button button15,btnLogin,btnRegister,button14,friend;
     private EditText txtPwdConfirm,txtEmail,txtPwd;
     boolean check = true;
     View view3;
-    Intent intent;
+    Intent intent,intent2;
     private static String showMsg = "\n";
     private final LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
     private final RegisterHandler registerHandler = new RegisterHandler(LoginActivity.this);
@@ -332,11 +332,20 @@ public class LoginActivity extends AppCompatActivity {
         button14 = (Button) findViewById(R.id.button14);
         view3 = (View) findViewById(R.id.view3);
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnRegister= (Button) findViewById(R.id.btnRegister);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
+        friend= (Button) findViewById(R.id.friend);
         txtPwdConfirm = (EditText) findViewById(R.id.txtPwdConfirm);
         txtPwd = (EditText) findViewById(R.id.txtPwd);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         intent = new Intent(this, NewMainActivity.class);
+        intent2 = new Intent(this, SearchFriendActivity.class);
+
+        friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent2); //登入成功導向首頁
+            }
+        });
         //登入
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

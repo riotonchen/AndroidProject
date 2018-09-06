@@ -38,10 +38,10 @@ public class NewMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigation_view;
     private Intent it;
-    private String name;
+    private String name,monthstart,monthend;
     private TextView username;
     //嚴禁 'Y'
-    //private SimpleDateFormat yyyymmdd  =  new SimpleDateFormat ("YYYY-MM-DD", Locale.TAIWAN);
+    private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
     Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
 
 
@@ -75,6 +75,11 @@ public class NewMainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigation_view = (NavigationView) findViewById(R.id.navigation_view);
 
+        datetime.set(Calendar.DAY_OF_MONTH,1);
+        monthstart = yyyyMMdd.format(datetime.getTime());
+        datetime.roll(Calendar.DAY_OF_MONTH,-1);
+        monthend = yyyyMMdd.format(datetime.getTime());
+
         // 為navigatin_view設置點擊事件
         navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -91,10 +96,14 @@ public class NewMainActivity extends AppCompatActivity {
                         return true;
                     case R.id.sort:
                         it = new Intent(NewMainActivity.this, SortActivity.class);
+                        it.putExtra("monthstart", monthstart);
+                        it.putExtra("monthend", monthend);
                         startActivity(it);
                         return true;
                     case R.id.sta:
                         it = new Intent(NewMainActivity.this, MonthSortPieChartActivity.class);
+                        it.putExtra("monthstart", monthstart);
+                        it.putExtra("monthend", monthend);
                         startActivity(it);
                         return true;
                     case R.id.account2:
@@ -163,6 +172,7 @@ public class NewMainActivity extends AppCompatActivity {
                 "4", "管理員"};
         AddData(TB_NAME, col, data);
         //新增mbr_member資料
+        Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
         TB_NAME = "mbr_member";
         col = new String[]{"name", "nickname", "email", "password", "renew_time"};
         data = new String[]{"王小明", "小明", "A1234567@pccu.edu.tw", "pwd123", datetime.getTime().toString()};

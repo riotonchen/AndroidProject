@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class ProjectFragment extends Fragment {
     private static final String TAG="ProjectFragment";
-    private String monthstart, monthend;
+    private String monthstart, monthend,projectName;
     private TextView txtProject;
     private ImageView imvProjectArrowLeft,imvProjectArrowRight;
     private Button btnAdd;
@@ -144,7 +144,7 @@ public class ProjectFragment extends Fragment {
                                 View ExpenseSortView = inflater.inflate(R.layout.createproject, null);
                                 final EditText edit_name=(EditText)ExpenseSortView.findViewById(R.id.edit_name);
 
-                                String projectName="";
+                                projectName="";
                                 String sqlCmd="SELECT name FROM sys_project WHERE _id=\""+ MprojectID + "\"";
                                 cur=db.rawQuery(sqlCmd,null);
                                 if (cur.getCount() != 0) {
@@ -187,8 +187,17 @@ public class ProjectFragment extends Fragment {
                                 return true;
 
                             case R.id.Delete:
+                                projectName="";
+                                sqlCmd="SELECT name FROM sys_project WHERE _id=\""+ MprojectID + "\"";
+                                cur=db.rawQuery(sqlCmd,null);
+                                if (cur.getCount() != 0) {
+                                    cur.moveToFirst();
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        projectName = cur.getString(0);
+                                    } while (cur.moveToNext());
+                                }
                                 TextView txv=new TextView(getActivity());
-                                txv.setText("刪除此專案，也會一併刪除所有此專案底下所有的收支紀錄");txv.setTextSize(15);
+                                txv.setText("刪除此專案("+projectName+")，也會一併刪除所有此專案底下所有的收支紀錄");txv.setTextSize(15);
                                 TextView txvTitle=new TextView(getActivity());
                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 
@@ -199,7 +208,7 @@ public class ProjectFragment extends Fragment {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 TextView txv=new TextView(getActivity());
-                                                txv.setText("最終確認，確定要刪除專案?");txv.setTextSize(15);
+                                                txv.setText("最終確認，確定要刪除專案("+projectName+")?");txv.setTextSize(15);
                                                 TextView txvTitle=new TextView(getActivity());
                                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 

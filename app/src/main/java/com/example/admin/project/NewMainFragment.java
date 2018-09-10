@@ -300,6 +300,7 @@ public class NewMainFragment extends Fragment {
         public View setViewForPosition(int position) {
             String[] sampleTitles = {"總資產", "收支比"};
             String[] sampleTitles2 = {"$"+SetListViewTotalAssets(), SetListViewRatio(monthstart,monthend)+"%"};
+            //String[] sampleTitles2 = {"$"+SetListViewTotalAssets(),"20"};
 
             View customView = getLayoutInflater().inflate(R.layout.view_custom, null);
 
@@ -510,8 +511,15 @@ public class NewMainFragment extends Fragment {
         } catch (Exception ex) {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
         }
+
         float fExpense=(float)Expense;float fIncome=(float)Income;
-        float fRatio=fExpense/fIncome;
+        float fRatio;
+        if(fIncome==0){
+            fRatio=0;
+        }
+        else {
+            fRatio = fExpense / fIncome;
+        }
         DecimalFormat df = new DecimalFormat("##.00");
         fRatio=Float.parseFloat(df.format(fRatio));
         arrayList.add((String.valueOf(fRatio)));

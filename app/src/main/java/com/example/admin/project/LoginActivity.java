@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,32 +21,55 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginBehavior;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button button15,btnLogin,btnRegister,button14,friend;
+    private static final String TAG="LoginActivity";
+    private Button button15,btnLogin,btnRegister,button14,fblogin;
     private EditText txtPwdConfirm,txtEmail,txtPwd;
     boolean check = true;
     View view3;
-    Intent intent,intent2;
+    Intent intent;
+    private static String email,name,id;
     private static String showMsg = "\n";
     private final LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
     private final RegisterHandler registerHandler = new RegisterHandler(LoginActivity.this);
     private final GetHandler getHandler = new GetHandler(LoginActivity.this);
     private final RefreshHandler refreshHandler = new RefreshHandler(LoginActivity.this);
+    private LoginButton loginButton;
+    // FB
+    private LoginManager loginManager;
+    private CallbackManager callbackManager;
 
     private class MyMessages {
         public static final int Error = 0;
@@ -53,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         public static final int Disconnect = 3;
     }
 
-    private class Path {  //注意路徑有無斜線(endpoint)
+    public class Path {  //注意路徑有無斜線(endpoint)
         public static final String api_token_jwtauth = "https://www.177together.com/api-token-jwtauth";
         public static final String api_token_refresh = "https://www.177together.com/api-token-refresh/";
         public static final String member = "https://www.177together.com/api/member/";
@@ -334,23 +359,44 @@ public class LoginActivity extends AppCompatActivity {
         view3 = (View) findViewById(R.id.view3);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        friend= (Button) findViewById(R.id.friend);
+        fblogin= (Button) findViewById(R.id.fblogin);
         txtPwdConfirm = (EditText) findViewById(R.id.txtPwdConfirm);
         txtPwd = (EditText) findViewById(R.id.txtPwd);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
 
-        //View header = navigationView.getHeaderView(0);
+        // init facebook
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        // init LoginManager & CallbackManager
+        loginManager = LoginManager.getInstance();
+        callbackManager = CallbackManager.Factory.create();
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email");
+
+        // method_1.判斷用戶是否登入過
+        if (Profile.getCurrentProfile() != null) {
+            Profile profile = Profile.getCurrentProfile();
+            // 取得用戶大頭照
+            Uri userPhoto = profile.getProfilePictureUri(300, 300);
+            String id = profile.getId();
+            String name = profile.getName();
+            Log.d(TAG, "Facebook userPhoto: " + userPhoto);
+            Log.d(TAG, "Facebook id: " + id);
+            Log.d(TAG, "Facebook name: " + name);
+        }
+
+        fblogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginFB();
+            }
+        });
+
+
 
 
         intent = new Intent(this, NewMainActivity.class);
-        intent2 = new Intent(this, SearchFriendActivity.class);
 
-        friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent2); //登入成功導向首頁
-            }
-        });
         //登入
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -524,9 +570,163 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+    private void loginFB() {
+        // 設定FB login的顯示方式 ; 預設是：NATIVE_WITH_FALLBACK
+        /**
+         * 1. NATIVE_WITH_FALLBACK
+         * 2. NATIVE_ONLY
+         * 3. KATANA_ONLY
+         * 4. WEB_ONLY
+         * 5. WEB_VIEW_ONLY
+         * 6. DEVICE_AUTH
+         */
+        loginManager.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
+        // 設定要跟用戶取得的權限，以下3個是基本可以取得，不需要經過FB的審核
+        List<String> permissions = new ArrayList<>();
+        permissions.add("public_profile");
+        permissions.add("email");
+        // 設定要讀取的權限
+        loginManager.logInWithReadPermissions(this, permissions);
+        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                // fb登入成功
+                // 透過GraphRequest來取得用戶的Facebook資訊
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            if (response.getConnection().getResponseCode() == 200) {
+                                id = object.getString("id");
+                                name = object.getString("name");
+                                email = object.getString("email");
+                                //-----------登入api開始---------------
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            loginHandler.sendEmptyMessage(MyMessages.Connecting);
+
+                                            Map<String, String> params = new HashMap<>();
+                                            //必填這三個欄位
+
+                                            params.put("username", email + ";" + "3");  //xxx@xxx;2
+                                            params.put("password", id);    //MySQL392
+                                            params.put("membertype_id", "3");
+
+                                            Message message = new Message();
+                                            message.what = MyMessages.Progressing;
+                                            Bundle bundle = new Bundle();
+                                            JSONObject jsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);
+                                            if(jsonObj.getInt("responseCode")!=HttpURLConnection.HTTP_OK){
+                                                message.what = MyMessages.Error;
+                                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
+                                                message.setData(bundle);
+                                                loginHandler.sendMessage(message);
+
+                                                //註冊api開始------------
+                                                params = new HashMap<>();
+                                                params.put("account", email);    //必填
+                                                params.put("identifier", id);
+                                                params.put("membertype", "3");  //必填
+                                                params.put("name", null);
+                                                //params.put("nickname", name);
+                                                params.put("password", id); //必填
+                                                //params.put("localpicture", "images\\usr\\pic001.jpg");
+                                                //params.put("dbpicture", "images\\usr\\pic020.jpg");
+
+                                                message = new Message();
+                                                message.what = MyMessages.Progressing;
+                                                bundle = new Bundle();
+                                                jsonObj = HttpUtils.Register(Path.member, params);
+                                                if (jsonObj.getInt("responseCode") != HttpURLConnection.HTTP_CREATED) { //檢查responseCode
+                                                    message.what = MyMessages.Error;
+                                                    bundle.putString("errorMsg", jsonObj.getString("error_msg"));
+                                                    message.setData(bundle);
+                                                    registerHandler.sendMessage(message);
+                                                    txtEmail.setText("註冊失敗");
+
+                                                } else {    //註冊成功
+                                                    txtEmail.setText("註冊成功");
+                                                    params = new HashMap<>();
+                                                    params.put("username", email + ";" + "3");//帳號+會員類型 為唯一
+                                                    params.put("password", id);
+                                                    params.put("membertype_id", "3");   //FB會員
+                                                    JSONObject tokenJsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);   //取得Token以利之後存取其他資源
+                                                    DealToken(tokenJsonObj.getString("token")); //儲存Token
+                                                    jsonObj.put("token", tokenJsonObj.getString("token"));   //加入註冊時回傳的json
+                                                    bundle.putBundle("member_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
+                                                    message.setData(bundle);
+                                                    registerHandler.sendMessage(message);
+                                                    intent.putExtra("username","吳彥霆");
+                                                    startActivity(intent); //登入成功導向首頁
+                                                }
+
+                                            }else{
+                                                //登入成功
+                                                intent.putExtra("username","吳彥霆");
+                                                startActivity(intent); //登入成功導向首頁
+                                                DealToken(jsonObj.getString("token"));  //儲存Token
+                                                bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
+                                                message.setData(bundle);
+                                                loginHandler.sendMessage(message);
+                                            }
+
+                                            loginHandler.sendEmptyMessage(MyMessages.Disconnect);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).start();
+
+                                // 此時如果登入成功，就可以順便取得用戶大頭照
+                                Profile profile = Profile.getCurrentProfile();
+                                // 設定大頭照大小
+                                Uri userPhoto = profile.getProfilePictureUri(300, 300);
+                                /*Glide.with(LoginActivity.this)
+                                        .load(userPhoto.toString())
+                                        .crossFade()
+                                        .into(mImgPhoto);
+                                mTextDescription.setText(String.format(Locale.TAIWAN, "Name:%s\nE-mail:%s", name, email));*/
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                // https://developers.facebook.com/docs/android/graph?locale=zh_TW
+                // 如果要取得email，需透過添加參數的方式來獲取(如下)
+                // 不添加只能取得id & name
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email");
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                // 用戶取消
+                Log.d(TAG, "Facebook onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                // 登入失敗
+                Log.d(TAG, "Facebook onError:" + error.toString());
+            }
+        });
+    }
 
 
 
 
-   
+
+
 }

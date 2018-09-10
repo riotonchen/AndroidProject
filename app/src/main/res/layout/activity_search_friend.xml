@@ -10,7 +10,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,9 +21,10 @@
             android:id="@+id/button8"
             android:layout_width="40dp"
             android:layout_height="30dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
 
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@drawable/backbutton"
             android:onClick="OnClick"
@@ -32,21 +33,20 @@
             android:textColorHighlight="@android:color/background_light"
             android:textColorLink="@android:color/background_light"
             android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/textView24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/textView24" />
 
         <TextView
             android:id="@+id/textView24"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:background="#ffffff"
             android:gravity="center"
             android:text="搜尋好友"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="22sp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
@@ -54,15 +54,16 @@
             android:id="@+id/imvAccountingBack"
             android:layout_width="30dp"
             android:layout_height="35dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView24"
+            app:layout_constraintTop_toTopOf="@+id/textView24"
             app:srcCompat="@drawable/arrow"
             tools:layout_editor_absoluteX="0dp" />
     </android.support.constraint.ConstraintLayout>
 
     <EditText
-        android:id="@+id/searchid"
+        android:id="@+id/txtToid"
         android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginEnd="16dp"
@@ -77,14 +78,14 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/btnSearchFriend"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/glass"
-        app:layout_constraintBottom_toBottomOf="@+id/searchid"
-        app:layout_constraintEnd_toEndOf="@+id/searchid"
-        app:layout_constraintTop_toTopOf="@+id/searchid" />
+        app:layout_constraintBottom_toBottomOf="@+id/txtToid"
+        app:layout_constraintEnd_toEndOf="@+id/txtToid"
+        app:layout_constraintTop_toTopOf="@+id/txtToid" />
 
     <RadioGroup
         android:id="@+id/radioGroup1"
@@ -94,7 +95,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/searchid"
+        app:layout_constraintBottom_toTopOf="@+id/txtToid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
@@ -113,5 +114,46 @@
             android:layout_weight="1"
             android:text="行動條碼" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/txvRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userimage" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bluebackground"
+        android:text="加入"
+        android:textColor="@color/default_circle_indicator_fill_color"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txvRecord" />
+
+    <ImageView
+        android:id="@+id/userimage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtToid"
+        app:srcCompat="@drawable/user2" />
 
 </android.support.constraint.ConstraintLayout>

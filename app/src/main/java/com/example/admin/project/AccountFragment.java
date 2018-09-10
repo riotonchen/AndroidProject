@@ -38,7 +38,7 @@ public class AccountFragment extends Fragment {
     private static final String TAG = "AccountFragment";
     private Button btnTab, btnTransfer, btnAdd;
     static final String DB_NAME = "MYLOCALDB";
-    private String monthstart,monthend;
+    private String monthstart,monthend,accountName,SaccountID;
     DBHelper DH;
     SQLiteDatabase db;
     Cursor cur;
@@ -123,7 +123,7 @@ public class AccountFragment extends Fragment {
                                 final EditText edit_FX=(EditText)AccountView.findViewById(R.id.edit_FX);
 
                                 int accountTypeId=0;
-                                String SaccountID="";String accountName="";
+                                SaccountID="";accountName="";
                                 String initialAmount="";
                                 String FX="";
                                 sqlCmd="SELECT * FROM mbr_memberaccount WHERE _id=\"" + accountID + "\"";
@@ -214,8 +214,26 @@ public class AccountFragment extends Fragment {
                                         .show();
                                 return true;
                             case R.id.Delete:
+                                SaccountID="";
+                                sqlCmd="SELECT accountID FROM mbr_memberaccount WHERE _id=\"" + accountID + "\"";
+                                cur=db.rawQuery(sqlCmd,null);
+                                if (cur.getCount() != 0) {
+                                    cur.moveToFirst();
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        SaccountID=Integer.toString(cur.getInt(0));
+                                    } while (cur.moveToNext());
+                                }
+                                accountName="";
+                                sqlCmd="SELECT name FROM sys_account WHERE _id=\"" + SaccountID + "\"";
+                                cur=db.rawQuery(sqlCmd,null);
+                                if (cur.getCount() != 0) {
+                                    cur.moveToFirst();
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        accountName=cur.getString(0);
+                                    } while (cur.moveToNext());
+                                }
                                 TextView txv=new TextView(getActivity());
-                                txv.setText("刪除此帳戶，也會一併刪除所有此帳戶底下所有的收支紀錄");txv.setTextSize(15);
+                                txv.setText("刪除此帳戶("+accountName+")，也會一併刪除所有此帳戶底下所有的收支紀錄");txv.setTextSize(15);
                                 TextView txvTitle=new TextView(getActivity());
                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 
@@ -226,7 +244,7 @@ public class AccountFragment extends Fragment {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 TextView txv=new TextView(getActivity());
-                                                txv.setText("最終確認，確定要刪除帳戶?");txv.setTextSize(15);
+                                                txv.setText("最終確認，確定要刪除帳戶("+accountName+")?");txv.setTextSize(15);
                                                 TextView txvTitle=new TextView(getActivity());
                                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 

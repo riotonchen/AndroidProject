@@ -34,6 +34,7 @@ import com.synnapps.carouselview.ViewListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,12 +52,10 @@ public class NewMainFragment extends Fragment {
     CarouselView customCarouselView;
     private Calendar datetime = Calendar.getInstance(Locale.TAIWAN);
     private SimpleDateFormat yyyyMMdd  =  new SimpleDateFormat ("yyyy/MM/dd", Locale.TAIWAN);
-    String[] sampleTitles = {"總資產", "收支比"};
-    String[] sampleTitles2 = {"$1,999", "20%"};
     private Intent it;
     public LinearLayout set,classification,account,invoice,analysis;
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
-    private TextView txvMainTodayExpense,txvMainMonthExpense,textView32;
+    private TextView txvMainTodayExpense,txvMainMonthExpense2,txvMainMonthExpense,textView32,txvMainTotalBudget,txvMainMonthBalance;
     private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis;
     private ImageView todayExpense,login;
     DBHelper DH;
@@ -79,7 +78,11 @@ public class NewMainFragment extends Fragment {
         btnaccount = (Button) view.findViewById(R.id.btnaccount);
         btnanalysis = (Button) view.findViewById(R.id.btnanalysis);
         txvMainTodayExpense=view.findViewById(R.id.textView12);
+        txvMainMonthExpense2=view.findViewById(R.id.textView16);
         txvMainMonthExpense=view.findViewById(R.id.textView39);
+        txvMainTotalBudget=view.findViewById(R.id.textView38);
+        txvMainMonthBalance=view.findViewById(R.id.textView40);
+
         todayExpense = view.findViewById(R.id.imageView15);
         login = view.findViewById(R.id.login);
         textView32 = view.findViewById(R.id.textView32);
@@ -235,8 +238,16 @@ public class NewMainFragment extends Fragment {
         //讀取範圍明細收支
         DH = new DBHelper(getActivity());
         db = DH.getReadableDatabase();
-        txvMainTodayExpense.setText(SetListViewBalance(today,today,0));
-        txvMainMonthExpense.setText(SetListViewBalance(monthstart,monthend,0));
+        txvMainTodayExpense.setText("$"+SetListViewBalance(today,today,0));
+        txvMainMonthExpense.setText("$"+SetListViewBalance(monthstart,monthend,0));
+        txvMainTotalBudget.setText("$"+SetListViewBudget());
+        int MonthExpense=Integer.valueOf(SetListViewBalance(monthstart,monthend,0));
+        int MonthBudget=Integer.valueOf(SetListViewBudget());
+        txvMainMonthBalance.setText("$"+String.valueOf(MonthBudget-MonthExpense));
+        txvMainMonthExpense2.setText("$"+SetListViewBalance2(monthstart,monthend));
+
+
+
 
         todayExpense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,6 +298,9 @@ public class NewMainFragment extends Fragment {
     ViewListener viewListener = new ViewListener() {
         @Override
         public View setViewForPosition(int position) {
+            String[] sampleTitles = {"總資產", "收支比"};
+            String[] sampleTitles2 = {"$"+SetListViewTotalAssets(), SetListViewRatio(monthstart,monthend)+"%"};
+            //String[] sampleTitles2 = {"$"+SetListViewTotalAssets(),"20"};
 
             View customView = getLayoutInflater().inflate(R.layout.view_custom, null);
 
@@ -328,10 +342,10 @@ public class NewMainFragment extends Fragment {
                     cur.moveToNext();
                 }
                 int iTotalAmount=(int)totalAmount;
-                arrayList.add((type == 0 ? "$" : "$") + String.valueOf(iTotalAmount));
+                arrayList.add(String.valueOf(iTotalAmount));
             }
             else {
-                arrayList.add((type == 0 ? "$" : "$") + String.valueOf(0));
+                arrayList.add(String.valueOf(0));
             }
             cur.close();
         } catch (Exception ex) {
@@ -341,6 +355,175 @@ public class NewMainFragment extends Fragment {
     }
     private static JSONObject StringToJSON(String jsonString) throws JSONException {
         return new JSONObject(jsonString);
+    }
+
+    private String SetListViewBudget() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        String sqlCmd = "SELECT SUM(budget) AS budget FROM mbr_membersort WHERE memberID=1 ";
+
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayList.add(String.valueOf(cur.getInt(0)));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        return arrayList.get(0);
+    }
+
+    private String SetListViewBalance2(String start,String end) {
+        start = start.replace('/', '-');
+        end = end.replace('/', '-');
+        ArrayList<String> arrayList = new ArrayList<>();
+        int Expense=0;int Income=0;
+        String sqlCmd = "SELECT amount,FX" +
+                "        FROM (SELECT amount,accountID FROM mbr_accounting WHERE memberID=1" +
+                "        AND type=0 AND time BETWEEN '" + start + "' AND '" + end + "') AS A " +
+                "        INNER JOIN" +
+                "                (SELECT _id,FX FROM mbr_memberaccount WHERE memberID=1) AS B" +
+                "        ON A.accountID=B._id";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            float totalAmount=0;
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    int amount=cur.getInt(0);
+                    float fAmount=(float)amount;
+                    String FX=cur.getString(1);
+                    float fFX=Float.parseFloat(FX.substring(0,FX.indexOf(":")));
+                    totalAmount=totalAmount+(fAmount*fFX);
+                    cur.moveToNext();
+                }
+                Expense=(int)totalAmount;
+            }
+            else {
+                Expense=0;
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        sqlCmd = "SELECT amount,FX" +
+                "        FROM (SELECT amount,accountID FROM mbr_accounting WHERE memberID=1" +
+                "        AND type=1 AND time BETWEEN '" + start + "' AND '" + end + "') AS A " +
+                "        INNER JOIN" +
+                "                (SELECT _id,FX FROM mbr_memberaccount WHERE memberID=1) AS B" +
+                "        ON A.accountID=B._id";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            float totalAmount=0;
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    int amount=cur.getInt(0);
+                    float fAmount=(float)amount;
+                    String FX=cur.getString(1);
+                    float fFX=Float.parseFloat(FX.substring(0,FX.indexOf(":")));
+                    totalAmount=totalAmount+(fAmount*fFX);
+                    cur.moveToNext();
+                }
+                Income=(int)totalAmount;
+            }
+            else {
+                Income=0;
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        arrayList.add(String.valueOf(Income-Expense));
+        return arrayList.get(0);
+    }
+
+    private String SetListViewTotalAssets() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        String sqlCmd = "SELECT balance,FX FROM mbr_memberaccount WHERE memberID=1 " +
+                "AND accountTypeID BETWEEN 1 AND 3";
+        int TotalAssets=0;
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            float totalAmount=0;
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    int amount=cur.getInt(0);
+                    float fAmount=(float)amount;
+                    String FX=cur.getString(1);
+                    float fFX=Float.parseFloat(FX.substring(0,FX.indexOf(":")));
+                    totalAmount=totalAmount+(fAmount*fFX);
+                    cur.moveToNext();
+                }
+                TotalAssets=(int)totalAmount;
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        arrayList.add(String.valueOf(TotalAssets));
+        return arrayList.get(0);
+    }
+
+    private String SetListViewRatio(String start,String end) {
+        start = start.replace('/', '-');
+        end = end.replace('/', '-');
+        ArrayList<String> arrayList = new ArrayList<>();
+        int Expense=0;int Income=0;
+        String sqlCmd = "SELECT SUM(amount) AS amount FROM mbr_accounting WHERE memberID=1 " +
+                "AND type=0 AND time BETWEEN '" + start + "' AND '" + end + "'";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    Expense=cur.getInt(0);
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+        sqlCmd = "SELECT SUM(amount) AS amount FROM mbr_accounting WHERE memberID=1 " +
+                "AND type=1 AND time BETWEEN '" + start + "' AND '" + end + "'";
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    Income=cur.getInt(0);
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+        }
+
+        float fExpense=(float)Expense;float fIncome=(float)Income;
+        float fRatio;
+        if(fIncome==0){
+            fRatio=0;
+        }
+        else {
+            fRatio = fExpense / fIncome;
+        }
+        DecimalFormat df = new DecimalFormat("##.00");
+        fRatio=Float.parseFloat(df.format(fRatio));
+        arrayList.add((String.valueOf(fRatio)));
+        return arrayList.get(0);
     }
 
 

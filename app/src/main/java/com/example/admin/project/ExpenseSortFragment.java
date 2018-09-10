@@ -42,7 +42,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
     private static final String TAG="ExpenseSortFragment";
     private Button btnProject,create;
     private TextView txvExpenseBudget,txvExpenseExpense,txvExpenseBalance;
-    private String monthstart, monthend,sortID;
+    private String monthstart, monthend,sortID,sortName;
     private TextView txtExpenseSortDate;
     private ImageView imvExpenseSortArrowLeft,imvExpenseSortArrowRight;
     static final String DB_NAME = "MYLOCALDB";
@@ -329,7 +329,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                                 }
                                 edit_budget.setText(budget);
 
-                                String sortName="";
+                                sortName="";
                                 sqlCmd="SELECT name FROM sys_sort WHERE _id=\""+ sortID + "\"";
                                 cur=db.rawQuery(sqlCmd,null);
                                 if (cur.getCount() != 0) {
@@ -390,8 +390,26 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                                         .show();
                                 return true;
                             case R.id.Delete:
+                                sortID="";
+                                sqlCmd="SELECT sortID FROM mbr_membersort WHERE _id=\"" + MsortID + "\"";
+                                cur=db.rawQuery(sqlCmd,null);
+                                if (cur.getCount() != 0) {
+                                    cur.moveToFirst();
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        sortID = Integer.toString(cur.getInt(0));
+                                    } while (cur.moveToNext());
+                                }
+                                sortName="";
+                                sqlCmd="SELECT name FROM sys_sort WHERE _id=\""+ sortID + "\"";
+                                cur=db.rawQuery(sqlCmd,null);
+                                if (cur.getCount() != 0) {
+                                    cur.moveToFirst();
+                                    do {        // 逐筆讀出資料(只會有一筆)
+                                        sortName = cur.getString(0);
+                                    } while (cur.moveToNext());
+                                }
                                 TextView txv=new TextView(getActivity());
-                                txv.setText("刪除此分類，也會一併刪除所有此分類底下所有的收支紀錄");txv.setTextSize(15);
+                                txv.setText("刪除此分類("+sortName+")，也會一併刪除所有此分類底下所有的收支紀錄");txv.setTextSize(15);
                                 TextView txvTitle=new TextView(getActivity());
                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 
@@ -402,7 +420,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 TextView txv=new TextView(getActivity());
-                                                txv.setText("最終確認，確定要刪除分類?");txv.setTextSize(15);
+                                                txv.setText("最終確認，確定要刪除分類("+sortName+")?");txv.setTextSize(15);
                                                 TextView txvTitle=new TextView(getActivity());
                                                 txvTitle.setText("刪除提示");txvTitle.setTextSize(20);
 

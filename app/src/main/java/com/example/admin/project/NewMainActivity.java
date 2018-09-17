@@ -110,6 +110,10 @@ public class NewMainActivity extends AppCompatActivity {
                         it = new Intent(NewMainActivity.this, AccountActivity.class);
                         startActivity(it);
                         return true;
+                    case R.id.Card:
+                        it = new Intent(NewMainActivity.this,CardActivity.class);
+                        startActivity(it);
+                        return true;
                 }
                 return false;
             }

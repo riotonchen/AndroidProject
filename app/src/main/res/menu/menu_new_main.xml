@@ -37,6 +37,11 @@
             android:title="統計分析" />
 
         <item
+            android:id="@+id/Card"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="票卡管理" />
+        <item
             android:id="@+id/Settings"
             android:checkable="false"
             android:icon="@drawable/black"

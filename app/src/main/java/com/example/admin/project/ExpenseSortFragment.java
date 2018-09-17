@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -296,6 +300,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 db=DH.getWritableDatabase();
                 final String MsortID=((TextView)view.findViewById(R.id.MsortID)).getText().toString();
                 final String sort=((TextView)view.findViewById(R.id.name)).getText().toString();
+                //initPopWindow(view);
                 PopupMenu popup=new PopupMenu(getActivity(),view);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -662,6 +667,38 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
             }
             db.insert(tableName, null, cv);
         }
+    }
+
+    private void initPopWindow(View v) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_item, null, false);
+        TextView txvCreate =(TextView)view.findViewById(R.id.txvCreate);
+        TextView txvDelete =(TextView)view.findViewById(R.id.txvDelete);
+        final PopupWindow popWindow = new PopupWindow(view,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        //這些是為了點擊非PopupWindow區域時，PopupWindow會消失，如果没有下面的
+        //程式碼的话，你會發現，當你把PopupWindow顯示出来了，無論你按多少次后返回鍵
+        //PopupWindow都不會關閉，而且退不出，加上下述程式碼可以解決
+        popWindow.setTouchable(true);
+        popWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        });
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要為popWindow設置一个背景才有效
+        popWindow.showAtLocation(lv,Gravity.CENTER,0,0);
+        txvCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "你新增了", Toast.LENGTH_SHORT).show();
+            }
+        });
+        txvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "你刪除了", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

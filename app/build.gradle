@@ -33,5 +33,6 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar' //掃描QR-Code
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1' //統計圖表
     implementation 'com.synnapps:carouselview:0.1.5' //首頁輪播圖滑動
+    implementation 'com.loopeer.library:cardstack:1.0.2' //票卡模組
 
 }

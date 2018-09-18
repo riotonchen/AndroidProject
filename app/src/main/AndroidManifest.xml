@@ -83,11 +83,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
         <activity android:name=".SearchFriendActivity" />
         <activity android:name=".CardActivity"></activity>
-=======
-        <activity android:name=".SearchFriendActivity"></activity>
+
+
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -107,7 +107,7 @@
             </intent-filter>
         </activity>
 
->>>>>>> 907e18d34f76f77c2e8161052cab997565c34fcc
+
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 

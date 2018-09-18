@@ -55,7 +55,7 @@ public class NewMainFragment extends Fragment {
     private Intent it;
     public LinearLayout set,classification,account,invoice,analysis;
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
-    private TextView txvMainTodayExpense,txvMainMonthExpense2,txvMainMonthExpense,textView32,txvMainTotalBudget,txvMainMonthBalance;
+    private TextView txvMainTodayExpense,txvMainMonthExpense2,txvMainMonthExpense,textView32,txvMainTotalBudget,txvMainMonthBalance,txvMonth;
     private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis;
     private ImageView todayExpense,login;
     DBHelper DH;
@@ -88,6 +88,10 @@ public class NewMainFragment extends Fragment {
         todayExpense = view.findViewById(R.id.imageView15);
         login = view.findViewById(R.id.login);
         textView32 = view.findViewById(R.id.textView32);
+
+        int month=datetime.get(Calendar.MONTH)+1;
+        txvMonth=view.findViewById(R.id.textView8);
+        txvMonth.setText(String.valueOf(month)+"月收支情形");
         //今日日期
         datetime.set(java.util.Calendar.HOUR_OF_DAY, 0);
         today = yyyyMMdd.format(datetime.getTime());
@@ -532,7 +536,7 @@ public class NewMainFragment extends Fragment {
             fRatio=0;
         }
         else {
-            fRatio = fExpense / fIncome;
+            fRatio = 100*(fExpense / fIncome);
         }
         DecimalFormat df = new DecimalFormat("##.00");
         fRatio=Float.parseFloat(df.format(fRatio));

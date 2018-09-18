@@ -33,11 +33,11 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar' //掃描QR-Code
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1' //統計圖表
     implementation 'com.synnapps:carouselview:0.1.5' //首頁輪播圖滑動
-<<<<<<< HEAD
+//<<<<<<< HEAD
     implementation 'com.loopeer.library:cardstack:1.0.2' //票卡模組
-=======
+//=======
     implementation 'com.facebook.android:facebook-login:[4,5)' //fb登入
 
->>>>>>> 907e18d34f76f77c2e8161052cab997565c34fcc
+//>>>>>>> 907e18d34f76f77c2e8161052cab997565c34fcc
 
 }

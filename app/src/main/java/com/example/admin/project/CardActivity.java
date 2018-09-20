@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +36,10 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
     private CardStackView cardStackView;
     private TestAdapter testStackAdapter;
     private SQLiteDatabase db;
-    private Button btn,btncode;
+    private Button btnCreate,btnModify,btnDelete,btncode;
     private EditText edit_code;
+    private ArrayList<String> arrayList;
+    private ArrayAdapter adapter;
 
     //private static Integer[] TEST_DATAS = new Integer[]{1,2,3,4,5,66};
     List<Integer> list = new ArrayList<>();
@@ -48,8 +52,8 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        btn=(Button)findViewById(R.id.button);
-
+        btnCreate=(Button)findViewById(R.id.button);
+        btnDelete=(Button)findViewById(R.id.button13);
 
 
         DBHelper DH = new DBHelper(this);
@@ -94,7 +98,7 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
                 , 200
         );
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBHelper DH=new DBHelper(CardActivity.this);
@@ -172,6 +176,43 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
                 //startActivity(it);
             }
         });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DBHelper DH=new DBHelper(CardActivity.this);
+                db=DH.getWritableDatabase();
+                LayoutInflater inflater = LayoutInflater.from(CardActivity.this);
+                final View CardView = inflater.inflate(R.layout.deletecard, null);
+                final Spinner spnCard=(Spinner)CardView.findViewById(R.id.spinner);
+                String sqlCmd="SELECT card_id,name FROM mbr_card WHERE member_id=0";
+                arrayList = Query(sqlCmd);
+                adapter = new ArrayAdapter(CardActivity.this, R.layout.support_simple_spinner_dropdown_item, arrayList);
+                spnCard.setAdapter(adapter);
+                new AlertDialog.Builder(CardActivity.this)
+                        .setView(CardView)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String dName=spnCard.getSelectedItem().toString();
+                                db.delete("mbr_card","card_id="+dName.substring(0, dName.indexOf(".")),null);
+                                Toast.makeText(CardActivity.this, String.valueOf("刪除成功"), Toast.LENGTH_SHORT).show();
+                                db.close();
+                                Intent it = new Intent(CardActivity.this, NewMainActivity.class);
+                                startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
         /*LayoutInflater inflater = LayoutInflater.from(CardActivity.this);
         final View CardView = inflater.inflate(R.layout.card_item, null);
         final TextView txvid=(TextView)CardView.findViewById(R.id.txvId);
@@ -235,6 +276,25 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private ArrayList<String> Query(String sqlCmd) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        try {
+            Cursor cur = db.rawQuery(sqlCmd, null);
+            int rowsCount = cur.getCount();
+            if (rowsCount != 0) {
+                cur.moveToFirst();
+                for (int i = 0; i < rowsCount; i++) {
+                    arrayList.add(String.valueOf(cur.getInt(0))+". "+cur.getString(1));
+                    cur.moveToNext();
+                }
+            }
+            cur.close();
+        } catch (Exception ex) {
+            Toast.makeText(CardActivity.this, "Error", Toast.LENGTH_SHORT).show();
+        }
+        return arrayList;
     }
 
 }

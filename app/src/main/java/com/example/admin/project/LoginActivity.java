@@ -644,15 +644,15 @@ public class LoginActivity extends AppCompatActivity {
                                                 message.what = MyMessages.Progressing;
                                                 bundle = new Bundle();
                                                 jsonObj = HttpUtils.Register(Path.member, params);
-                                                if (jsonObj.getInt("responseCode") != HttpURLConnection.HTTP_CREATED) { //檢查responseCode
+                                               if (jsonObj.getInt("responseCode") != HttpURLConnection.HTTP_CREATED) { //檢查responseCode
                                                     message.what = MyMessages.Error;
                                                     bundle.putString("errorMsg", jsonObj.getString("error_msg"));
                                                     message.setData(bundle);
                                                     registerHandler.sendMessage(message);
-                                                    txtEmail.setText("註冊失敗");
+
 
                                                 } else {    //註冊成功
-                                                    txtEmail.setText("註冊成功");
+
                                                     params = new HashMap<>();
                                                     params.put("username", email + ";" + "3");//帳號+會員類型 為唯一
                                                     params.put("password", id);
@@ -669,12 +669,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                             }else{
                                                 //登入成功
-                                                intent.putExtra("username","吳彥霆");
-                                                startActivity(intent); //登入成功導向首頁
+
                                                 DealToken(jsonObj.getString("token"));  //儲存Token
                                                 bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                                 message.setData(bundle);
                                                 loginHandler.sendMessage(message);
+                                                intent.putExtra("username","吳彥霆");
+                                                startActivity(intent); //登入成功導向首頁
                                             }
 
                                             loginHandler.sendEmptyMessage(MyMessages.Disconnect);

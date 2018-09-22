@@ -1,5 +1,6 @@
 package com.example.admin.project;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -116,46 +117,13 @@ public class LoginActivity extends AppCompatActivity {
                             showMsg = "\n[Connecting]>>>";
                             break;
                         case MyMessages.Progressing:
-                            showMsg = "[Progressing]>>>";
-
-                            SharedPreferences myPref = myGetSharedPreferences(activity.getApplicationContext());    //靜態方法
-                            String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
-                            JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
-
-                            Bundle bundle = msg.getData();
-                            JSONObject jsonObj = BundleToJson(bundle.getBundle("token_Bundle"));    //轉成JSON
-                            showMsg +=
-                                    "\n[ResponseCode]：" + String.valueOf(jsonObj.getInt("responseCode")) +
-                                            "\n[Token]：" + jsonObj.getString("token") +
-                                            "\n[PAYLOAD.user_id]：" + jsonPayload.getInt("user_id") +
-                                            "\n[PAYLOAD.username]：" + jsonPayload.getString("username") +
-                                            "\n[PAYLOAD.exp]：" + jsonPayload.getInt("exp") +
-                                            "\n[PAYLOAD.orig_iat]：" + jsonPayload.getInt("orig_iat");
-
-                            //activity.txvStatus.setText("狀態：已登入 ; user_id = " + String.valueOf(jsonPayload.getInt("user_id")));
-                            //activity.txvStatus.setTextColor(Color.BLUE);
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-                            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
-                            Date expiredDate = new Date(jsonPayload.getInt("exp") * 1000L); //Unix timestamp 轉 Date
-                            Date orig_iatDate = new Date(jsonPayload.getInt("orig_iat") * 1000L);
-                            //activity.txvExpired.setText("Token Expired：" + sdf.format(expiredDate));
-                            //activity.txvOrig_iat.setText("Token Issued At：" + sdf.format(orig_iatDate));
-
-                            //activity.btnLogin.setEnabled(false); //已登入不允許再登入及註冊
-                            //activity.btnRegister.setEnabled(false);
-                            //activity.txtEmail.setEnabled(false);
-                            //activity.txtPwd.setEnabled(false);
-                            //activity.txtPwdConfirm.setEnabled(false);
-
-
                             Toast.makeText(activity, "登入成功！", Toast.LENGTH_SHORT).show();
                             break;
                         case MyMessages.Disconnect:
                             showMsg = "\n[Disconnect]\n";
                             break;
                         case MyMessages.Error:
-                            bundle = msg.getData();
+                            Bundle bundle = msg.getData();
                             String errorMsg = bundle.getString("errorMsg", "");
                             Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
                             break;
@@ -188,50 +156,13 @@ public class LoginActivity extends AppCompatActivity {
                             showMsg = "\n[Connecting]>>>";
                             break;
                         case MyMessages.Progressing:
-                            showMsg = "[Progressing]>>>";
-                            SharedPreferences myPref = myGetSharedPreferences(activity.getApplicationContext());
-                            String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
-                            JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
-
-                            Bundle bundle = msg.getData();
-                            JSONObject jsonObj = BundleToJson(bundle.getBundle("member_Bundle"));    //轉成JSON
-                            showMsg +=
-                                    "\n[ResponseCode]：" + String.valueOf(jsonObj.getInt("responseCode")) +
-                                            "\n[Token]：" + jsonObj.getString("token") +
-                                            "\n[PAYLOAD.exp]：" + jsonPayload.getInt("exp") +
-                                            "\n[PAYLOAD.orig_iat]：" + jsonPayload.getInt("orig_iat");
-                            showMsg += "\n{\n\"id\" : " + jsonObj.getInt("id") + ",\n" +
-                                    "\"toid\" : \"" + jsonObj.getString("toid") + "\",\n" +
-                                    "\"account\" : \"" + jsonObj.getString("account") + "\",\n" +
-                                    "\"identifier\" : \"" + jsonObj.getString("identifier") + "\",\n" +
-                                    "\"membertype\" : " + jsonObj.getInt("membertype") + ",\n" +
-                                    "\"name\" : \"" + jsonObj.getString("name") + "\",\n" +
-                                    "\"nickname\" : \"" + jsonObj.getString("nickname") + "\",\n" +
-                                    "\"password\" : \"" + jsonObj.getString("password") + "\",\n" +
-                                    "\"localpicture\" : \"" + jsonObj.getString("localpicture") + "\",\n" +
-                                    "\"dbpicture\" : \"" + jsonObj.getString("dbpicture") + "\",\n}";
-                            //activity.txvStatus.setText("狀態：已登入 ; user_id = " + String.valueOf(jsonPayload.getInt("user_id")));
-                            //activity.txvStatus.setTextColor(Color.BLUE);
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-                            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
-                            Date expiredDate = new Date(jsonPayload.getInt("exp") * 1000L); //Unix timestamp 轉 Date
-                            Date orig_iatDate = new Date(jsonPayload.getInt("orig_iat") * 1000L);
-                            //activity.txvExpired.setText("Token Expired：" + sdf.format(expiredDate));
-                            //activity.txvOrig_iat.setText("Token Issued At：" + sdf.format(orig_iatDate));
-                            //activity.btnLogin.setEnabled(false); //已登入不允許再登入及註冊
-                            //activity.btnRegister.setEnabled(false);
-                            //activity.txtEmail.setEnabled(false);
-                            //activity.txtPwd.setEnabled(false);
-                            //activity.txtPwdConfirm.setEnabled(false);
-
                             Toast.makeText(activity, "註冊成功！", Toast.LENGTH_SHORT).show();
                             break;
                         case MyMessages.Disconnect:
                             showMsg = "\n[Disconnect]\n";
                             break;
                         case MyMessages.Error:
-                            bundle = msg.getData();
+                            Bundle bundle = msg.getData();
                             String errorMsg = bundle.getString("errorMsg", "");
                             Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
                             break;
@@ -369,6 +300,10 @@ public class LoginActivity extends AppCompatActivity {
         txtPwd = (EditText) findViewById(R.id.txtPwd);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
 
+        if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
+            Toast.makeText(this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
+        }
+
         // init facebook
         FacebookSdk.sdkInitialize(getApplicationContext());
         // init LoginManager & CallbackManager
@@ -424,7 +359,12 @@ public class LoginActivity extends AppCompatActivity {
         fblogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginFB();
+                if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
+                    Toast.makeText(LoginActivity.this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
+                }else{
+                    loginFB();
+                }
+
             }
         });
 
@@ -432,8 +372,23 @@ public class LoginActivity extends AppCompatActivity {
 
         //登入
         btnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
+                    Toast.makeText(LoginActivity.this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(txtEmail.getText().toString().equals("") || txtPwd.getText().toString().equals("")){
+                    Toast.makeText(LoginActivity.this, "請輸入E-Mail及密碼!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
+                final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
+                progress.setMessage("登入中");
+                progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                progress.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -451,10 +406,11 @@ public class LoginActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             JSONObject jsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);
                             if(jsonObj.getInt("responseCode")!=HttpURLConnection.HTTP_OK){
-                                message.what = MyMessages.Error;
-                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
-                                message.setData(bundle);
-                                loginHandler.sendMessage(message);
+//                                message.what = MyMessages.Error;
+//                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
+//                                message.setData(bundle);
+//                                loginHandler.sendMessage(message);
+                                Toast.makeText(LoginActivity.this, "E-Mail或密碼錯誤，請重新輸入！", Toast.LENGTH_LONG).show();
 
                             }else{
 
@@ -466,33 +422,47 @@ public class LoginActivity extends AppCompatActivity {
                                 String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
                                 JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
                                 intent.putExtra("username",jsonPayload.getString("name"));
-                                startActivity(intent); //登入成功導向首頁
-                            }
 
+                                startActivity(intent); //登入成功導向首頁
+
+                            }
+                            progress.dismiss();
                             loginHandler.sendEmptyMessage(MyMessages.Disconnect);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     }
                 }).start();
+
             }
         });
         //註冊
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            if (!(txtPwd.getText().toString().equals(txtPwdConfirm.getText().toString()))) {
-                                Message message = new Message();
-                                message.what = MyMessages.Error;
-                                Bundle bundle = new Bundle();
-                                bundle.putString("errorMsg", "兩次密碼不一致，請重新輸入！");
-                                message.setData(bundle);
-                                registerHandler.sendMessage(message);
-                            } else {
+                if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
+                    Toast.makeText(LoginActivity.this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(txtEmail.getText().toString().equals("") || txtPwd.getText().toString().equals("") || txtPwdConfirm.getText().toString().equals("")){
+                    return;
+                }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(txtEmail.getText().toString()).matches()){
+                    Toast.makeText(LoginActivity.this, "Email格式不正確", Toast.LENGTH_LONG).show();
+                }else if(txtPwd.getText().toString().length()<8){
+                    Toast.makeText(LoginActivity.this, "密碼長度不得小於8碼", Toast.LENGTH_LONG).show();
+                }else if(!(txtPwd.getText().toString().equals(txtPwdConfirm.getText().toString()))){
+                    Toast.makeText(LoginActivity.this, "兩次密碼不一致，請重新輸入！", Toast.LENGTH_LONG).show();
+                }else {
+
+                    final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
+                    progress.setMessage("註冊中");
+                    progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                    progress.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
                                 registerHandler.sendEmptyMessage(MyMessages.Connecting);
                                 Map<String, String> params = new HashMap<>();
                                 params.put("account", txtEmail.getText().toString());    //必填
@@ -525,15 +495,22 @@ public class LoginActivity extends AppCompatActivity {
                                     bundle.putBundle("member_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                     message.setData(bundle);
                                     registerHandler.sendMessage(message);
-                                }
-                                registerHandler.sendEmptyMessage(MyMessages.Disconnect);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                                    SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+                                    String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
+                                    JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                                    intent.putExtra("username",jsonPayload.getString("name"));
+                                    startActivity(intent); //註冊成功導向首頁
 
+                                }
+                                progress.dismiss();
+                                registerHandler.sendEmptyMessage(MyMessages.Disconnect);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
             }
         });
 
@@ -612,7 +589,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+
     private void loginFB() {
+
         // 設定FB login的顯示方式 ; 預設是：NATIVE_WITH_FALLBACK
         /**
          * 1. NATIVE_WITH_FALLBACK
@@ -643,12 +623,14 @@ public class LoginActivity extends AppCompatActivity {
                                 name = object.getString("name");
                                 email = object.getString("email");
                                 //-----------登入api開始---------------
+                                final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
+                                progress.setMessage("Facebook登入中");
+                                progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                                progress.show();
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            loginHandler.sendEmptyMessage(MyMessages.Connecting);
-
                                             Map<String, String> params = new HashMap<>();
                                             //必填這三個欄位
 
@@ -661,10 +643,10 @@ public class LoginActivity extends AppCompatActivity {
                                             Bundle bundle = new Bundle();
                                             JSONObject jsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);
                                             if(jsonObj.getInt("responseCode")!=HttpURLConnection.HTTP_OK){
-                                                message.what = MyMessages.Error;
-                                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
-                                                message.setData(bundle);
-                                                loginHandler.sendMessage(message);
+//                                                message.what = MyMessages.Error;
+//                                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
+//                                                message.setData(bundle);
+//                                                loginHandler.sendMessage(message);
 
                                                 //註冊api開始------------
                                                 params = new HashMap<>();
@@ -700,7 +682,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     bundle.putBundle("member_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                                     message.setData(bundle);
                                                     registerHandler.sendMessage(message);
-                                                    intent.putExtra("username","吳彥霆");
+                                                    intent.putExtra("username",name);
                                                     startActivity(intent); //登入成功導向首頁
                                                 }
 
@@ -717,7 +699,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 intent.putExtra("username",jsonPayload.getString("name"));
                                                 startActivity(intent); //登入成功導向首頁
                                             }
-
+                                            progress.dismiss();
                                             loginHandler.sendEmptyMessage(MyMessages.Disconnect);
                                         } catch (Exception e) {
                                             e.printStackTrace();

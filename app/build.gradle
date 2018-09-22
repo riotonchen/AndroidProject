@@ -16,8 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        //add by jiancheng https://blog.csdn.net/caobin_study/article/details/79152163
+        exclude 'META-INF/*'//DEPENDENCIES
+    }
 
-    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -28,16 +31,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.android.support:design:26.1.0'
     implementation 'com.google.zxing:core:3.2.1' //掃描QR-Code
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar' //掃描QR-Code
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1' //統計圖表
     implementation 'com.synnapps:carouselview:0.1.5' //首頁輪播圖滑動
-//<<<<<<< HEAD
     implementation 'com.loopeer.library:cardstack:1.0.2' //票卡模組
-//=======
     implementation 'com.facebook.android:facebook-login:[4,5)' //fb登入
 
-//>>>>>>> 907e18d34f76f77c2e8161052cab997565c34fcc
+    implementation fileTree(dir: 'libs', include: ['*.jar'])   //add my jiancheng
 
 }

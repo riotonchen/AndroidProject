@@ -1,23 +1,28 @@
 package com.example.admin.project;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -28,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
@@ -104,7 +110,7 @@ public class HttpUtils {
     }
 
     public static JSONObject Register(String path, Map<String, String> params) {
-        JSONObject resultObj = null;
+        JSONObject resultObj = new JSONObject();
         try {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -120,7 +126,11 @@ public class HttpUtils {
             if(responseCode == HttpStatus.SC_CREATED){
                 resultObj = new JSONObject(EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8)); //注意編碼
                 resultObj.put("responseCode", String.valueOf(responseCode));
-            }else{
+            }else if(responseCode == HttpStatus.SC_BAD_REQUEST){
+                resultObj = new JSONObject(EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8)); //注意編碼
+                resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
+            }
+            else{
                 resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
             }
         }catch(Exception e){
@@ -212,6 +222,82 @@ public class HttpUtils {
         }
         return null;
     }
+    public static JSONObject Patch(String path, String token, Map<String, String> params) {
+        JSONObject resultObj = null;
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPatch httpPatch = new HttpPatch(path);
+            httpPatch.setHeader("Content-type", "application/json");
+            httpPatch.setHeader("Charset", HTTP.UTF_8);
+            httpPatch.setHeader("Accept", "application/json");
+            httpPatch.setHeader("Accept-Charset", HTTP.UTF_8);
+            httpPatch.setHeader("Authorization", "JWT " + token);  //注意空格
+            StringEntity entity = new StringEntity(MapToJSONString(params), HTTP.UTF_8);
+            httpPatch.setEntity(entity);
+
+            HttpResponse response = httpClient.execute(httpPatch);
+            int responseCode = response.getStatusLine().getStatusCode();
+            if (responseCode == HttpStatus.SC_NO_CONTENT) {   //204沒有回傳資料
+                resultObj = new JSONObject("{responseCode: 204}");
+            } else {
+                resultObj = new JSONObject(EntityUtils.toString(response.getEntity(), HTTP.UTF_8)); //注意編碼
+                resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultObj;
+    }
+
+    public static JSONObject Patch(String path, String token, String jsonStrData) {
+        JSONObject resultObj = null;
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPatch httpPatch = new HttpPatch(path);
+            httpPatch.setHeader("Content-type", "application/json");
+            httpPatch.setHeader("Charset", HTTP.UTF_8);
+            httpPatch.setHeader("Accept", "application/json");
+            httpPatch.setHeader("Accept-Charset", HTTP.UTF_8);
+            httpPatch.setHeader("Authorization", "JWT " + token);  //注意空格
+            StringEntity entity = new StringEntity(jsonStrData, HTTP.UTF_8);
+            httpPatch.setEntity(entity);
+
+            HttpResponse response = httpClient.execute(httpPatch);
+            int responseCode = response.getStatusLine().getStatusCode();
+            if (responseCode == HttpStatus.SC_NO_CONTENT) {   //204沒有回傳資料
+                resultObj = new JSONObject("{responseCode: 204}");
+            } else {
+                resultObj = new JSONObject(EntityUtils.toString(response.getEntity(), HTTP.UTF_8)); //注意編碼
+                resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultObj;
+    }
+
+    public static JSONObject Post(String path, String token, Map<String, String> params) {
+        JSONObject resultObj = null;
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("Charset", HTTP.UTF_8);
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Accept-Charset", HTTP.UTF_8);
+            httpPost.setHeader("Authorization", "JWT " + token);  //注意空格
+            StringEntity entity = new StringEntity(MapToJSONString(params), HTTP.UTF_8);
+            httpPost.setEntity(entity);
+
+            HttpResponse response = httpClient.execute(httpPost);
+            int responseCode = response.getStatusLine().getStatusCode();
+            resultObj = new JSONObject(EntityUtils.toString(response.getEntity(), HTTP.UTF_8)); //注意編碼
+            resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultObj;
+    }
 
     /**
      * 轉成JSON格式
@@ -274,6 +360,7 @@ public class HttpUtils {
         return null;
     }
 
+
     /**
      * 處理伺服器的回應結果（將輸入流轉換成字串)
      *
@@ -311,6 +398,20 @@ public class HttpUtils {
         }
         return jsonArray;
 
+    }
+
+    /**
+     * 檢查網路是否連接
+     * @param context 使用getApplicationContext()得到Context傳入
+     * @return 是否連接網路
+     * */
+    public static boolean IsInternetAvailable(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 
     public static String[] SendGetRequest(String path, String colName) {

@@ -90,7 +90,7 @@ public class NewMainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (item.getItemId()) {
                     case R.id.Member:
-                        it = new Intent(NewMainActivity.this, LoginActivity.class);
+                        it = new Intent(NewMainActivity.this, ProfileActivity.class);
                         startActivity(it);
                         return true;
                     case R.id.SearchFriend:
@@ -176,7 +176,7 @@ public class NewMainActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    finishAffinity();
                                 }
                             })
                     .setNegativeButton("取消",

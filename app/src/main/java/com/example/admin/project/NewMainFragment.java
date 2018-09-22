@@ -327,7 +327,7 @@ public class NewMainFragment extends Fragment {
         }
         return arrayList.get(0);
     }
-    private static JSONObject StringToJSON(String jsonString) throws JSONException {
+    public static JSONObject StringToJSON(String jsonString) throws JSONException {
         return new JSONObject(jsonString);
     }
 

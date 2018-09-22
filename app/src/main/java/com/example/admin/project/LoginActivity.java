@@ -3,6 +3,9 @@ package com.example.admin.project;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
@@ -42,6 +45,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -370,10 +375,10 @@ public class LoginActivity extends AppCompatActivity {
         loginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
+        //loginButton = (LoginButton) findViewById(R.id.login_button);
+        //loginButton.setReadPermissions("email");
 
-        // method_1.判斷用戶是否登入過
+        /*// method_1.判斷fb是否登入過
         if (Profile.getCurrentProfile() != null) {
             Profile profile = Profile.getCurrentProfile();
             // 取得用戶大頭照
@@ -383,7 +388,38 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "Facebook userPhoto: " + userPhoto);
             Log.d(TAG, "Facebook id: " + id);
             Log.d(TAG, "Facebook name: " + name);
-        }
+        }*/
+
+        intent = new Intent(this, NewMainActivity.class);
+            //自動登入
+            SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+            if (myPref.getString("token", "").equals("")) {
+                //未登入繼續登入
+            } else {
+                try {
+                    String strPayload = myPref.getString("PAYLOAD", "");
+                    JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                    long exp = Long.valueOf(jsonPayload.getString("exp"));
+                    long now = System.currentTimeMillis() / 1000L;  //系統時間
+                    if (exp <= now) {
+                        //逾期再次登入
+                    } else {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+                        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
+                        Toast.makeText(this, "登入成功！", Toast.LENGTH_SHORT).show();
+
+                        intent.putExtra("username", jsonPayload.getString("name"));
+                        startActivity(intent); //登入成功導向首頁
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
 
         fblogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,9 +429,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
-
-        intent = new Intent(this, NewMainActivity.class);
 
         //登入
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -424,12 +457,16 @@ public class LoginActivity extends AppCompatActivity {
                                 loginHandler.sendMessage(message);
 
                             }else{
-                                intent.putExtra("username","吳彥霆");
-                                startActivity(intent); //登入成功導向首頁
+
                                 DealToken(jsonObj.getString("token"));  //儲存Token
                                 bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                 message.setData(bundle);
                                 loginHandler.sendMessage(message);
+                                SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+                                String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
+                                JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                                intent.putExtra("username",jsonPayload.getString("name"));
+                                startActivity(intent); //登入成功導向首頁
                             }
 
                             loginHandler.sendEmptyMessage(MyMessages.Disconnect);
@@ -634,7 +671,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 params.put("account", email);    //必填
                                                 params.put("identifier", id);
                                                 params.put("membertype", "3");  //必填
-                                                params.put("name", null);
+                                                params.put("name", name);
                                                 //params.put("nickname", name);
                                                 params.put("password", id); //必填
                                                 //params.put("localpicture", "images\\usr\\pic001.jpg");
@@ -674,7 +711,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                                 message.setData(bundle);
                                                 loginHandler.sendMessage(message);
-                                                intent.putExtra("username","吳彥霆");
+                                                SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+                                                String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
+                                                JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                                                intent.putExtra("username",jsonPayload.getString("name"));
                                                 startActivity(intent); //登入成功導向首頁
                                             }
 

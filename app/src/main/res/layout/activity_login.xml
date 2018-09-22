@@ -17,7 +17,7 @@
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="325dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="80dp"
             android:layout_marginTop="64dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="312dp"
             android:background="@drawable/facebook"
             app:layout_constraintEnd_toStartOf="@+id/button11"
@@ -41,7 +41,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/googleplus"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,36 +51,42 @@
 
         <EditText
             android:id="@+id/txtEmail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="164dp"
             android:ems="10"
             android:hint="請輸入E-Mail"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageView6"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/txtPwd"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="請輸入密碼"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtEmail"
             app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
         <EditText
             android:id="@+id/txtPwdConfirm"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="再次輸入密碼"
             android:inputType="textPassword"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtPwd"
             app:layout_constraintTop_toBottomOf="@+id/txtPwd" />
 
         <Button
@@ -140,13 +146,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

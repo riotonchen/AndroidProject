@@ -117,6 +117,30 @@ public class NewMainActivity extends AppCompatActivity {
                         it = new Intent(NewMainActivity.this,CardActivity.class);
                         startActivity(it);
                         return true;
+                    case R.id.Logout:
+                        new AlertDialog.Builder(NewMainActivity.this)
+                                .setTitle("確認登出")
+                                .setIcon(R.drawable.logo2)
+                                .setPositiveButton("確定",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                SharedPreferences.Editor editor = getSharedPreferences("jwt_token", MODE_PRIVATE).edit();
+                                                editor.clear(); //清除Token
+                                                editor.apply();
+                                                it = new Intent(NewMainActivity.this, LoginActivity.class);
+                                                startActivity(it);
+                                            }
+                                        })
+                                .setNegativeButton("取消",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+                                                // TODO Auto-generated method stub
+                                            }
+                                        }).show();
+                        return true;
                 }
                 return false;
             }

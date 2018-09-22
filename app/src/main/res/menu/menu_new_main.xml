@@ -52,6 +52,11 @@
             android:checkable="false"
             android:icon="@drawable/black"
             android:title="關於" />
+        <item
+            android:id="@+id/Logout"
+            android:checkable="false"
+            android:icon="@drawable/black"
+            android:title="登出" />
     </group>
 
 </menu>

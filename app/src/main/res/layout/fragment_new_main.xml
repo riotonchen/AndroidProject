@@ -12,8 +12,8 @@
         android:id="@+id/togethercircle"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="116dp"
         android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -266,11 +266,12 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/white_corner"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView15" />
+        app:layout_constraintTop_toBottomOf="@+id/todayExpense" />
 
     <ImageView
         android:id="@+id/imageView12"
@@ -327,13 +328,13 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/user" />
+        app:srcCompat="@drawable/menubutton" />
 
     <ImageView
         android:id="@+id/imageView14"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/button"
         app:layout_constraintStart_toStartOf="parent"
@@ -341,8 +342,8 @@
 
     <ImageView
         android:id="@+id/imageView13"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -354,22 +355,23 @@
         app:layout_constraintTop_toTopOf="@+id/imageView14" />
 
     <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/todayExpense"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="216dp"
-        android:src="@drawable/button"
+        android:layout_marginTop="205dp"
+        android:src="@drawable/indexbuttonselector"
+
         app:layout_constraintStart_toEndOf="@+id/imageView16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView16"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="224dp"
-        android:src="@drawable/button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="204dp"
+        android:src="@drawable/indexbuttonselector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -383,9 +385,9 @@
         android:text="今日花費"
         android:textColor="@android:color/background_dark"
         android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView15"
-        app:layout_constraintStart_toStartOf="@+id/imageView15"
-        app:layout_constraintTop_toTopOf="@+id/imageView15" />
+        app:layout_constraintEnd_toEndOf="@+id/todayExpense"
+        app:layout_constraintStart_toStartOf="@+id/todayExpense"
+        app:layout_constraintTop_toTopOf="@+id/todayExpense" />
 
     <TextView
         android:id="@+id/textView12"
@@ -395,11 +397,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="$1,999"
+        android:text="$1,99900"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView15"
-        app:layout_constraintStart_toStartOf="@+id/imageView15"
+        app:layout_constraintEnd_toEndOf="@+id/todayExpense"
+        app:layout_constraintStart_toStartOf="@+id/todayExpense"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
@@ -408,7 +410,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="可用餘額"
         android:textColor="@android:color/background_dark"
@@ -420,14 +422,12 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="$2,200"
+        android:text="$000000"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="14dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView18"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="@+id/imageView16"
         app:layout_constraintStart_toStartOf="@+id/imageView16"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -565,30 +565,10 @@
         app:layout_constraintStart_toStartOf="@+id/imageView7"
         app:layout_constraintTop_toBottomOf="@+id/imageView17" />
 
-    <ImageView
-        android:id="@+id/imageView18"
-        android:layout_width="15dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/right"
-        app:layout_constraintEnd_toEndOf="@+id/imageView16"
-        app:layout_constraintTop_toTopOf="@+id/imageView16" />
-
-    <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="15dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="55dp"
-        android:src="@drawable/right"
-        app:layout_constraintEnd_toEndOf="@+id/imageView15"
-        app:layout_constraintTop_toTopOf="@+id/imageView15" />
-
     <com.synnapps.carouselview.CarouselView
         android:id="@+id/customCarouselView"
-        android:layout_width="169dp"
-        android:layout_height="116dp"
+        android:layout_width="149dp"
+        android:layout_height="120dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -606,37 +586,5 @@
         app:strokeColor="#FF777777"
         app:strokeWidth="1dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7">
-
-        <ImageView
-            android:id="@+id/imageView20"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:src="@drawable/circlegray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-        <ImageView
-            android:id="@+id/imageView21"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:src="@drawable/circlegainsboro"
-            app:layout_constraintStart_toEndOf="@+id/imageView20"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 

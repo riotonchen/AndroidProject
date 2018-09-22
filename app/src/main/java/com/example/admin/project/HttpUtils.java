@@ -11,7 +11,10 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,48 +104,29 @@ public class HttpUtils {
     }
 
     public static JSONObject Register(String path, Map<String, String> params) {
-        HttpURLConnection httpURLConnection = null;
-        InputStream inputStream = null;
+        JSONObject resultObj = null;
         try {
-            URL url = new URL(path);    //路徑
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setConnectTimeout(3000);  // 設置連接超時時間
-            httpURLConnection.setDoInput(true);         // 打開輸入流，以便從伺服器獲取數據
-            httpURLConnection.setDoOutput(true);        // 打開輸出流，以便向伺服器提交數據
-            httpURLConnection.setRequestMethod("POST"); // 設置以POST方式提交數據
-            httpURLConnection.setUseCaches(false);      // 使用POST方式不能使用緩存
-            // 設置請求體的類型是JSON
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.setRequestProperty("Accept", "application/json");
-            // 獲得輸入流，向伺服器寫入數據
-            OutputStream outputStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
-            DataOutputStream writer = new DataOutputStream(outputStream);
-            writer.writeBytes(MapToJSONString(params));
-            writer.flush();
-            writer.close();
-
-            int responseCode = httpURLConnection.getResponseCode();     // 獲得伺服器回應碼
-            switch (responseCode) {
-                case HttpURLConnection.HTTP_CREATED:   //HTTP Status Code=201
-                    inputStream = httpURLConnection.getInputStream();
-                    return DealResponseResultToJSON(inputStream, responseCode);
-                default:    //其他訊息(錯誤)
-                    inputStream = httpURLConnection.getErrorStream();   //注意如果連結(傳送)失敗但伺服器仍然發送了有用數據，則回傳錯誤流
-                    return DealResponseResultToJSON(inputStream, responseCode);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("Charset", HTTP.UTF_8);
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Accept-Charset", HTTP.UTF_8);
+//        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+            StringEntity entity = new StringEntity(MapToJSONString(params), HTTP.UTF_8);
+            httpPost.setEntity(entity);
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            int responseCode = httpResponse.getStatusLine().getStatusCode();
+            if(responseCode == HttpStatus.SC_CREATED){
+                resultObj = new JSONObject(EntityUtils.toString(httpResponse.getEntity(), HTTP.UTF_8)); //注意編碼
+                resultObj.put("responseCode", String.valueOf(responseCode));
+            }else{
+                resultObj.put("responseCode", String.valueOf(responseCode));    //加入回應碼
             }
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
-            if (inputStream != null)
-                try {
-                    inputStream.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            if (httpURLConnection != null)
-                httpURLConnection.disconnect();
         }
-        return null;
+        return  resultObj;
     }
 
     public static JSONObject RefreshToken(String path, Map<String, String> params) {

@@ -67,11 +67,10 @@ public class LoginActivity extends AppCompatActivity {
     View view3;
     Intent intent;
     private static String email,name,id;
-    private static String showMsg = "\n";
     private final LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
     private final RegisterHandler registerHandler = new RegisterHandler(LoginActivity.this);
     private final GetHandler getHandler = new GetHandler(LoginActivity.this);
-    private final RefreshHandler refreshHandler = new RefreshHandler(LoginActivity.this);
+
     private LoginButton loginButton;
     // FB
     private LoginManager loginManager;
@@ -86,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public class Path {  //注意路徑有無斜線(endpoint)
         public static final String api_token_jwtauth = "https://www.177together.com/api-token-jwtauth";
-        public static final String api_token_refresh = "https://www.177together.com/api-token-refresh/";
+//        public static final String api_token_refresh = "https://www.177together.com/api-token-refresh/";
         public static final String member = "https://www.177together.com/api/member/";
         public static final String friendShip = "https://www.177together.com/api/friendship/";
     }
@@ -113,24 +112,18 @@ public class LoginActivity extends AppCompatActivity {
             if (activity != null) {
                 try {
                     switch (msg.what) {
-                        case MyMessages.Connecting:
-                            showMsg = "\n[Connecting]>>>";
-                            break;
                         case MyMessages.Progressing:
                             Toast.makeText(activity, "登入成功！", Toast.LENGTH_SHORT).show();
                             break;
-                        case MyMessages.Disconnect:
-                            showMsg = "\n[Disconnect]\n";
-                            break;
                         case MyMessages.Error:
-                            Bundle bundle = msg.getData();
-                            String errorMsg = bundle.getString("errorMsg", "");
-                            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
+//                            Bundle bundle = msg.getData();
+//                            String errorMsg = bundle.getString("errorMsg", "");
+//                            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, "E-Mail或密碼錯誤，請重新輸入！", Toast.LENGTH_LONG).show();
                             break;
                         default:
                             break;
                     }
-                    //activity.txvRecord.append(showMsg);
                     //super.handleMessage(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -152,14 +145,8 @@ public class LoginActivity extends AppCompatActivity {
             if (activity != null) {
                 try {
                     switch (msg.what) {
-                        case MyMessages.Connecting:
-                            showMsg = "\n[Connecting]>>>";
-                            break;
                         case MyMessages.Progressing:
                             Toast.makeText(activity, "註冊成功！", Toast.LENGTH_SHORT).show();
-                            break;
-                        case MyMessages.Disconnect:
-                            showMsg = "\n[Disconnect]\n";
                             break;
                         case MyMessages.Error:
                             Bundle bundle = msg.getData();
@@ -169,7 +156,6 @@ public class LoginActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-                    //activity.txvRecord.append(showMsg);
                     //super.handleMessage(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,92 +177,18 @@ public class LoginActivity extends AppCompatActivity {
             if (activity != null) {
                 try {
                     switch (msg.what) {
-                        case MyMessages.Connecting:
-                            showMsg = "\n[Connecting]>>>";
-                            break;
                         case MyMessages.Progressing:
-                            showMsg = "[Progressing]>>>";
-                            Bundle bundle = msg.getData();
-                            JSONArray jsonArray = new JSONArray(bundle.getString("get_jsonArrayString"));
-                            JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length() - 1);    //最後一個為responseCode
-                            showMsg +=
-                                    "\n[ResponseCode]：" + String.valueOf(jsonObject.getInt("responseCode")) +
-                                            "\n" + jsonArray.toString();  //這邊直接輸出字串，未處理
 
                             Toast.makeText(activity, "讀取成功！", Toast.LENGTH_SHORT).show();
                             break;
-                        case MyMessages.Disconnect:
-                            showMsg = "\n[Disconnect]\n";
-                            break;
                         case MyMessages.Error:
-                            bundle = msg.getData();
-                            String errorMsg = bundle.getString("errorMsg", "");
-                            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
-                            break;
-                        default:
-                            break;
-                    }
-                    //activity.txvRecord.append(showMsg);
-                    //super.handleMessage(msg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private static class RefreshHandler extends Handler {
-        private final WeakReference<LoginActivity> mActivity;    //弱引用
-
-        private RefreshHandler(LoginActivity activity) {
-            mActivity = new WeakReference<LoginActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            LoginActivity activity = mActivity.get();    //獲取弱引用的對象
-            if (activity != null) {
-                try {
-                    switch (msg.what) {
-                        case MyMessages.Connecting:
-                            showMsg = "\n[Connecting]>>>";
-                            break;
-                        case MyMessages.Progressing:
-                            showMsg = "[Progressing]>>>";
-                            SharedPreferences myPref = myGetSharedPreferences(activity.getApplicationContext());
-                            String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
-                            JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
-
                             Bundle bundle = msg.getData();
-                            JSONObject jsonObj = BundleToJson(bundle.getBundle("token_Bundle"));
-                            showMsg +=
-                                    "\n[ResponseCode]：" + String.valueOf(jsonObj.getInt("responseCode")) +
-                                            "\n[Token]：" + jsonObj.getString("token") +
-                                            "\n[PAYLOAD.exp]：" + jsonPayload.getInt("exp") +
-                                            "\n[PAYLOAD.orig_iat]：" + jsonPayload.getInt("orig_iat");
-                            //activity.txvStatus.setText("狀態：已登入 ; user_id = " + String.valueOf(jsonPayload.getInt("user_id")));
-                            //activity.txvStatus.setTextColor(Color.BLUE);
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-                            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
-                            Date expiredDate = new Date(jsonPayload.getInt("exp") * 1000L); //Unix timestamp 轉 Date
-                            Date orig_iatDate = new Date(jsonPayload.getInt("orig_iat") * 1000L);
-                            //activity.txvExpired.setText("Token Expired：" + sdf.format(expiredDate));
-                            //activity.txvOrig_iat.setText("Token Issued At：" + sdf.format(orig_iatDate));
-                            Toast.makeText(activity, "Token更新成功！", Toast.LENGTH_SHORT).show();
-                            break;
-                        case MyMessages.Disconnect:
-                            showMsg = "\n[Disconnect]\n";
-                            break;
-                        case MyMessages.Error:
-                            bundle = msg.getData();
                             String errorMsg = bundle.getString("errorMsg", "");
                             Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show();
                             break;
                         default:
                             break;
                     }
-                    //activity.txvRecord.append(showMsg);
                     //super.handleMessage(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -284,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -383,7 +296,10 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "請輸入E-Mail及密碼!", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(txtEmail.getText().toString()).matches()) {
+                    Toast.makeText(LoginActivity.this, "Email格式不正確", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
                 progress.setMessage("登入中");
@@ -393,12 +309,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            loginHandler.sendEmptyMessage(MyMessages.Connecting);
-
                             Map<String, String> params = new HashMap<>();
                             //必填這三個欄位
                             params.put("username", txtEmail.getText().toString() + ";" + "2");  //xxx@xxx;2
-                            params.put("password", txtPwd.getText().toString());    //MySQL392
+                            params.put("password", txtPwd.getText().toString());
                             params.put("membertype_id", "2");
 
                             Message message = new Message();
@@ -406,14 +320,12 @@ public class LoginActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             JSONObject jsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);
                             if(jsonObj.getInt("responseCode")!=HttpURLConnection.HTTP_OK){
-//                                message.what = MyMessages.Error;
+                                message.what = MyMessages.Error;
 //                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
 //                                message.setData(bundle);
-//                                loginHandler.sendMessage(message);
-                                Toast.makeText(LoginActivity.this, "E-Mail或密碼錯誤，請重新輸入！", Toast.LENGTH_LONG).show();
+                                loginHandler.sendMessage(message);
 
                             }else{
-
                                 DealToken(jsonObj.getString("token"));  //儲存Token
                                 bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
                                 message.setData(bundle);
@@ -427,7 +339,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                             progress.dismiss();
-                            loginHandler.sendEmptyMessage(MyMessages.Disconnect);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -444,8 +355,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
                     Toast.makeText(LoginActivity.this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
                     return;
-                }
-                if(txtEmail.getText().toString().equals("") || txtPwd.getText().toString().equals("") || txtPwdConfirm.getText().toString().equals("")){
+                }else if(txtEmail.getText().toString().equals("") || txtPwd.getText().toString().equals("") || txtPwdConfirm.getText().toString().equals("")){
+                    Toast.makeText(LoginActivity.this, "請輸入E-Mail、密碼及確認密碼！", Toast.LENGTH_LONG).show();
                     return;
                 }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(txtEmail.getText().toString()).matches()){
                     Toast.makeText(LoginActivity.this, "Email格式不正確", Toast.LENGTH_LONG).show();
@@ -463,7 +374,6 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                registerHandler.sendEmptyMessage(MyMessages.Connecting);
                                 Map<String, String> params = new HashMap<>();
                                 params.put("account", txtEmail.getText().toString());    //必填
                                 params.put("identifier", null);
@@ -503,8 +413,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
                                 progress.dismiss();
-                                registerHandler.sendEmptyMessage(MyMessages.Disconnect);
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -520,7 +428,7 @@ public class LoginActivity extends AppCompatActivity {
         loginHandler.removeCallbacksAndMessages(null);
         registerHandler.removeCallbacksAndMessages(null);
         getHandler.removeCallbacksAndMessages(null);
-        refreshHandler.removeCallbacksAndMessages(null);
+
         super.onDestroy();
     }
 
@@ -668,10 +576,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     bundle.putString("errorMsg", jsonObj.getString("error_msg"));
                                                     message.setData(bundle);
                                                     registerHandler.sendMessage(message);
-
-
                                                 } else {    //註冊成功
-
                                                     params = new HashMap<>();
                                                     params.put("username", email + ";" + "3");//帳號+會員類型 為唯一
                                                     params.put("password", id);
@@ -700,7 +605,6 @@ public class LoginActivity extends AppCompatActivity {
                                                 startActivity(intent); //登入成功導向首頁
                                             }
                                             progress.dismiss();
-                                            loginHandler.sendEmptyMessage(MyMessages.Disconnect);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }

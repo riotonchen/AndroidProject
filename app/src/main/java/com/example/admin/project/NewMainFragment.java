@@ -56,7 +56,7 @@ public class NewMainFragment extends Fragment {
     public LinearLayout set,classification,account,invoice,analysis;
     private String today , weekstart , weekend , monthstart , monthend , yearstart , yearend;
     private TextView txvMainTodayExpense,txvMainMonthExpense2,txvMainMonthExpense,textView32,txvMainTotalBudget,txvMainMonthBalance,txvMonth;
-    private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis;
+    private Button btn1,btn2,btnclassification,btnInvoice,btnaccount,btnanalysis,btncard;
     private ImageView todayExpense,login;
     DBHelper DH;
     SQLiteDatabase db;
@@ -79,6 +79,7 @@ public class NewMainFragment extends Fragment {
         btnInvoice = (Button) view.findViewById(R.id.btnInvoice);
         btnaccount = (Button) view.findViewById(R.id.btnaccount);
         btnanalysis = (Button) view.findViewById(R.id.btnanalysis);
+        btncard=(Button)view.findViewById(R.id.card);
         txvMainTodayExpense=view.findViewById(R.id.textView12);
         txvMainMonthExpense2=view.findViewById(R.id.textView16);
         txvMainMonthExpense=view.findViewById(R.id.textView39);
@@ -205,6 +206,13 @@ public class NewMainFragment extends Fragment {
             public void onClick(View view) {
                 it = new Intent(getActivity(), AccountingActivity.class);
                 it.putExtra("today", today);
+                startActivity(it);
+            }
+        });
+        btncard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                it = new Intent(getActivity(),CardActivity.class);
                 startActivity(it);
             }
         });

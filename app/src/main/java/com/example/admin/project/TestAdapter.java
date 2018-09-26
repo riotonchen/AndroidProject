@@ -1,5 +1,6 @@
 package com.example.admin.project;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +10,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +77,7 @@ public class TestAdapter extends StackAdapter<Integer> {
         Button btn;
         ImageView codeImg;
         Bitmap bmp;
+        String name,number;
 
         public ColorItemViewHolder(View view) {
             super(view);
@@ -92,8 +98,8 @@ public class TestAdapter extends StackAdapter<Integer> {
             DBHelper DH = new DBHelper(getContext());
             SQLiteDatabase db = DH.getReadableDatabase();
             String sqlCmd="SELECT name,number FROM mbr_card WHERE card_id=\"" + data + "\"";
-            String name="";
-            String number="";
+            name="";
+            number="";
             try {
                 Cursor cur = db.rawQuery(sqlCmd, null);
                 int rowsCount = cur.getCount();
@@ -121,8 +127,25 @@ public class TestAdapter extends StackAdapter<Integer> {
             if (bmp != null) {
                 codeImg.setImageBitmap(bmp);
             }
-            mTextTitle.setText(String.valueOf(position+1));
+            //String.valueOf(position+1)
+            mTextTitle.setText(name);
             text_view.setText("id:"+String.valueOf(data)+"卡名:"+name);
+
+
+            codeImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    final View CardView = inflater.inflate(R.layout.checkcard, null);
+                    final ImageView chkImg=(ImageView)CardView.findViewById(R.id.imageView15);
+                    chkImg.setImageBitmap(bmp);
+                    new AlertDialog.Builder(getContext())
+                            .setView(CardView)
+                            .show();
+                    Toast.makeText(getContext(), number, Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
         }
 
@@ -195,7 +218,29 @@ public class TestAdapter extends StackAdapter<Integer> {
     public static Bitmap CreateOneDCode(String content) throws WriterException {
         // 生成一维条码,编码时指定大小,不要生成了图片以后再进行缩放,这样会模糊导致识别失败
         BitMatrix matrix = new MultiFormatWriter().encode(content,
-                BarcodeFormat.CODE_128, 800, 200);
+                BarcodeFormat.CODE_128, 3000, 1000);
+        int width = matrix.getWidth();
+        int height = matrix.getHeight();
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (matrix.get(x, y)) {
+                    pixels[y * width + x] = 0xff000000;
+                }
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
+        // 通过像素数组生成bitmap,具体参考api
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
+    }
+    public static Bitmap CreateOneDCode2(String content) throws WriterException {
+        // 生成一维条码,编码时指定大小,不要生成了图片以后再进行缩放,这样会模糊导致识别失败
+
+        BitMatrix matrix = new MultiFormatWriter().encode(content,
+                BarcodeFormat.CODE_128, 1200, 500);
         int width = matrix.getWidth();
         int height = matrix.getHeight();
         int[] pixels = new int[width * height];

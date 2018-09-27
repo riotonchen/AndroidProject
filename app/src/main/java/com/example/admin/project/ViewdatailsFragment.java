@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,7 +82,7 @@ public class ViewdatailsFragment extends Fragment {
                 final String txvId=((TextView) view.findViewById(R.id.txvId)).getText().toString();
                 final String money=((TextView) view.findViewById(R.id.money)).getText().toString();
                 final String date=((TextView)view.findViewById(R.id.date)).getText().toString();
-                PopupMenu popup=new PopupMenu(getActivity(),view);
+                PopupMenu popup=new PopupMenu(getActivity(),view, Gravity.RIGHT);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

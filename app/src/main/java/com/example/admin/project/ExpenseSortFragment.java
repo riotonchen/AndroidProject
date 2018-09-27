@@ -301,7 +301,7 @@ public class ExpenseSortFragment extends Fragment implements OnItemClickListener
                 final String MsortID=((TextView)view.findViewById(R.id.MsortID)).getText().toString();
                 final String sort=((TextView)view.findViewById(R.id.name)).getText().toString();
                 //initPopWindow(view);
-                PopupMenu popup=new PopupMenu(getActivity(),view);
+                PopupMenu popup=new PopupMenu(getActivity(),view,Gravity.RIGHT);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

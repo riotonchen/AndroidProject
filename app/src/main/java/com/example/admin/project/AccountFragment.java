@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -93,7 +94,7 @@ public class AccountFragment extends Fragment {
                 db=DH.getWritableDatabase();
                 final String accountID=((TextView)view.findViewById(R.id.accountID)).getText().toString();
                 final String account=((TextView)view.findViewById(R.id.account)).getText().toString();
-                PopupMenu popup=new PopupMenu(getActivity(),view);
+                PopupMenu popup=new PopupMenu(getActivity(),view, Gravity.RIGHT);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

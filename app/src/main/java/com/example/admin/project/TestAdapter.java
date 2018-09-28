@@ -85,7 +85,6 @@ public class TestAdapter extends StackAdapter<Integer> {
             mContainerContent = view.findViewById(R.id.container_list_content);
             mTextTitle = (TextView) view.findViewById(R.id.text_list_card_title);
             text_view=(TextView)view.findViewById(R.id.text_view);
-            btn=(Button)view.findViewById(R.id.button4);
             codeImg=(ImageView)view.findViewById(R.id.codeImg);
         }
 

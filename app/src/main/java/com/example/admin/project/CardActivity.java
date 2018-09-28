@@ -88,7 +88,9 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
             list.add(i);
         }*/
 
-        new Handler().postDelayed(
+        testStackAdapter.updateData(list);
+
+        /*new Handler().postDelayed(
                 new Runnable() {
                     @Override
                     public void run() {
@@ -96,7 +98,9 @@ public class CardActivity extends AppCompatActivity implements CardStackView.Ite
                     }
                 }
                 , 200
-        );
+        );*/
+
+
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

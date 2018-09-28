@@ -8,11 +8,13 @@
             <solid
                 android:color="#7ecef4"/>
             <corners
-                android:topLeftRadius="10dip"
-                android:topRightRadius="10dip"/>
+                android:topLeftRadius="30dip"
+                android:topRightRadius="30dip"
+                android:bottomRightRadius="30dip"
+                android:bottomLeftRadius="30dip"/>
             <stroke
                 android:width="0.5px"
-                android:color="#7ecef4"/>
+                android:color="@android:color/black"/>
         </shape>
     </item>
 </layer-list>

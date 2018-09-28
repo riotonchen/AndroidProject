@@ -37,6 +37,14 @@ import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,11 +69,13 @@ import java.util.TimeZone;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG="LoginActivity";
-    private Button button15,btnLogin,btnRegister,button14,fblogin;
+    private Button button15,btnLogin,btnRegister,button14,fblogin,button19,google;
     private EditText txtPwdConfirm,txtEmail,txtPwd;
     boolean check = true;
     View view3;
     Intent intent;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
     private static String email,name,id;
     private final LoginHandler loginHandler = new LoginHandler(LoginActivity.this);
     private final RegisterHandler registerHandler = new RegisterHandler(LoginActivity.this);
@@ -208,11 +218,12 @@ public class LoginActivity extends AppCompatActivity {
         view3 = (View) findViewById(R.id.view3);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        fblogin= (Button) findViewById(R.id.fblogin);
+        fblogin = (Button) findViewById(R.id.fblogin);
         txtPwdConfirm = (EditText) findViewById(R.id.txtPwdConfirm);
         txtPwd = (EditText) findViewById(R.id.txtPwd);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
-
+        button19 = (Button) findViewById(R.id.button19);
+        google = (Button) findViewById(R.id.google);
         if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
             Toast.makeText(this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
         }
@@ -237,7 +248,16 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "Facebook id: " + id);
             Log.d(TAG, "Facebook name: " + name);
         }*/
+        //Google登入
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         intent = new Intent(this, NewMainActivity.class);
             //自動登入
             SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
@@ -281,6 +301,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!HttpUtils.IsInternetAvailable(getApplicationContext())) { //檢查網路是否連接
+                    Toast.makeText(LoginActivity.this, "網路未連接，請檢察網路狀態！", Toast.LENGTH_LONG).show();
+                }else{
+                    signIn();
+                }
+
+            }
+        });
 
 
         //登入
@@ -423,6 +454,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+    //google登入
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
     @Override
     protected void onDestroy() {    //清除所有Handler動作
         loginHandler.removeCallbacksAndMessages(null);
@@ -478,16 +514,20 @@ public class LoginActivity extends AppCompatActivity {
             button14.setVisibility(View.INVISIBLE);
             btnRegister.setVisibility(View.VISIBLE);
             btnLogin.setVisibility(View.INVISIBLE);
-            button15.setText("已經有帳號?");
+            button19.setVisibility(View.VISIBLE);
+            //button15.setText("已經有帳號?");
+            button15.setVisibility(View.INVISIBLE);
             view3.setVisibility(View.INVISIBLE);
             check = false;
         }else{
             txtPwdConfirm.setVisibility(View.INVISIBLE);
             button14.setVisibility(View.VISIBLE);
             view3.setVisibility(View.VISIBLE);
+            button19.setVisibility(View.INVISIBLE);
             btnRegister.setVisibility(View.INVISIBLE);
             btnLogin.setVisibility(View.VISIBLE);
-            button15.setText("還沒有帳號");
+            button15.setVisibility(View.VISIBLE);
+            //button15.setText("還沒有帳號");
             check = true;
         }
     }
@@ -496,6 +536,106 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            // Signed in successfully
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            id = account.getId();
+            name = account.getDisplayName();
+            email = account.getEmail();
+            //-----------登入api開始---------------
+            final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
+            progress.setMessage("Google+登入中");
+            progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progress.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Map<String, String> params = new HashMap<>();
+                        //必填這三個欄位
+
+                        params.put("username", email + ";" + "4");  //xxx@xxx;2
+                        params.put("password", id);    //MySQL392
+                        params.put("membertype_id", "4");
+
+                        Message message = new Message();
+                        message.what = MyMessages.Progressing;
+                        Bundle bundle = new Bundle();
+                        JSONObject jsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);
+                        if (jsonObj.getInt("responseCode") != HttpURLConnection.HTTP_OK) {
+//                                                message.what = MyMessages.Error;
+//                                                bundle.putString("errorMsg", jsonObj.getString("non_field_errors"));    //"non_field_errors"為jwt預設"key"名稱
+//                                                message.setData(bundle);
+//                                                loginHandler.sendMessage(message);
+
+                            //註冊api開始------------
+                            params = new HashMap<>();
+                            params.put("account", email);    //必填
+                            params.put("identifier", id);
+                            params.put("membertype", "4");  //必填
+                            params.put("name", name);
+                            //params.put("nickname", name);
+                            params.put("password", id); //必填
+                            //params.put("localpicture", "images\\usr\\pic001.jpg");
+                            //params.put("dbpicture", "images\\usr\\pic020.jpg");
+
+                            message = new Message();
+                            message.what = MyMessages.Progressing;
+                            bundle = new Bundle();
+                            jsonObj = HttpUtils.Register(Path.member, params);
+                            if (jsonObj.getInt("responseCode") != HttpURLConnection.HTTP_CREATED) { //檢查responseCode
+                                message.what = MyMessages.Error;
+                                bundle.putString("errorMsg", jsonObj.getString("error_msg"));
+                                message.setData(bundle);
+                                registerHandler.sendMessage(message);
+                            } else {    //註冊成功
+                                params = new HashMap<>();
+                                params.put("username", email + ";" + "4");//帳號+會員類型 為唯一
+                                params.put("password", id);
+                                params.put("membertype_id", "4");   //Google會員
+                                JSONObject tokenJsonObj = HttpUtils.GetToken(Path.api_token_jwtauth, params);   //取得Token以利之後存取其他資源
+                                DealToken(tokenJsonObj.getString("token")); //儲存Token
+                                jsonObj.put("token", tokenJsonObj.getString("token"));   //加入註冊時回傳的json
+                                bundle.putBundle("member_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
+                                message.setData(bundle);
+                                registerHandler.sendMessage(message);
+                                intent.putExtra("username", name);
+                                startActivity(intent); //登入成功導向首頁
+                            }
+
+                        } else {
+                            //登入成功
+
+                            DealToken(jsonObj.getString("token"));  //儲存Token
+                            bundle.putBundle("token_Bundle", JsonToBundle(jsonObj));    //轉成Bundle
+                            message.setData(bundle);
+                            loginHandler.sendMessage(message);
+                            SharedPreferences myPref = getSharedPreferences("jwt_token", MODE_PRIVATE);  //此處使用預設的非靜態方法
+                            String strPayload = myPref.getString("PAYLOAD", "");//讀取已儲存的SharedPref
+                            JSONObject jsonPayload = StringToJSON(strPayload);  //轉成JSON
+                            intent.putExtra("username", jsonPayload.getString("name"));
+                            startActivity(intent); //登入成功導向首頁
+                        }
+                        progress.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
     }
 
 

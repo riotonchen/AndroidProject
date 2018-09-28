@@ -34,9 +34,11 @@ dependencies {
     implementation 'com.google.zxing:core:3.2.1' //掃描QR-Code
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar' //掃描QR-Code
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1' //統計圖表
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //統計圖表
     implementation 'com.synnapps:carouselview:0.1.5' //首頁輪播圖滑動
     implementation 'com.loopeer.library:cardstack:1.0.2' //票卡模組
     implementation 'com.facebook.android:facebook-login:[4,5)' //fb登入
+    implementation 'com.google.android.gms:play-services-auth:15.0.1' //google登入
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])   //add my jiancheng
 

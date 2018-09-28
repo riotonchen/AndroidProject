@@ -14,7 +14,7 @@
             android:id="@+id/SearchFriend"
             android:checkable="false"
             android:icon="@drawable/black"
-            android:title="搜尋好友" />
+            android:title="加入好友" />
         <item
             android:id="@+id/Friend"
             android:checkable="false"

@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:background="#ffffff"
             android:gravity="center"
-            android:text="搜尋好友"
+            android:text="加入好友"
             android:textColor="#000000"
             android:textSize="22sp"
             tools:layout_editor_absoluteX="0dp"
@@ -155,5 +155,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtToid"
         app:srcCompat="@drawable/user2" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="顯示行動條碼"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
